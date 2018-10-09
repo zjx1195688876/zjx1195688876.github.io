@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Flux与Redux浅析 | 张金新的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="什么是Flux?—— 简单地说，Flux是用来构建用户端的Web应用程序的体系架构，用来管理和控制应用中数据的流向。  从上图可知，Flux最大的一个优点就是数据的单向流动。  1.首先要有 action，通过定义一些 action creator 方法根据需要创建 Action 提供给 dispatcher  2.View 层通过用户交互（比如 onClick）会触发 Action  3.Dis">
+<meta name="keywords" content="JavaScript,前端,Flux,Redux">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flux与Redux浅析">
+<meta property="og:url" content="http://zhangjinxin.com/2017/05/31/Flux与Redux浅析/index.html">
+<meta property="og:site_name" content="张金新的博客">
+<meta property="og:description" content="什么是Flux?—— 简单地说，Flux是用来构建用户端的Web应用程序的体系架构，用来管理和控制应用中数据的流向。  从上图可知，Flux最大的一个优点就是数据的单向流动。  1.首先要有 action，通过定义一些 action creator 方法根据需要创建 Action 提供给 dispatcher  2.View 层通过用户交互（比如 onClick）会触发 Action  3.Dis">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://haitao.nos.netease.com/1dd8055f-2ba0-47c6-b15d-30ae205cc2f3.png">
+<meta property="og:image" content="https://haitao.nos.netease.com/f9abd847-0212-4584-b580-c268bb621630.png">
+<meta property="og:image" content="https://haitao.nos.netease.com/116462f9-e8fb-4daa-89e2-73a129d29dce.png">
+<meta property="og:updated_time" content="2017-05-31T16:03:51.311Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Flux与Redux浅析">
+<meta name="twitter:description" content="什么是Flux?—— 简单地说，Flux是用来构建用户端的Web应用程序的体系架构，用来管理和控制应用中数据的流向。  从上图可知，Flux最大的一个优点就是数据的单向流动。  1.首先要有 action，通过定义一些 action creator 方法根据需要创建 Action 提供给 dispatcher  2.View 层通过用户交互（比如 onClick）会触发 Action  3.Dis">
+<meta name="twitter:image" content="https://haitao.nos.netease.com/1dd8055f-2ba0-47c6-b15d-30ae205cc2f3.png">
+  
+    <link rel="alternative" href="/atom.xml" title="张金新的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/star.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">张金新</a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+				        	<li><a href="/file/resume.pdf" target="_blank">我的简历</a></li>
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://taobaofed.org/">淘宝前端团队</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://efe.baidu.com">百度EFE技术体系</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">张金新</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/star.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">张金新</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-Flux与Redux浅析" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/05/31/Flux与Redux浅析/" class="article-date">
+  	<time datetime="2017-05-30T16:00:00.000Z" itemprop="datePublished">2017-05-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Flux与Redux浅析
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flux/">Flux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redux/">Redux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="什么是Flux"><a href="#什么是Flux" class="headerlink" title="什么是Flux?"></a>什么是Flux?</h2><p>—— 简单地说，Flux是用来构建用户端的Web应用程序的体系架构，用来管理和控制应用中数据的流向。</p>
+<p><img src="https://haitao.nos.netease.com/1dd8055f-2ba0-47c6-b15d-30ae205cc2f3.png" alt="Flux数据流"></p>
+<p>从上图可知，Flux最大的一个优点就是数据的单向流动。</p>
+<blockquote>
+<p>1.首先要有 action，通过定义一些 action creator 方法根据需要创建 Action 提供给 dispatcher<br>  2.View 层通过用户交互（比如 onClick）会触发 Action<br>  3.Dispatcher 会分发触发的 Action 给所有注册的 Store 的回调函数<br>  4.Store 回调函数根据接收的 Action 更新自身数据之后会触发一个 change 事件通知 View 数据更改了<br>  5.View 会监听这个 change 事件，拿到对应的新数据并调用 setState 更新组件 UI</p>
+</blockquote>
+<p>因此，我们可以将上图总结一下：<br><strong>Action</strong>可以看成是修改Store的行为抽象；<br><strong>Dispatcher</strong>管理着应用的数据流，可以看为Action到Store的分发器；<br><strong>Store</strong>管理着整个应用的状态和逻辑，类似MVC中的Model。</p>
+<p>相对于MVC中View具备多个修改Modal的能力，导致VC<->M在复杂页面中会比较混乱。<br><img src="https://haitao.nos.netease.com/f9abd847-0212-4584-b580-c268bb621630.png" alt="MVC"></-></p>
+<p>Flux实现了所有的状态都通过Store来维护，Store统一控制View，View没有直接修改Store的能力，而是发起Action通过Dispatcher去修改Store(通过 Action 传递数据)。避免了数据流的混乱。</p>
+<p><a href="https://github.com/facebook/flux/tree/master/examples" target="_blank" rel="noopener">Flux Demo</a></p>
+<h2 id="什么是Redux"><a href="#什么是Redux" class="headerlink" title="什么是Redux?"></a>什么是Redux?</h2><p>—— Redux是基于Flux架构的一次改进，官方的定义：Redux is a predictable state container for JavaScript apps（可预测的状态容器）。</p>
+<p><img src="https://haitao.nos.netease.com/116462f9-e8fb-4daa-89e2-73a129d29dce.png" alt="Redux数据流"></p>
+<p>从图中可以看出，Redux和Flux最大的不同在于Redux用Reducer代替了Flux的Dispatcher。Redux设想你永远不会变动你的数据，而应该在Reducer中返回新的对象来作为应用的新状态。因此，State 应该是只读的，唯一改变 State 的方法就是触发Action。而为了描述 Action 如何改变 State Tree ，需要编写 Reducers来实现。</p>
+<p><strong>Reducer函数</strong>：是纯函数，不应该有副作用，不应有API调用，Date.now()或者随机获取等不稳定的操作，应当保证相同的输入Reducer计算的结果应该是一致的输出，它只会进行单纯的计算。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Reducer</span>(<span class="params">state, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> ACTION_TYPE:</span><br><span class="line">      <span class="comment">// calc...</span></span><br><span class="line">      <span class="keyword">return</span> newState;</span><br><span class="line">    <span class="keyword">default</span>: <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> newState;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>State是不可修改的，所以返回的新State应该是基于输入State副本的修改，而不是直接修改State后的返回。</p>
+<h3 id="Redux三大原则"><a href="#Redux三大原则" class="headerlink" title="Redux三大原则"></a>Redux三大原则</h3><blockquote>
+<p><strong>1.单一数据源(Store)</strong><br>    整个应用的State被存放在一棵Object tree中，并且这个Object tree只存在唯一一个Store中；<br>  <strong>2.State是只读的 唯一改变 State 的方法就是触发 Action，Action 是一个用于描述已发生事件的普通对象。</strong><br>  确保了View和网络请求无法直接修改State，所有的修改都能被集中化处理。<br>  <strong>3.通过纯函数Reducer来修改Store,</strong><br>  Reducer 只是一些纯函数，它接收先前的 State 和 Action，并返回新的 State。<br>  即reducer(state, action) =&gt; new state</p>
+</blockquote>
+<h3 id="Redux与Flux的对比"><a href="#Redux与Flux的对比" class="headerlink" title="Redux与Flux的对比"></a>Redux与Flux的对比</h3><p>前面我们称Redux是基于Flux架构的一次改进，那么Redux和Flux具体有哪些区别呢？从代码层面来看：<br><strong>Action:</strong></p>
+<ul>
+<li><p><em>Flux:</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*Flux直接在Action中调用Dispatch*/</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">addTodo</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">  AppDispatcher.dispatch(&#123;</span><br><span class="line">    type: ActionTypes.ADD_TODO,</span><br><span class="line">    text: text</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>Redux:</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*Redux将Action和Dispatch解耦*/</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">addTodo</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    type: ActionTypes.ADD_TODO,</span><br><span class="line">    text: text</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>Store:</strong></p>
+<ul>
+<li><p><em>Flux:</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> _todos = [];</span><br><span class="line"><span class="keyword">const</span> TodoStore = <span class="built_in">Object</span>.assign(<span class="keyword">new</span> EventEmitter(), &#123;</span><br><span class="line">  getTodos() &#123;</span><br><span class="line">    <span class="keyword">return</span> _todos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line">AppDispatcher.register(<span class="function"><span class="keyword">function</span> (<span class="params">action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">  <span class="keyword">case</span> ActionTypes.ADD_TODO:</span><br><span class="line">    _todos = _todos.concat([action.text]);</span><br><span class="line">    TodoStore.emitChange();</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> TodoStore;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>Redux:</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*Redux将Dispatch从Store中剥离*/</span></span><br><span class="line"><span class="keyword">const</span> initialState = &#123; <span class="attr">todos</span>: [] &#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">TodoStore</span>(<span class="params">state = initialState, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">  <span class="keyword">case</span> ActionTypes.ADD_TODO:</span><br><span class="line">    <span class="keyword">return</span> &#123; <span class="attr">todos</span>: state.todos.concat([action.text]) &#125;;</span><br><span class="line">  <span class="keyword">default</span>:</span><br><span class="line">    <span class="keyword">return</span> state;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Redux简单demo实现"><a href="#Redux简单demo实现" class="headerlink" title="Redux简单demo实现"></a>Redux简单demo实现</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// actions</span></span><br><span class="line"><span class="keyword">const</span> INCREMENT = <span class="string">'INCREMENT'</span>;</span><br><span class="line"><span class="keyword">const</span> DECREMENT = <span class="string">'DECREMENT'</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">incrementCreator</span>(<span class="params">number</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    type: INCREMENT,</span><br><span class="line">    number,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">decrementCreator</span>(<span class="params">number</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    type: DECREMENT,</span><br><span class="line">    number,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化state</span></span><br><span class="line"><span class="keyword">const</span> initialState = &#123;</span><br><span class="line">  counter: <span class="number">0</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// reducers函数，注意最后一定要return state防止不能匹配到action的时候state丢失</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">countReducer</span>(<span class="params">state = initialState, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> INCREMENT:</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Object</span>.assign(&#123;&#125;, &#123;</span><br><span class="line">        counter: state.counter + action.number,</span><br><span class="line">      &#125;);</span><br><span class="line">    <span class="keyword">case</span> DECREMENT:</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Object</span>.assign(&#123;&#125;, &#123;</span><br><span class="line">        counter: state.counter - action.number,</span><br><span class="line">      &#125;);</span><br><span class="line">    <span class="keyword">default</span>: <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建store</span></span><br><span class="line"><span class="keyword">const</span> store = Redux.createStore(countReducer);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 订阅store的修改</span></span><br><span class="line">store.subscribe(<span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(store.getState());</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过dispatch action来改变state</span></span><br><span class="line">store.dispatch(incrementCreator(<span class="number">5</span>)); <span class="comment">//Object &#123;counter: 5&#125;</span></span><br><span class="line">store.dispatch(decrementCreator(<span class="number">4</span>)); <span class="comment">//Object &#123;counter: 1&#125;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/08/01/HTTPS浅析/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          HTTPS协议浅析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/04/23/JavaScript并发模型与Event Loop /" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JavaScript并发模型与Event Loop</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 张金新
+        <span>--联系我：15757116071@163.com</span>
+    	</div>
+      	<div class="footer-right">
+      		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

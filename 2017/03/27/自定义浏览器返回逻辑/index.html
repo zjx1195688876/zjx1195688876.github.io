@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>自定义浏览器返回逻辑 | 张金新的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="业务场景：当某一页面有重要信息，返回操作可能会导致信息丢失或无法再回到该页面。如：用户随机抽奖，获取某实物奖品需要用户填写地址来寄送奖品，若用户返回则无法获取到获奖用户地址信息且无法再次回到填写地址的页面。  因此，类似于填写地址的页面，通常会有返回二次确认的逻辑。在APP里实现很简单，只需要订阅appbridge实例的自定义返回事件即可。但在其他APP内置浏览器和普通浏览器返回就不能拦截了。">
+<meta name="keywords" content="JavaScript,前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义浏览器返回逻辑">
+<meta property="og:url" content="http://zhangjinxin.com/2017/03/27/自定义浏览器返回逻辑/index.html">
+<meta property="og:site_name" content="张金新的博客">
+<meta property="og:description" content="业务场景：当某一页面有重要信息，返回操作可能会导致信息丢失或无法再回到该页面。如：用户随机抽奖，获取某实物奖品需要用户填写地址来寄送奖品，若用户返回则无法获取到获奖用户地址信息且无法再次回到填写地址的页面。  因此，类似于填写地址的页面，通常会有返回二次确认的逻辑。在APP里实现很简单，只需要订阅appbridge实例的自定义返回事件即可。但在其他APP内置浏览器和普通浏览器返回就不能拦截了。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-07-10T15:35:41.642Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义浏览器返回逻辑">
+<meta name="twitter:description" content="业务场景：当某一页面有重要信息，返回操作可能会导致信息丢失或无法再回到该页面。如：用户随机抽奖，获取某实物奖品需要用户填写地址来寄送奖品，若用户返回则无法获取到获奖用户地址信息且无法再次回到填写地址的页面。  因此，类似于填写地址的页面，通常会有返回二次确认的逻辑。在APP里实现很简单，只需要订阅appbridge实例的自定义返回事件即可。但在其他APP内置浏览器和普通浏览器返回就不能拦截了。">
+  
+    <link rel="alternative" href="/atom.xml" title="张金新的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/star.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">张金新</a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+				        	<li><a href="/file/resume.pdf" target="_blank">我的简历</a></li>
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://taobaofed.org/">淘宝前端团队</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://efe.baidu.com">百度EFE技术体系</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">张金新</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/star.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">张金新</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-自定义浏览器返回逻辑" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/27/自定义浏览器返回逻辑/" class="article-date">
+  	<time datetime="2017-03-26T16:00:00.000Z" itemprop="datePublished">2017-03-27</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      自定义浏览器返回逻辑
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>业务场景：当某一页面有重要信息，返回操作可能会导致信息丢失或无法再回到该页面。如：用户随机抽奖，获取某实物奖品需要用户填写地址来寄送奖品，若用户返回则无法获取到获奖用户地址信息且无法再次回到填写地址的页面。</p>
+</blockquote>
+<p>因此，类似于填写地址的页面，通常会有返回二次确认的逻辑。在APP里实现很简单，只需要订阅appbridge实例的自定义返回事件即可。但在其他APP内置浏览器和普通浏览器返回就不能拦截了。</p>
+<p>这种情况下我们通过 history.pushState() + popstate event 的方法来实现自定义浏览器返回的需求。</p>
+<h2 id="关于-history-pushState"><a href="#关于-history-pushState" class="headerlink" title="关于 history.pushState"></a>关于 history.pushState</h2><p>通过history.pushState() 方法可以向浏览器历史添加了一个状态。</p>
+<blockquote>
+<p>语法 history.pushState(state, title, url); [state：状态对象，title：标题，url：新历史纪录的地址]</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向history中添加一条状态</span></span><br><span class="line"><span class="keyword">var</span> state = &#123; <span class="string">'page_id'</span>: <span class="number">1</span>, <span class="string">'user_id'</span>: <span class="number">5</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> title = <span class="string">'Hello World'</span>;</span><br><span class="line"><span class="keyword">var</span> url = <span class="string">'hello-world.html'</span>;</span><br><span class="line"></span><br><span class="line">history.pushState(state, title, url);</span><br></pre></td></tr></table></figure>
+<p>浏览器兼容良好，兼容情况可查看下方的 “MDN: History.pushState()详解”</p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/History/pushState" target="_blank" rel="noopener">MDN: History.pushState()详解</a></p>
+<h2 id="关于-popstate-event"><a href="#关于-popstate-event" class="headerlink" title="关于 popstate event"></a>关于 popstate event</h2><p> 浏览器的前进后退行为(或者在JavaScript中调用history.back()、history.forward()、history.go()方法)会触发popstate事件。【注：history.pushState()或者history.replaceState()不会触发popstate事件】</p>
+<blockquote>
+<p>语法 window.onpopstate = function() {};</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.onpopstate = <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(event.state));</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">history.pushState(&#123;<span class="string">'page_id'</span>: <span class="number">1</span>&#125;, <span class="string">"title 1"</span>, <span class="string">"?page=1"</span>);    <span class="comment">//添加并激活一个历史记录条目</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/onpopstate" target="_blank" rel="noopener">MDN: window.onpopstate详解</a></p>
+<h2 id="通过结合history-pushState-和popstate-event实现自定义返回的例子"><a href="#通过结合history-pushState-和popstate-event实现自定义返回的例子" class="headerlink" title="通过结合history.pushState()和popstate event实现自定义返回的例子"></a>通过结合history.pushState()和popstate event实现自定义返回的例子</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向history中添加一条状态</span></span><br><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//调用history.pushState()方法，向history对象中添加一条状态</span></span><br><span class="line">    history.pushState(&#123;</span><br><span class="line">            <span class="string">'page_id'</span>: <span class="number">1</span>,</span><br><span class="line">        &#125;,<span class="string">'after'</span>,<span class="string">'/after.html'</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.onpopstate = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//Modal让用户选择是确定返回还是继续留在本页面</span></span><br><span class="line">    <span class="keyword">var</span> modal = <span class="built_in">document</span>.createElement(<span class="string">'div'</span>);</span><br><span class="line">    modal.innerHTML = <span class="string">'&lt;div class="content" &gt;\</span></span><br><span class="line"><span class="string">                        &lt;p&gt;文案&lt;/p&gt;\</span></span><br><span class="line"><span class="string">                    &lt;/div&gt;\</span></span><br><span class="line"><span class="string">                    &lt;div class="btn-box"&gt;\</span></span><br><span class="line"><span class="string">                        &lt;a id="btn-cancel"class="btn btn-cancel" href="javascript: void(0)"&gt;取消&lt;/a&gt;\</span></span><br><span class="line"><span class="string">                        &lt;a id="btn-confirm" class="btn btn-confirm" href="javascript: void(0)"&gt;确定&lt;/a&gt;\</span></span><br><span class="line"><span class="string">                    &lt;/div&gt;'</span>;</span><br><span class="line">    <span class="built_in">document</span>.body.appendChild(modal);</span><br><span class="line">    <span class="keyword">var</span> cancelBtn = <span class="built_in">document</span>.getElementById(<span class="string">'btn-cancel'</span>);</span><br><span class="line">    <span class="keyword">var</span> confirmBtn = <span class="built_in">document</span>.getElementById(<span class="string">'btn-confirm'</span>);</span><br><span class="line"></span><br><span class="line">    cancelBtn.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        history.pushState(&#123;</span><br><span class="line">            <span class="string">'page_id'</span>: <span class="number">1</span>,</span><br><span class="line">        &#125;,<span class="string">'after'</span>,<span class="string">'/after.html'</span>);</span><br><span class="line">        <span class="built_in">document</span>.body.removeChild(modal);</span><br><span class="line">    &#125;;</span><br><span class="line">    confirmBtn.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        history.go(<span class="number">-1</span>);</span><br><span class="line">        <span class="built_in">document</span>.body.removeChild(modal);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>点击查看实现效果</strong>：<a href="http://5.zhangjinxin.applinzi.com/before.html" target="_blank" rel="noopener">http://5.zhangjinxin.applinzi.com/before.html</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/04/23/JavaScript并发模型与Event Loop /" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          JavaScript并发模型与Event Loop
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/03/20/JavaScript设计模式/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JavaScript设计模式</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 张金新
+        <span>--联系我：15757116071@163.com</span>
+    	</div>
+      	<div class="footer-right">
+      		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

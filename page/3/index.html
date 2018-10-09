@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>张金新的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="张金新的博客">
+<meta property="og:url" content="http://zhangjinxin.com/page/3/index.html">
+<meta property="og:site_name" content="张金新的博客">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="张金新的博客">
+  
+    <link rel="alternative" href="/atom.xml" title="张金新的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/star.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">张金新</a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+				        	<li><a href="/file/resume.pdf" target="_blank">我的简历</a></li>
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://taobaofed.org/">淘宝前端团队</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://efe.baidu.com">百度EFE技术体系</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">张金新</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/star.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">张金新</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap">
+  
+    <article id="post-HTTPS浅析" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/01/HTTPS浅析/" class="article-date">
+  	<time datetime="2017-07-31T16:00:00.000Z" itemprop="datePublished">2017-08-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/01/HTTPS浅析/">HTTPS协议浅析</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>首先，我们在讲HTTPS之前先了解下为什么摒弃HTTP。</p>
+<h3 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h3><p>明文传输协议，交互过程以及数据传输都没有进行加密，通信双方也没有进行任何认证，通信过程非常容易遭遇劫持、监听、篡改，严重情况下，会造成恶意的流量劫持等问题，甚至造成个人隐私泄露（比如银行卡卡号和密码泄露）等严重的安全问题。</p>
+<h3 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h3><p>超文本安全传输协议,和HTTP相比,多了一个SSL/TSL的认证过程,端口为443。<br>HTTP协议直接放置在TCP协议之上,而HTTPS在HTTP和TCP中间加上一层加密层。如图2-1所示。</p>
+<center><br><img src="https://haitao.nos.netease.com/a7cf29cb-9134-4762-847f-49c5a308fc93.png" alt="HTTPS"><br>图2-1<br></center>
+
+<h3 id="HTTPS流程解析"><a href="#HTTPS流程解析" class="headerlink" title="HTTPS流程解析"></a>HTTPS流程解析</h3><p>首先，我们来看一下HTTPS的简要流程图（如图3-1）。</p>
+<center><br><img src="https://haitao.nos.netease.com/291669a5-da1e-4512-a4a4-0978cff1bb23.png" alt="HTTPS"><br>图3-1<br></center>
+
+<p>1.客户端先向服务端发送一次HTTPS的连接请求。HTTPS服务端返回CA证书和加密公钥public key(非对称加密，如RSA)。<br>2.客户端用预设的CA列表验证证书，若证书有问题则提示风险。<br>3.客户端生成随机对称密钥，并通过第一步骤中的public key做加密（如AES对称加密）<br>4.将加密后的对称密钥发送给HTTPS服务端<br>5.HTTPS服务端用自己的非对称密钥private key解密，得到第三步的随机对称密钥<br>6.之后双方传送数据都用第五步得到的对称密钥加密后通信</p>
+<p><strong>注意点：</strong></p>
+<blockquote>
+<ol>
+<li>第一步中为什么使用非对称加密（如RSA）？<br> 因为非对称加密中，公钥加密的数据，有且只有唯一的私钥才能够解密。<strong>栗子</strong>：我有N把锁但只对应一把钥匙，这把钥匙保存在HTTPS服务器中，锁通过第一步的请求分发给各个客户端。</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="2">
+<li>第三步中为什么使用对称加密（如AES）?<br> 因为非对称加密的解密过程极其消耗CPU资源，如果在通信过程中均使用非对称加密，会对服务器产生巨大的压力。因此非对称加密只是在对称密钥交换或者CA签名的时候使用（第一步和第五步）。之后一直使用对称加密进行通信，因为对称加密的效率高、速度快。<br> <strong>栗子</strong>：对称加密就是一把锁对应一把钥匙，第四步就是客户端把自己的钥放进过public key这把锁里，然后发给HTTPS服务端，服务端用自己的private key打开这把锁，得到了里面的对称密钥。这样客户端和服务端双方手里都拿着对称密钥，之后就可以拿着这把锁互相加解密了。</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="3">
+<li>为什么需要CA数字证书？<br> 数字证书有三个功能：<br> 1.身份授权。确保浏览器访问的网站是经过CA验证的可信任的网站；<br> 2.分发公钥。每个数字证书都包含了注册者生成的公钥（验证确保是合法的，非伪造的公钥）。在SSL握手时会通过certificate消息传输给客户端；<br> 3.验证证书合法性。客户端接收到数字证书后，会对证书合法性进行验证。只有验证通过后的证书，才能够进行后续通信过程（通过数字签名防伪SHA-RSA）。<br><strong>如果没有数字证书，第一步中的非对称密钥可能会被中间人拦截，然后自己创建一个新的非对称密钥给客户端，从而导致客户端和服务端的通信均可被中间人解密了</strong></li>
+</ol>
+</blockquote>
+<p>综上所述，如图3-2，非对称加密算法（公钥和私钥）交换对称密钥+数字证书验证身份（验证公钥是否是伪造的）+利用对称密钥加解密后续传输的数据=安全</p>
+<center><br><img src="https://haitao.nos.netease.com/113c9ab4-1787-418f-b3da-66482f5ccb4f.png" alt="HTTPS"><br>图3-2<br></center>
+
+<p>HTTPS基本的流程如上所示，其中的非对称加密、对称加密和数字签名可以展开很多篇幅，这里就不详细展开了。可以通过对应用密码学的学习，对HTTPS的加解密过程进行更深入的理解。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-Flux与Redux浅析" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/05/31/Flux与Redux浅析/" class="article-date">
+  	<time datetime="2017-05-30T16:00:00.000Z" itemprop="datePublished">2017-05-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/31/Flux与Redux浅析/">Flux与Redux浅析</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="什么是Flux"><a href="#什么是Flux" class="headerlink" title="什么是Flux?"></a>什么是Flux?</h2><p>—— 简单地说，Flux是用来构建用户端的Web应用程序的体系架构，用来管理和控制应用中数据的流向。</p>
+<p><img src="https://haitao.nos.netease.com/1dd8055f-2ba0-47c6-b15d-30ae205cc2f3.png" alt="Flux数据流"></p>
+<p>从上图可知，Flux最大的一个优点就是数据的单向流动。</p>
+<blockquote>
+<p>1.首先要有 action，通过定义一些 action creator 方法根据需要创建 Action 提供给 dispatcher<br>  2.View 层通过用户交互（比如 onClick）会触发 Action<br>  3.Dispatcher 会分发触发的 Action 给所有注册的 Store 的回调函数<br>  4.Store 回调函数根据接收的 Action 更新自身数据之后会触发一个 change 事件通知 View 数据更改了<br>  5.View 会监听这个 change 事件，拿到对应的新数据并调用 setState 更新组件 UI</p>
+</blockquote>
+<p>因此，我们可以将上图总结一下：<br><strong>Action</strong>可以看成是修改Store的行为抽象；<br><strong>Dispatcher</strong>管理着应用的数据流，可以看为Action到Store的分发器；<br><strong>Store</strong>管理着整个应用的状态和逻辑，类似MVC中的Model。</p>
+<p>相对于MVC中View具备多个修改Modal的能力，导致VC<->M在复杂页面中会比较混乱。<br><img src="https://haitao.nos.netease.com/f9abd847-0212-4584-b580-c268bb621630.png" alt="MVC"></-></p>
+<p>Flux实现了所有的状态都通过Store来维护，Store统一控制View，View没有直接修改Store的能力，而是发起Action通过Dispatcher去修改Store(通过 Action 传递数据)。避免了数据流的混乱。</p>
+<p><a href="https://github.com/facebook/flux/tree/master/examples" target="_blank" rel="noopener">Flux Demo</a></p>
+<h2 id="什么是Redux"><a href="#什么是Redux" class="headerlink" title="什么是Redux?"></a>什么是Redux?</h2><p>—— Redux是基于Flux架构的一次改进，官方的定义：Redux is a predictable state container for JavaScript apps（可预测的状态容器）。</p>
+<p><img src="https://haitao.nos.netease.com/116462f9-e8fb-4daa-89e2-73a129d29dce.png" alt="Redux数据流"></p>
+<p>从图中可以看出，Redux和Flux最大的不同在于Redux用Reducer代替了Flux的Dispatcher。Redux设想你永远不会变动你的数据，而应该在Reducer中返回新的对象来作为应用的新状态。因此，State 应该是只读的，唯一改变 State 的方法就是触发Action。而为了描述 Action 如何改变 State Tree ，需要编写 Reducers来实现。</p>
+<p><strong>Reducer函数</strong>：是纯函数，不应该有副作用，不应有API调用，Date.now()或者随机获取等不稳定的操作，应当保证相同的输入Reducer计算的结果应该是一致的输出，它只会进行单纯的计算。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Reducer</span>(<span class="params">state, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> ACTION_TYPE:</span><br><span class="line">      <span class="comment">// calc...</span></span><br><span class="line">      <span class="keyword">return</span> newState;</span><br><span class="line">    <span class="keyword">default</span>: <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> newState;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>State是不可修改的，所以返回的新State应该是基于输入State副本的修改，而不是直接修改State后的返回。</p>
+<h3 id="Redux三大原则"><a href="#Redux三大原则" class="headerlink" title="Redux三大原则"></a>Redux三大原则</h3><blockquote>
+<p><strong>1.单一数据源(Store)</strong><br>    整个应用的State被存放在一棵Object tree中，并且这个Object tree只存在唯一一个Store中；<br>  <strong>2.State是只读的 唯一改变 State 的方法就是触发 Action，Action 是一个用于描述已发生事件的普通对象。</strong><br>  确保了View和网络请求无法直接修改State，所有的修改都能被集中化处理。<br>  <strong>3.通过纯函数Reducer来修改Store,</strong><br>  Reducer 只是一些纯函数，它接收先前的 State 和 Action，并返回新的 State。<br>  即reducer(state, action) =&gt; new state</p>
+</blockquote>
+<h3 id="Redux与Flux的对比"><a href="#Redux与Flux的对比" class="headerlink" title="Redux与Flux的对比"></a>Redux与Flux的对比</h3><p>前面我们称Redux是基于Flux架构的一次改进，那么Redux和Flux具体有哪些区别呢？从代码层面来看：<br><strong>Action:</strong></p>
+<ul>
+<li><p><em>Flux:</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*Flux直接在Action中调用Dispatch*/</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">addTodo</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">  AppDispatcher.dispatch(&#123;</span><br><span class="line">    type: ActionTypes.ADD_TODO,</span><br><span class="line">    text: text</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>Redux:</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*Redux将Action和Dispatch解耦*/</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">addTodo</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    type: ActionTypes.ADD_TODO,</span><br><span class="line">    text: text</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>Store:</strong></p>
+<ul>
+<li><p><em>Flux:</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> _todos = [];</span><br><span class="line"><span class="keyword">const</span> TodoStore = <span class="built_in">Object</span>.assign(<span class="keyword">new</span> EventEmitter(), &#123;</span><br><span class="line">  getTodos() &#123;</span><br><span class="line">    <span class="keyword">return</span> _todos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line">AppDispatcher.register(<span class="function"><span class="keyword">function</span> (<span class="params">action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">  <span class="keyword">case</span> ActionTypes.ADD_TODO:</span><br><span class="line">    _todos = _todos.concat([action.text]);</span><br><span class="line">    TodoStore.emitChange();</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> TodoStore;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><em>Redux:</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*Redux将Dispatch从Store中剥离*/</span></span><br><span class="line"><span class="keyword">const</span> initialState = &#123; <span class="attr">todos</span>: [] &#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">TodoStore</span>(<span class="params">state = initialState, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">  <span class="keyword">case</span> ActionTypes.ADD_TODO:</span><br><span class="line">    <span class="keyword">return</span> &#123; <span class="attr">todos</span>: state.todos.concat([action.text]) &#125;;</span><br><span class="line">  <span class="keyword">default</span>:</span><br><span class="line">    <span class="keyword">return</span> state;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Redux简单demo实现"><a href="#Redux简单demo实现" class="headerlink" title="Redux简单demo实现"></a>Redux简单demo实现</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// actions</span></span><br><span class="line"><span class="keyword">const</span> INCREMENT = <span class="string">'INCREMENT'</span>;</span><br><span class="line"><span class="keyword">const</span> DECREMENT = <span class="string">'DECREMENT'</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">incrementCreator</span>(<span class="params">number</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    type: INCREMENT,</span><br><span class="line">    number,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">decrementCreator</span>(<span class="params">number</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    type: DECREMENT,</span><br><span class="line">    number,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化state</span></span><br><span class="line"><span class="keyword">const</span> initialState = &#123;</span><br><span class="line">  counter: <span class="number">0</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// reducers函数，注意最后一定要return state防止不能匹配到action的时候state丢失</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">countReducer</span>(<span class="params">state = initialState, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> INCREMENT:</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Object</span>.assign(&#123;&#125;, &#123;</span><br><span class="line">        counter: state.counter + action.number,</span><br><span class="line">      &#125;);</span><br><span class="line">    <span class="keyword">case</span> DECREMENT:</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Object</span>.assign(&#123;&#125;, &#123;</span><br><span class="line">        counter: state.counter - action.number,</span><br><span class="line">      &#125;);</span><br><span class="line">    <span class="keyword">default</span>: <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建store</span></span><br><span class="line"><span class="keyword">const</span> store = Redux.createStore(countReducer);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 订阅store的修改</span></span><br><span class="line">store.subscribe(<span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(store.getState());</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过dispatch action来改变state</span></span><br><span class="line">store.dispatch(incrementCreator(<span class="number">5</span>)); <span class="comment">//Object &#123;counter: 5&#125;</span></span><br><span class="line">store.dispatch(decrementCreator(<span class="number">4</span>)); <span class="comment">//Object &#123;counter: 1&#125;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flux/">Flux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redux/">Redux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-JavaScript并发模型与Event Loop " class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/04/23/JavaScript并发模型与Event Loop /" class="article-date">
+  	<time datetime="2017-04-22T16:00:00.000Z" itemprop="datePublished">2017-04-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/23/JavaScript并发模型与Event Loop /">JavaScript并发模型与Event Loop</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="并发模型可视化描述"><a href="#并发模型可视化描述" class="headerlink" title="并发模型可视化描述"></a>并发模型可视化描述</h2><p><img src="https://mdn.mozillademos.org/files/4617/default.svg" alt="model.svg"></p>
+<p>如上图所示，Javascript执行引擎的主线程运行的时候，产生堆（heap）和栈（stack），程序中代码依次进入栈中等待执行，若执行时遇到异步方法，该异步方法会被添加到用于回调的队列（queue）中【即JavaScript执行引擎的主线程拥有一个执行栈/堆和一个任务队列】。</p>
+<blockquote>
+<p>栈（stack） : 函数调用会形成了一个堆栈帧<br>堆（heap） : 对象被分配在一个堆中，一个用以表示一个内存中大的未被组织的区域。<br>队列（queue） ： 一个 JavaScript 运行时包含了一个待处理的消息队列。每一个消息都与一个函数相关联。当栈为空时，则从队列中取出一个消息进行处理。这个处理过程包含了调用与这个消息相关联的函数（以及因而创建了一个初始堆栈帧）。当栈再次为空的时候，也就意味着该消息处理结束。 </p>
+</blockquote>
+<h3 id="为了更清晰地描述Event-Loop，参考下图的描述："><a href="#为了更清晰地描述Event-Loop，参考下图的描述：" class="headerlink" title="为了更清晰地描述Event Loop，参考下图的描述："></a>为了更清晰地描述Event Loop，参考下图的描述：</h3><p><img src="http://image.beekka.com/blog/2014/bg2014100802.png" alt="model.png"></p>
+<p><strong>首先，我们对图中的一些名词稍加解释</strong>：</p>
+<ol>
+<li>queue : 如上文的解释，值得注意的是，除了IO设备的事件(如load)会被添加到queue中，用户操作产生 的事件（如click,touchmove）同样也会被添加到queue中。队列中的这些事件会在主线程的执行栈被清空时被依次读取（队列先进先出，即先被压入队列中的事件会被先执行）。</li>
+<li>callback : 被主线程挂起来的代码，等主线程执行队列中的事件时，事件对应的callback代码就会被执行</li>
+</ol>
+<p>【注：因为主线程从”任务队列”中读取事件的过程是循环不断的，因此这种运行机制又称为Event Loop（事件循环）】</p>
+<p><strong>下面我们通过setTimeout来看看单线程的JavaScript执行引擎是如何来执行该方法的。</strong></p>
+<ol>
+<li>JavaScript执行引擎主线程运行，产生heap和stack</li>
+<li>从上往下执行同步代码,log(1)被压入执行栈，因为log是webkit内核支持的普通方法而非WebAPIs的方法，因此立即出栈被引擎执行，输出1</li>
+<li>JavaScript执行引擎继续往下，遇到setTimeout()t异步方法（如图，setTimeout属于WebAPIs），将setTimeout(callback,5000)添加到执行栈</li>
+<li>因为setTimeout()属于WebAPIs中的方法，JavaScript执行引擎在将setTimeout()出栈执行时，注册setTimeout()延时方法交由浏览器内核其他模块（以webkit为例，是webcore模块）处理</li>
+<li>继续运行setTimeout()下面的log(3)代码，原理同步骤2</li>
+<li>当延时方法到达触发条件，即到达设置的延时时间时（5秒后），<strong>该延时方法就会被添加至任务队列里</strong>。这一过程由浏览器内核其他模块处理，与执行引擎主线程<strong>独立</strong></li>
+<li>JavaScript执行引擎在主线程方法执行完毕，到达空闲状态时，会从任务队列中顺序获取任务来执行。</li>
+<li>将队列的第一个回调函数重新压入执行栈，执行回调函数中的代码log(2)，原理同步骤2，回调函数的代码执行完毕，清空执行栈</li>
+<li>JavaScript执行引擎继续轮循队列，直到队列为空</li>
+<li>执行完毕</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="number">1</span>);</span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="number">2</span>);</span><br><span class="line">&#125;,<span class="number">5000</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="number">3</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//输出结果：</span></span><br><span class="line"><span class="comment">//1</span></span><br><span class="line"><span class="comment">//3</span></span><br><span class="line"><span class="comment">//2</span></span><br></pre></td></tr></table></figure>
+<h2 id="Macrotasks-和-Microtasks"><a href="#Macrotasks-和-Microtasks" class="headerlink" title="Macrotasks 和 Microtasks"></a>Macrotasks 和 Microtasks</h2><p>基本上，一个完整的事件循环模型就讲完了。现在我们来重点关注一下队列。<br>异步任务分为两种：Macrotasks 和 Microtasks。</p>
+<ul>
+<li>Macrotasks: setTimeout, setInterval, setImmediate, I/O, UI rendering</li>
+<li>Microtasks: process.nextTick, Promises, Object.observe(废弃), MutationObserver</li>
+</ul>
+<p>Macrotasks 和 Microtasks有什么区别呢？我们以setTimeout和Promises来举例。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'1'</span>);</span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'2'</span>);</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"><span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'3'</span>);</span><br><span class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'4'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'5'</span>);</span><br><span class="line"><span class="comment">//输出结果：</span></span><br><span class="line"><span class="comment">//1</span></span><br><span class="line"><span class="comment">//5</span></span><br><span class="line"><span class="comment">//3</span></span><br><span class="line"><span class="comment">//4</span></span><br><span class="line"><span class="comment">//2</span></span><br></pre></td></tr></table></figure>
+<p>原因是Promise中的then方法的函数会被推入 microtasks 队列，而setTimeout的任务会被推入 macrotasks 队列。在每一次事件循环中，macrotask 只会提取一个执行，而 microtask 会一直提取，直到 microtasks 队列清空。<br>结论如下：</p>
+<ol>
+<li>microtask会优先macrotask执行</li>
+<li>microtasks会被循环提取到执行引擎主线程的执行栈，直到microtasks任务队列清空，才会执行macrotask</li>
+</ol>
+<p>【注：一般情况下，macrotask queues 我们会直接称为 task queues，只有 microtask queues 才会特别指明。】</p>
+<h2 id="【参考链接】"><a href="#【参考链接】" class="headerlink" title="【参考链接】"></a>【参考链接】</h2><p><a href="http://www.ruanyifeng.com/blog/2014/10/event-loop.html" target="_blank" rel="noopener">JavaScript 运行机制详解：再谈Event Loop</a><br><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/EventLoop" target="_blank" rel="noopener">并发模型与Event Loop</a><br><a href="http://www.alloyteam.com/2015/10/turning-to-javascript-series-from-settimeout-said-the-event-loop-model/" target="_blank" rel="noopener">【转向Javascript系列】从setTimeout说事件循环模型</a><br><a href="https://blog.keifergu.me/2017/03/23/difference-between-javascript-macrotask-and-microtask/" target="_blank" rel="noopener">异步 JavaScript 之理解 macrotask 和 microtask</a> </p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/事件循环模型/">事件循环模型</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-自定义浏览器返回逻辑" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/27/自定义浏览器返回逻辑/" class="article-date">
+  	<time datetime="2017-03-26T16:00:00.000Z" itemprop="datePublished">2017-03-27</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/27/自定义浏览器返回逻辑/">自定义浏览器返回逻辑</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>业务场景：当某一页面有重要信息，返回操作可能会导致信息丢失或无法再回到该页面。如：用户随机抽奖，获取某实物奖品需要用户填写地址来寄送奖品，若用户返回则无法获取到获奖用户地址信息且无法再次回到填写地址的页面。</p>
+</blockquote>
+<p>因此，类似于填写地址的页面，通常会有返回二次确认的逻辑。在APP里实现很简单，只需要订阅appbridge实例的自定义返回事件即可。但在其他APP内置浏览器和普通浏览器返回就不能拦截了。</p>
+<p>这种情况下我们通过 history.pushState() + popstate event 的方法来实现自定义浏览器返回的需求。</p>
+<h2 id="关于-history-pushState"><a href="#关于-history-pushState" class="headerlink" title="关于 history.pushState"></a>关于 history.pushState</h2><p>通过history.pushState() 方法可以向浏览器历史添加了一个状态。</p>
+<blockquote>
+<p>语法 history.pushState(state, title, url); [state：状态对象，title：标题，url：新历史纪录的地址]</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向history中添加一条状态</span></span><br><span class="line"><span class="keyword">var</span> state = &#123; <span class="string">'page_id'</span>: <span class="number">1</span>, <span class="string">'user_id'</span>: <span class="number">5</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> title = <span class="string">'Hello World'</span>;</span><br><span class="line"><span class="keyword">var</span> url = <span class="string">'hello-world.html'</span>;</span><br><span class="line"></span><br><span class="line">history.pushState(state, title, url);</span><br></pre></td></tr></table></figure>
+<p>浏览器兼容良好，兼容情况可查看下方的 “MDN: History.pushState()详解”</p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/History/pushState" target="_blank" rel="noopener">MDN: History.pushState()详解</a></p>
+<h2 id="关于-popstate-event"><a href="#关于-popstate-event" class="headerlink" title="关于 popstate event"></a>关于 popstate event</h2><p> 浏览器的前进后退行为(或者在JavaScript中调用history.back()、history.forward()、history.go()方法)会触发popstate事件。【注：history.pushState()或者history.replaceState()不会触发popstate事件】</p>
+<blockquote>
+<p>语法 window.onpopstate = function() {};</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.onpopstate = <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(event.state));</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">history.pushState(&#123;<span class="string">'page_id'</span>: <span class="number">1</span>&#125;, <span class="string">"title 1"</span>, <span class="string">"?page=1"</span>);    <span class="comment">//添加并激活一个历史记录条目</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/onpopstate" target="_blank" rel="noopener">MDN: window.onpopstate详解</a></p>
+<h2 id="通过结合history-pushState-和popstate-event实现自定义返回的例子"><a href="#通过结合history-pushState-和popstate-event实现自定义返回的例子" class="headerlink" title="通过结合history.pushState()和popstate event实现自定义返回的例子"></a>通过结合history.pushState()和popstate event实现自定义返回的例子</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向history中添加一条状态</span></span><br><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//调用history.pushState()方法，向history对象中添加一条状态</span></span><br><span class="line">    history.pushState(&#123;</span><br><span class="line">            <span class="string">'page_id'</span>: <span class="number">1</span>,</span><br><span class="line">        &#125;,<span class="string">'after'</span>,<span class="string">'/after.html'</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.onpopstate = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//Modal让用户选择是确定返回还是继续留在本页面</span></span><br><span class="line">    <span class="keyword">var</span> modal = <span class="built_in">document</span>.createElement(<span class="string">'div'</span>);</span><br><span class="line">    modal.innerHTML = <span class="string">'&lt;div class="content" &gt;\</span></span><br><span class="line"><span class="string">                        &lt;p&gt;文案&lt;/p&gt;\</span></span><br><span class="line"><span class="string">                    &lt;/div&gt;\</span></span><br><span class="line"><span class="string">                    &lt;div class="btn-box"&gt;\</span></span><br><span class="line"><span class="string">                        &lt;a id="btn-cancel"class="btn btn-cancel" href="javascript: void(0)"&gt;取消&lt;/a&gt;\</span></span><br><span class="line"><span class="string">                        &lt;a id="btn-confirm" class="btn btn-confirm" href="javascript: void(0)"&gt;确定&lt;/a&gt;\</span></span><br><span class="line"><span class="string">                    &lt;/div&gt;'</span>;</span><br><span class="line">    <span class="built_in">document</span>.body.appendChild(modal);</span><br><span class="line">    <span class="keyword">var</span> cancelBtn = <span class="built_in">document</span>.getElementById(<span class="string">'btn-cancel'</span>);</span><br><span class="line">    <span class="keyword">var</span> confirmBtn = <span class="built_in">document</span>.getElementById(<span class="string">'btn-confirm'</span>);</span><br><span class="line"></span><br><span class="line">    cancelBtn.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        history.pushState(&#123;</span><br><span class="line">            <span class="string">'page_id'</span>: <span class="number">1</span>,</span><br><span class="line">        &#125;,<span class="string">'after'</span>,<span class="string">'/after.html'</span>);</span><br><span class="line">        <span class="built_in">document</span>.body.removeChild(modal);</span><br><span class="line">    &#125;;</span><br><span class="line">    confirmBtn.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        history.go(<span class="number">-1</span>);</span><br><span class="line">        <span class="built_in">document</span>.body.removeChild(modal);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>点击查看实现效果</strong>：<a href="http://5.zhangjinxin.applinzi.com/before.html" target="_blank" rel="noopener">http://5.zhangjinxin.applinzi.com/before.html</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-JavaScript设计模式" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/20/JavaScript设计模式/" class="article-date">
+  	<time datetime="2017-03-19T16:00:00.000Z" itemprop="datePublished">2017-03-20</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/20/JavaScript设计模式/">JavaScript设计模式</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>设计模式的定义：在面向对象软件设计过程中针对特定问题的简洁而优雅的解决方案</p>
+</blockquote>
+<p>当然我们可以用一个通俗的说法：设计模式是解决某个特定场景下对某种问题的解决方案。因此，当我们遇到合适的场景时，我们可能会条件反射一样自然而然想到符合这种场景的设计模式。</p>
+<p>比如，当系统中某个接口的结构已经无法满足我们现在的业务需求，但又不能改动这个接口，因为可能原来的系统很多功能都依赖于这个接口，改动接口会牵扯到太多文件。因此应对这种场景，我们可以很快地想到可以用适配器模式来解决这个问题。</p>
+<p><em>下面介绍几种在JavaScript中常见的几种设计模式：</em></p>
+<p>##1.单例模式</p>
+<blockquote>
+<p>单例模式的定义：保证一个类仅有一个实例，并提供一个访问它的全局访问点。实现的方法为先判断实例存在与否，如果存在则直接返回，如果不存在就创建了再返回，这就确保了一个类只有一个实例对象。</p>
+</blockquote>
+<p>适用场景：一个单一对象。比如：弹窗，无论点击多少次，弹窗只应该被创建一次。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CreateUser</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(name) &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.getName();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    getName() &#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 代理实现单例模式</span></span><br><span class="line"><span class="keyword">var</span> ProxyMode = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> instance = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!instance) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> CreateUser(name);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="comment">// 测试单体模式的实例</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> ProxyMode(<span class="string">"aaa"</span>);</span><br><span class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> ProxyMode(<span class="string">"bbb"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 因为单体模式是只实例化一次，所以下面的实例是相等的</span></span><br><span class="line"><span class="built_in">console</span>.log(a === b);    <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/03/20/JavaScript设计模式/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
+    </nav>
+  
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 张金新
+        <span>--联系我：15757116071@163.com</span>
+    	</div>
+      	<div class="footer-right">
+      		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

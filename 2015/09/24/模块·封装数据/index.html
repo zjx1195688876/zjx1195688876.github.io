@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>模块·封装数据 | 张金新的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="有时候我们不希望外部访问私有变量，但希望外部可以来访问方法，我们通过模块模式来暴露相关的接口供外部调用，同时函数内部的私有变量外部又是访问不到的，从而实现了数据的封装，达到信息隐藏的目的。接下来我们来看demo： 123456789101112131415var prison = (function()&amp;#123;    var prisonerName = &quot;Mike&quot;;    var jail">
+<meta name="keywords" content="JavaScript,前端,模块模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模块·封装数据">
+<meta property="og:url" content="http://zhangjinxin.com/2015/09/24/模块·封装数据/index.html">
+<meta property="og:site_name" content="张金新的博客">
+<meta property="og:description" content="有时候我们不希望外部访问私有变量，但希望外部可以来访问方法，我们通过模块模式来暴露相关的接口供外部调用，同时函数内部的私有变量外部又是访问不到的，从而实现了数据的封装，达到信息隐藏的目的。接下来我们来看demo： 123456789101112131415var prison = (function()&amp;#123;    var prisonerName = &quot;Mike&quot;;    var jail">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2015-09-24T14:41:30.531Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="模块·封装数据">
+<meta name="twitter:description" content="有时候我们不希望外部访问私有变量，但希望外部可以来访问方法，我们通过模块模式来暴露相关的接口供外部调用，同时函数内部的私有变量外部又是访问不到的，从而实现了数据的封装，达到信息隐藏的目的。接下来我们来看demo： 123456789101112131415var prison = (function()&amp;#123;    var prisonerName = &quot;Mike&quot;;    var jail">
+  
+    <link rel="alternative" href="/atom.xml" title="张金新的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/star.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">张金新</a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+				        	<li><a href="/file/resume.pdf" target="_blank">我的简历</a></li>
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://taobaofed.org/">淘宝前端团队</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://efe.baidu.com">百度EFE技术体系</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">张金新</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/star.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">张金新</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-模块·封装数据" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/24/模块·封装数据/" class="article-date">
+  	<time datetime="2015-09-23T16:00:00.000Z" itemprop="datePublished">2015-09-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      模块·封装数据
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/模块模式/">模块模式</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>有时候我们不希望外部访问私有变量，但希望外部可以来访问方法，我们通过模块模式来暴露相关的接口供外部调用，同时函数内部的私有变量外部又是访问不到的，从而实现了数据的封装，达到信息隐藏的目的。<br>接下来我们来看demo：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> prison = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> prisonerName = <span class="string">"Mike"</span>;</span><br><span class="line">    <span class="keyword">var</span> jailTerm = <span class="string">"20 year term"</span>;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        prisoner : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> prisonerName + <span class="string">"-"</span> + jailTerm;</span><br><span class="line">        &#125;,</span><br><span class="line">        setJailTerm : <span class="function"><span class="keyword">function</span>(<span class="params">term</span>)</span>&#123;</span><br><span class="line">            jailTerm = term;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="built_in">console</span>.log(prison.prisoner());     <span class="comment">//"Mike-20 year term"</span></span><br><span class="line">prison.setJailTerm(<span class="string">"Sententce commuted"</span>);       </span><br><span class="line"><span class="built_in">console</span>.log(prison.prisoner());     <span class="comment">//"Mike-Sententce commuted"</span></span><br></pre></td></tr></table></figure>
+<p>通过立即执行函数可以避免全局污染。<br>我们不能通过prison. prisonerName和prison. jailTerm来访问prison的变量(私有变量),因为私有变量的生命周期只存在立即执行函数的作用域内，但是我们可以通过访问prison.prisoner()和prison.setJailTerm()这两个对象方法(函数暴露的接口)来访问和修改变量值。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/09/24/关于CSS的层叠特性/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          关于CSS的层叠特性
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/06/07/笔记1：关于作用域/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">笔记1：关于作用域</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 张金新
+        <span>--联系我：15757116071@163.com</span>
+    	</div>
+      	<div class="footer-right">
+      		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

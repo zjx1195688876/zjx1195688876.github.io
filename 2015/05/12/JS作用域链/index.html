@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>JS作用域链 | 张金新的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="作用域链的执行：如图所示，当在查找变量的定义时，JavaScript引擎首先在局部执行环境对象上查找。如果没有定义，则跳出作用域链，到创建它的执行环境中去，并且在该执行环境对象中查找变量的定义，以此类推，直到找到定义或者到达全局作用域为止。 为了演示作用域链，下面我们来看一份例子,下面的代码清单将会依次打印下面的内容：-I am here to save the day-regular_joe i">
+<meta name="keywords" content="JavaScript,前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS作用域链">
+<meta property="og:url" content="http://zhangjinxin.com/2015/05/12/JS作用域链/index.html">
+<meta property="og:site_name" content="张金新的博客">
+<meta property="og:description" content="作用域链的执行：如图所示，当在查找变量的定义时，JavaScript引擎首先在局部执行环境对象上查找。如果没有定义，则跳出作用域链，到创建它的执行环境中去，并且在该执行环境对象中查找变量的定义，以此类推，直到找到定义或者到达全局作用域为止。 为了演示作用域链，下面我们来看一份例子,下面的代码清单将会依次打印下面的内容：-I am here to save the day-regular_joe i">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2015-05-13T03:16:40.181Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JS作用域链">
+<meta name="twitter:description" content="作用域链的执行：如图所示，当在查找变量的定义时，JavaScript引擎首先在局部执行环境对象上查找。如果没有定义，则跳出作用域链，到创建它的执行环境中去，并且在该执行环境对象中查找变量的定义，以此类推，直到找到定义或者到达全局作用域为止。 为了演示作用域链，下面我们来看一份例子,下面的代码清单将会依次打印下面的内容：-I am here to save the day-regular_joe i">
+  
+    <link rel="alternative" href="/atom.xml" title="张金新的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/star.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">张金新</a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+				        	<li><a href="/file/resume.pdf" target="_blank">我的简历</a></li>
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://taobaofed.org/">淘宝前端团队</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://efe.baidu.com">百度EFE技术体系</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">张金新</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/star.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">张金新</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-JS作用域链" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/05/12/JS作用域链/" class="article-date">
+  	<time datetime="2015-05-11T16:00:00.000Z" itemprop="datePublished">2015-05-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JS作用域链
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>作用域链的执行：如图所示，当在查找变量的定义时，JavaScript引擎首先在局部执行环境对象上查找。如果没有定义，则跳出作用域链，到创建它的执行环境中去，并且在该执行环境对象中查找变量的定义，以此类推，直到找到定义或者到达全局作用域为止。</p>
+<p>为了演示作用域链，下面我们来看一份例子,下面的代码清单将会依次打印下面的内容：<br>-<code>I am here to save the day</code><br>-<code>regular_joe is assigned</code><br>-<code>undefined</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> regular_joe = <span class="string">'I am here to save the day'</span>; <span class="comment">//在全局作用域里，设置regular_joe</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//logs 'I am here to save the day'</span></span><br><span class="line">    <span class="built_in">console</span>.log(regular_joe); <span class="comment">//调用作用域：全局。作用域链中的最近匹配：全局的regular_joe</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">supermax</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> regular_joe = <span class="string">'regular_joe is assigned'</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//logs 'regular_joe is assigned'</span></span><br><span class="line">        <span class="built_in">console</span>.log(regular_joe); <span class="comment">//调用作用域：全局-&gt;supermax(),作用域链中的最近匹配：在supermax()中定义的regular_joe</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">presion</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">var</span> regular_joe;</span><br><span class="line">            <span class="built_in">console</span>.log(regular_joe); <span class="comment">//调用作用域：全局-&gt;supermax()-&gt;presion(),作用域链中的最近匹配：在presion()中定义的regular_joe</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//logs 'ubdefined'</span></span><br><span class="line">        presion();</span><br><span class="line">    &#125;</span><br><span class="line">    supermax();</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>在运行期，JavaScript会检索作用域层级来解析变量名，它从当前作用域开始，然后按它的查找方式回到顶级的作用域，即window(浏览器)或者global(node.js)对象，它找到的第一次匹配并停止查找。<strong>注意</strong>，这意味着在层级更深的嵌套作用域中的变量，会使用它们的当前作用域替换更加全局的作用域，从而隐藏更加全局的作用域中的变量。</p>
+<p>我们来详细地解释下这段代码的执行过程：<br>(1)清单中的第一处console.log(regular_joe)调用在全局作用域里面。JavaScript从全局执行环境对象上开始查找regular_joe属性。它找到了一个值为I am here to save the day，并使用了这个值。<br>(2)清单中的第二处console.log(regular_joe)调用在supermax的执行环境中。JavaScript从supermax执行环境对象上开始查找regular_joe属性。它找到了一个值为regular_joe is assigned，并使用了这个值。<br>(3)清单中的第三处console.log(regular_joe)调用在supermax的执行环境内的prison执行环境中。JavaScript从prison执行环境对象上开始查找regular_joe属性。它找到了一个但未被赋值，所以为undefined，并使用了这个值。</p>
+<p>例如下面这段代码它的执行结果为：输出三次-<code>I am here to save the day</code>，原因是我们只在全局作用域汇总定义了这个变量，所以当JavaScript在当前作用域中找不到该变量的定义时，会回溯到上一级继续查找该变量，直到查找到全局作用域，最终找到了就使用这个值，若最终还是找不到则为undefined</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> regular_joe = <span class="string">'I am here to save the day'</span>; <span class="comment">//在全局作用域里，设置regular_joe</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//logs 'I am here to save the day'</span></span><br><span class="line">    <span class="built_in">console</span>.log(regular_joe); <span class="comment">//调用作用域：全局。作用域链中的最近匹配：全局的regular_joe</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">supermax</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="comment">//logs 'I am here to save the day'</span></span><br><span class="line">        <span class="built_in">console</span>.log(regular_joe); <span class="comment">//调用作用域：全局-&gt;supermax(),作用域链中的最近匹配：全局中定义的regular_joe</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">presion</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="built_in">console</span>.log(regular_joe); <span class="comment">//调用作用域：全局-&gt;supermax()-&gt;presion(),作用域链中的最近匹配：在全局中定义的regular_joe</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//logs 'I am here to save the day'</span></span><br><span class="line">        presion();</span><br><span class="line">    &#125;</span><br><span class="line">    supermax();</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/05/13/Flex伸缩盒模型实现三列布局/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Flex伸缩盒模型实现三列布局
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/05/12/AJAX/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">AJAX</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 张金新
+        <span>--联系我：15757116071@163.com</span>
+    	</div>
+      	<div class="footer-right">
+      		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

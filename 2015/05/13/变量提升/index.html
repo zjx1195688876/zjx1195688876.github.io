@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>JS变量提升 | 张金新的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在JavaScript中，当变量被声明时，声明会被提升到它所在函数的顶部，并被赋予undefined值。这就使得在函数的任意位置声明的变量存在于整个函数中，尽管在赋值之前，它的值一直为undefined。像这样：12345function()&amp;#123;                             function()&amp;#123;        console.log(v);">
+<meta name="keywords" content="JavaScript,前端">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JS变量提升">
+<meta property="og:url" content="http://zhangjinxin.com/2015/05/13/变量提升/index.html">
+<meta property="og:site_name" content="张金新的博客">
+<meta property="og:description" content="在JavaScript中，当变量被声明时，声明会被提升到它所在函数的顶部，并被赋予undefined值。这就使得在函数的任意位置声明的变量存在于整个函数中，尽管在赋值之前，它的值一直为undefined。像这样：12345function()&amp;#123;                             function()&amp;#123;        console.log(v);">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2015-05-13T05:12:46.076Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JS变量提升">
+<meta name="twitter:description" content="在JavaScript中，当变量被声明时，声明会被提升到它所在函数的顶部，并被赋予undefined值。这就使得在函数的任意位置声明的变量存在于整个函数中，尽管在赋值之前，它的值一直为undefined。像这样：12345function()&amp;#123;                             function()&amp;#123;        console.log(v);">
+  
+    <link rel="alternative" href="/atom.xml" title="张金新的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/star.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">张金新</a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+				        	<li><a href="/file/resume.pdf" target="_blank">我的简历</a></li>
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://taobaofed.org/">淘宝前端团队</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://efe.baidu.com">百度EFE技术体系</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">张金新</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/star.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">张金新</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-变量提升" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/05/13/变量提升/" class="article-date">
+  	<time datetime="2015-05-12T16:00:00.000Z" itemprop="datePublished">2015-05-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JS变量提升
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在JavaScript中，当变量被声明时，声明会被提升到它所在函数的顶部，并被赋予<strong>undefined</strong>值。这就使得在函数的任意位置声明的变量存在于整个函数中，尽管在赋值之前，它的值一直为undefined。<br>像这样：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;                             <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(v);           ------------&gt; <span class="keyword">var</span> v;</span><br><span class="line">        <span class="keyword">var</span> v = <span class="number">1</span>; ______________/              <span class="built_in">console</span>.log(v);</span><br><span class="line">                                 \------------&gt; v = <span class="number">1</span>;</span><br><span class="line">    &#125;                                   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>左边和右边的函数是等价的。JavaScript的变量声明会被提升到它们所在函数的顶部，而初始化仍旧在原来的地方。</p>
+<p>JavaScript引擎并没有重写代码：每次调用函数时，声明都会重新提升。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">prison</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//logs 'undefined'</span></span><br><span class="line">    <span class="built_in">console</span>.log(prisoner);</span><br><span class="line">    <span class="keyword">var</span> prisoner = <span class="string">'Now I am defined'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//logs 'Now I am define'</span></span><br><span class="line">    <span class="built_in">console</span>.log(prisoner);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>接下来作用域和变量提升在一起后出现比较神奇的现象。比如这样的代码我们很容易知道是输出’Regular Joe’<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> regular_joe = <span class="string">'Regular Joe'</span>; <span class="comment">//regular_joe在全局作用域中定义</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">prison</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//logs 'Regular Joe'</span></span><br><span class="line">    <span class="built_in">console</span>.log(regular_joe);</span><br><span class="line">&#125;</span><br><span class="line">prison();</span><br></pre></td></tr></table></figure></p>
+<p>但是接下来这个呢？我们会惊奇地发现输出的是undefined!<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> regular_joe = <span class="string">'Regular Joe'</span>; <span class="comment">//regular_joe在全局作用域中定义</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">prison</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//logs 'undefined'</span></span><br><span class="line">    <span class="built_in">console</span>.log(regular_joe);</span><br><span class="line">    <span class="keyword">var</span> regular_joe;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">prison();</span><br></pre></td></tr></table></figure></p>
+<p>原因就是在prison局部函数中声明了regular_joe了，然后这个声明提升到prison函数的顶部，而按照JS的作用域链，JavaScript引擎发现已经在局部函数里面找到regular_joe了，就使用了它的值：undefined，而不会再向上找。<br>——关于作用域链具体可参见<a href="/2015/05/12/JS作用域链/index.html" target="_blank"> [ JS作用域链 ]</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/05/13/双飞翼布局/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          双飞翼布局
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/05/13/Flex伸缩盒模型实现三列布局/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Flex伸缩盒模型实现三列布局</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 张金新
+        <span>--联系我：15757116071@163.com</span>
+    	</div>
+      	<div class="footer-right">
+      		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>封装一个复制组件 | 张金新的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="应用场景： WEB/WAP 工程中有一些复制文本的需求，目的是为了减少用户的操作步骤。既然该功能比较常用，那就封装成组件吧。  API 1. document.execCommand  当一个HTML文档切换到设计模式(designMode)时，文档对象暴露execCommand方法，该方法允许运行命令来操纵可编辑区域的内容。  1234567/***若bool = false 则表示docum">
+<meta name="keywords" content="JavaScript,前端,Component">
+<meta property="og:type" content="article">
+<meta property="og:title" content="封装一个复制组件">
+<meta property="og:url" content="http://zhangjinxin.com/2017/09/29/封装一个复制组件/index.html">
+<meta property="og:site_name" content="张金新的博客">
+<meta property="og:description" content="应用场景： WEB/WAP 工程中有一些复制文本的需求，目的是为了减少用户的操作步骤。既然该功能比较常用，那就封装成组件吧。  API 1. document.execCommand  当一个HTML文档切换到设计模式(designMode)时，文档对象暴露execCommand方法，该方法允许运行命令来操纵可编辑区域的内容。  1234567/***若bool = false 则表示docum">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2017-12-17T11:33:17.049Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="封装一个复制组件">
+<meta name="twitter:description" content="应用场景： WEB/WAP 工程中有一些复制文本的需求，目的是为了减少用户的操作步骤。既然该功能比较常用，那就封装成组件吧。  API 1. document.execCommand  当一个HTML文档切换到设计模式(designMode)时，文档对象暴露execCommand方法，该方法允许运行命令来操纵可编辑区域的内容。  1234567/***若bool = false 则表示docum">
+  
+    <link rel="alternative" href="/atom.xml" title="张金新的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/star.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">张金新</a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+				        	<li><a href="/file/resume.pdf" target="_blank">我的简历</a></li>
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://taobaofed.org/">淘宝前端团队</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://efe.baidu.com">百度EFE技术体系</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">张金新</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/star.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">张金新</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-封装一个复制组件" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/29/封装一个复制组件/" class="article-date">
+  	<time datetime="2017-09-28T16:00:00.000Z" itemprop="datePublished">2017-09-29</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      封装一个复制组件
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Component/">Component</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>应用场景： WEB/WAP 工程中有一些复制文本的需求，目的是为了减少用户的操作步骤。既然该功能比较常用，那就封装成组件吧。</p>
+</blockquote>
+<h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2><p> <strong>1. document.execCommand</strong></p>
+<blockquote>
+<p>当一个HTML文档切换到设计模式(designMode)时，文档对象暴露execCommand方法，该方法允许运行命令来操纵可编辑区域的内容。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*若bool = false 则表示document.execCommand方法不被当前浏览器支持或未被启用</span></span><br><span class="line"><span class="comment">*@property &#123;String&#125; aCommandName 命令的名称，如：copy/cut/paste【必选】</span></span><br><span class="line"><span class="comment">*@property &#123;Boolean&#125; aShowDefaultUI 是否展示用户界面，默认false【可选】</span></span><br><span class="line"><span class="comment">*@property &#123;String&#125; aValueArgument 一些命令（例如insertImage）需要额外的参数（insertImage需要提供插入image的url），默认null【可选】</span></span><br><span class="line"><span class="comment">**/</span></span><br><span class="line">bool = <span class="built_in">document</span>.execCommand(aCommandName, aShowDefaultUI, aValueArgument);</span><br></pre></td></tr></table></figure>
+<p><strong>2. ClipboardEvent.clipboardData(注：实验中的功能)</strong></p>
+<blockquote>
+<p>ClipboardEvent.clipboardData 属性保存了一个 DataTransfer 对象，这个对象可用于：</p>
+<ol>
+<li>描述哪些数据可以由 cut 和 copy 事件处理器放入剪切板，通常通过调用 setData(format, data) 方法；</li>
+<li>获取由 paste 事件处理器拷贝进剪切板的数据，通常通过调用 getData(format) 方法</li>
+</ol>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data = ClipboardEvent.clipboardData</span><br></pre></td></tr></table></figure>
+<p>Q: 那既然ClipboardEvent.clipboardData是实验中的功能，那兼容性就需要考虑了，那在IE低版本下如何实现将内容传给剪切板呢？<br>A：通过插入input节点，再通过input.select()方法选中内容的方式去hack，这总hack方式浏览器的兼容性更好。</p>
+<h2 id="基于Regular实现copy组件"><a href="#基于Regular实现copy组件" class="headerlink" title="基于Regular实现copy组件"></a>基于Regular实现copy组件</h2><p>Component - HTML：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"command-container"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"content &#123;extendClass_content&#125;"</span> <span class="attr">r-modal</span>=<span class="string">&#123;content&#125;</span>&gt;</span>&#123;content&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"u-btn u-btn_copy &#123;extendClass_copy&#125;"</span> <span class="attr">href</span>=<span class="string">"javascript:void(0)"</span> <span class="attr">on-tap</span>=<span class="string">&#123;this.copy()&#125;</span>&gt;</span>&#123;buttonTxt || '复制'&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>Component - JS：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">define([</span><br><span class="line">    <span class="string">'pro/widget/BaseComponent'</span>,</span><br><span class="line">    <span class="string">'pro/components/toast/toast'</span>,</span><br><span class="line">    <span class="string">'text!./copy.html'</span>,</span><br><span class="line">], <span class="function"><span class="keyword">function</span>(<span class="params">BaseComponent, toast, tpl</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> Copy = BaseComponent.extend(&#123;</span><br><span class="line">        template: tpl,</span><br><span class="line">        config: <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.supr(data);</span><br><span class="line">        &#125;,</span><br><span class="line">        copy: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">this</span>.clipCopy();</span><br><span class="line">            &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">                <span class="comment">//低版本浏览器通过input方式hack复制兼容</span></span><br><span class="line">                <span class="keyword">this</span>.inputCopy(); </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        clipCopy: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> data = <span class="keyword">this</span>.data;</span><br><span class="line">            <span class="built_in">document</span>.addEventListener(<span class="string">'copy'</span>, <span class="function"><span class="keyword">function</span> <span class="title">copy</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">                <span class="comment">//将需要复制的内容传给系统的剪切板</span></span><br><span class="line">                evt.clipboardData.setData(<span class="string">'text/plain'</span>, data.content);</span><br><span class="line">                evt.preventDefault();</span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="keyword">var</span> isCopySuc = <span class="built_in">document</span>.execCommand(<span class="string">'copy'</span>);</span><br><span class="line">            <span class="built_in">document</span>.removeEventListener(<span class="string">'copy'</span>, <span class="string">'copy'</span>);</span><br><span class="line">            <span class="keyword">this</span>.callback(isCopySuc);</span><br><span class="line">        &#125;,</span><br><span class="line">        inputCopy: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> data = <span class="keyword">this</span>.data;</span><br><span class="line">            <span class="keyword">var</span> input = <span class="built_in">document</span>.createElement(<span class="string">'input'</span>);</span><br><span class="line">            input.style.display = <span class="string">'none'</span>;</span><br><span class="line">            input.setAttribute(<span class="string">'value'</span>, data.content);</span><br><span class="line">            <span class="built_in">document</span>.body.appendChild(input);</span><br><span class="line">            input.select();</span><br><span class="line">            <span class="keyword">var</span> isCopySuc = <span class="built_in">document</span>.execCommand(<span class="string">'copy'</span>);</span><br><span class="line">            <span class="built_in">document</span>.body.removeChild(input);</span><br><span class="line">            <span class="keyword">this</span>.callback(isCopySuc);</span><br><span class="line">        &#125;,</span><br><span class="line">        callback: <span class="function"><span class="keyword">function</span>(<span class="params">isCopySuc</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> data = <span class="keyword">this</span>.data;</span><br><span class="line">            <span class="keyword">if</span> (data.onSuccess &amp;&amp; isCopySuc) &#123; <span class="comment">//copy组件实例复制成功回调</span></span><br><span class="line">                data.onSuccess();</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (data.onFail &amp;&amp; !isCopySuc) &#123; <span class="comment">//copy组件实例复制失败回调</span></span><br><span class="line">                data.onFail();</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 若copy组件实例无相关回调，触发默认的toast</span></span><br><span class="line">            <span class="keyword">var</span> message = isCopySuc? <span class="string">'复制成功'</span>: <span class="string">'不支持复制，请手动复制'</span>;</span><br><span class="line">            toast.toast(&#123;<span class="attr">message</span>: message, <span class="attr">singleMsg</span>: <span class="literal">true</span>&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Copy;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>兼容性：IE9+, AOS4.1+, iOS7.1+ （部分待验证）</p>
+<h2 id="copy组件使用文档："><a href="#copy组件使用文档：" class="headerlink" title="copy组件使用文档："></a>copy组件使用文档：</h2><h3 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Copy</span> <span class="attr">content</span>=<span class="string">&#123;</span> <span class="attr">content</span> &#125;&gt;</span><span class="tag">&lt;/<span class="name">Copy</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="Props"><a href="#Props" class="headerlink" title="Props"></a>Props</h3><table>
+<thead>
+<tr>
+<th style="text-align:left">参数</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">默认值</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">content</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">【必选】复制的内容</td>
+</tr>
+<tr>
+<td style="text-align:left">extendClass_content</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">【可选】内容框自定义class</td>
+</tr>
+<tr>
+<td style="text-align:left">extendClass_copy</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">【可选】复制按钮自定义class</td>
+</tr>
+<tr>
+<td style="text-align:left">buttonTxt</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">【可选】复制按钮自定义文字</td>
+</tr>
+<tr>
+<td style="text-align:left">onSuccess</td>
+<td style="text-align:left">Function</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">【可选】复制成功回调函数</td>
+</tr>
+<tr>
+<td style="text-align:left">onFail</td>
+<td style="text-align:left">Function</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">【可选】复制失败回调函数</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/11/13/wap适配iPhone X方案实践/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          wap适配iPhone X方案实践
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/09/01/跨域/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">跨域</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 张金新
+        <span>--联系我：15757116071@163.com</span>
+    	</div>
+      	<div class="footer-right">
+      		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>张金新的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="张金新的博客">
+<meta property="og:url" content="http://zhangjinxin.com/page/2/index.html">
+<meta property="og:site_name" content="张金新的博客">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="张金新的博客">
+  
+    <link rel="alternative" href="/atom.xml" title="张金新的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/star.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">张金新</a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+				        	<li><a href="/file/resume.pdf" target="_blank">我的简历</a></li>
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://taobaofed.org/">淘宝前端团队</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://efe.baidu.com">百度EFE技术体系</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">张金新</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/star.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">张金新</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap">
+  
+    <article id="post-JSBridge的原理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/06/05/JSBridge的原理/" class="article-date">
+  	<time datetime="2018-06-04T16:00:00.000Z" itemprop="datePublished">2018-06-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/05/JSBridge的原理/">JSBridge的原理</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>转载自掘金：<a href="https://juejin.im/post/5abca877f265da238155b6bc" target="_blank" rel="noopener">https://juejin.im/post/5abca877f265da238155b6bc</a></p>
+</blockquote>
+<p>关于 JSBridge，绝大多数同学最早遇到的是微信的 WeiXinJSBridge（现在被封装成 JSSDK），各种 Web 页面可以通过 Bridge 调用微信提供的一些原生功能，为用户提供相关的功能。其实，JSBridge很早就出现在软件开发中，在一些桌面软件中很早就运用了这样的形式，多用在通知、产品详情、广告等模块中，然后这些模块中，使用的是 WebUI，而相关按钮点击后，调用的是Native功能。现在移动端盛行，不管是Hybrid应用，还是React-Native都离不开JSBridge，当然也包括在国内举足轻重的微信小程序。那么，JSBridge到底是什么？它的出现是为了什么？它究竟是怎么实现的？在这篇文章中，会在移动混合开发的范畴内，将给大家带来 JSBridge 的深入剖析。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/3/29/16270f34f02109eb?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="图1"><br><img src="https://user-gold-cdn.xitu.io/2018/3/29/16270f45ca45db54?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="图2"></p>
+<h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1 前言"></a>1 前言</h1><p>有些童鞋听到JSBridge这个名词，就是觉得非常高上大，有了它Web和Native可以进行交互，就像『进化药水』，让Web摇身一变，成为移动战场的『上将一名』。其实并非如此，JSBridge 其实真是一个很简单的东西，更多的是一种形式、一种思想。</p>
+<h1 id="2-JSBridge-的起源"><a href="#2-JSBridge-的起源" class="headerlink" title="2 JSBridge 的起源"></a>2 JSBridge 的起源</h1><p>为什么是 JSBridge ？而不是 PythonBridge 或是 RubyBridge ？</p>
+<p>当然不是因为 JavaScript 语言高人一等（虽然斯坦福大学已经把算法导论的语言从 Java 改成 JavaScript，小得意一下，嘻嘻），主要的原因还是因为 JavaScript 主要载体 Web 是当前世界上的<strong>最易编写、最易维护、最易部署</strong>的UI构建方式。工程师可以用很简单的HTML标签和CSS样式快速的构建出一个页面，并且在服务端部署后，用户不需要主动更新，就能看到最新的 UI 展现。</p>
+<p>因此，<strong>开发维护成本</strong>和 <strong>更新成本</strong>较低的 Web 技术成为混合开发中几乎不二的选择，而作为Web技术逻辑核心的JavaScript也理所应当肩负起与其他技术『桥接』的职责，并且作为移动不可缺少的一部分，任何一个移动操作系统中都包含可运行JavaScript的容器，例如WebView和JSCore。所以，运行JavaScript不用像运行其他语言时，要额外添加运行环境。因此，基于上面种种原因，JSBridge 应运而生。PhoneGap（Codova 的前身）作为 Hybrid 鼻祖框架，应该是最先被开发者广泛认知的 JSBridge 的应用场景；而对于 JSBridge的应用在国内真正兴盛起来，则是因为杀手级应用微信的出现，主要用途是在网页中通过JSBridge设置分享内容。移动端混合开发中的JSBridge，主要被应用在两种形式的技术方案上：</p>
+<ol>
+<li>基于 Web 的 Hybrid 解决方案：例如微信浏览器、各公司的 Hybrid 方案</li>
+<li>非基于 Web UI 但业务逻辑基于 JavaScript 的解决方案：例如 React-Native</li>
+</ol>
+<p>【注】：微信小程序基于 Web UI，但是为了追求运行效率，对 UI 展现逻辑和业务逻辑的 JavaScript 进行了隔离。因此小程序的技术方案介于上面描述的两种方式之间。</p>
+<h1 id="3-JSBridge-的用途"><a href="#3-JSBridge-的用途" class="headerlink" title="3 JSBridge 的用途"></a>3 JSBridge 的用途</h1><p>JSBridge 简单来讲，主要是 给 JavaScript 提供调用 Native 功能的接口，让混合开发中的『前端部分』可以方便地使用地址位置、摄像头甚至支付等 Native 功能。<br>既然是『简单来讲』，那么 JSBridge 的用途肯定不只『调用 Native 功能』这么简单宽泛。实际上，JSBridge 就像其名称中的『Bridge』的意义一样，是 Native 和非 Native 之间的桥梁，它的核心是 构建 Native 和非 Native 间消息通信的通道，而且是 双向通信的通道。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/3/29/16270f744a3e61f2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="图3"></p>
+<p>所谓 双向通信的通道:</p>
+<ol>
+<li>JS 向 Native 发送消息 : 调用相关功能、通知 Native 当前 JS 的相关状态等。</li>
+<li>Native 向 JS 发送消息 : 回溯调用结果、消息推送、通知 JS 当前 Native 的状态等。</li>
+</ol>
+<p>这里有些同学有疑问了：消息都是单向的，那么调用 Native 功能时 Callback 怎么实现的？对于这个问题，在下一节里会给出解释。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JSBridge/">JSBridge</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2018/06/05/JSBridge的原理/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-在JavaScript中使用mixin" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/06/04/在JavaScript中使用mixin/" class="article-date">
+  	<time datetime="2018-06-03T16:00:00.000Z" itemprop="datePublished">2018-06-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/04/在JavaScript中使用mixin/">在JavaScript中使用mixin</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>mixin:多重继承，也称为extend</p>
+<p>mixin(混合)的本质就是将一个对象的属性拷贝到另一个对象上，其实就是对象的融合。</p>
+<p>Q: 这个和原型链的继承有什么区别？<br>A: mixin是直接在混合后的对象本身的属性上查找的，而不是在prototype上查找的</p>
+<p>Q: 这个和Object.assigin()有什么区别？<br>A: 虽然Object.assigin()也在对象属性进行合并，但Object.assigin()不会复制原型链上的属性，<br>   而mixin会将原型链上的属性一并复制过去（for … in …）</p>
+<p>demo:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mixin.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> mixin (source, target) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> source) &#123;</span><br><span class="line">        <span class="keyword">if</span> (source[key] !== target[key]) &#123;</span><br><span class="line">            target[key] = source[key];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> target;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="keyword">import</span> mixin <span class="keyword">from</span> <span class="string">'mixin'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Book = &#123;</span><br><span class="line">    type: <span class="string">'book'</span>,</span><br><span class="line">    log () &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Tech_book = mixin (Book, &#123;</span><br><span class="line">    name: <span class="string">'tech_book'</span>,</span><br><span class="line">    log () &#123;</span><br><span class="line">        Book.log.call(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Tech_book.log();</span><br><span class="line"><span class="comment">// this: &#123;</span></span><br><span class="line">    type: <span class="string">'book'</span>,</span><br><span class="line">    name: <span class="string">'tech_book'</span>,</span><br><span class="line">    log: f log()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注： mixin.js 扩展参数的写法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mixin.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> mixin (...objs) &#123;</span><br><span class="line">    <span class="keyword">return</span> objs.reduce(<span class="function">(<span class="params">dest, src</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> src) &#123;</span><br><span class="line">            dest[key] = src[key]</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dest;    </span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-wap适配iPhone X方案实践" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/11/13/wap适配iPhone X方案实践/" class="article-date">
+  	<time datetime="2017-11-12T16:00:00.000Z" itemprop="datePublished">2017-11-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/13/wap适配iPhone X方案实践/">wap适配iPhone X方案实践</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p><strong>关于异形屏的安全区以及苹果官方的文档，网上有很详尽的博客，这里不再累述，本文偏实践。阅读本文前，<a href="http://www.zcool.com.cn/article/ZNTU1MTUy.html" target="_blank" rel="noopener">可点击了解safe-Area概念</a></strong></p>
+</blockquote>
+<h1 id="适配iphone-X方案："><a href="#适配iphone-X方案：" class="headerlink" title="适配iphone X方案："></a>适配iphone X方案：</h1><h2 id="1-实现原理："><a href="#1-实现原理：" class="headerlink" title="1. 实现原理："></a>1. 实现原理：</h2><pre><code>&gt; 首先我们需要了解一个属性：constant(safe-area-inset-bottom)/env(safe-area-inset-bottom)；这个的含义是，安全区底部距离屏幕底部的距离。因此，非异形屏下，这个值为0/或不解析；异形屏下，这个值为真实的距离，比如34px啥的。
+</code></pre><p>接下来，我们需要做的有三点：</p>
+<ol>
+<li>找到有底部banner的页面</li>
+<li>将底部banner的父容器从bottom: 0; 升级成 bottom: 0;bottom: constant(safe-area-inset-bottom); bottom: env(safe-area-inset-bottom); // bottom: 0;是兼容非异形屏，bottom: constant(safe-area-inset-bottom);是为了让banner上移到安全区内。</li>
+<li>给 banner:after添加纯色遮罩bottom: 0; height: 0; height: constant(safe-area-inset-bottom); height: env(safe-area-inset-bottom); background: #fff;<br>（注：iOS11支持constant语法，future版本支持env语法）</li>
+</ol>
+<p>然后我们发现底部的banner确实是在安全区内了，而且底部有纯色遮罩覆盖，不会有穿透效果。</p>
+<p>然而。。。。我们是否忘记了，底部banner上移了，那页面里原有的内容区是不是被盖住了一部分？<br>所以，我们需要再给body:after加上height: 0; height: $safeArea（bottom）;把body也撑起一个高度，使得内容区不会被上移了的banner遮住。</p>
+<h2 id="2-实现方式："><a href="#2-实现方式：" class="headerlink" title="2. 实现方式："></a>2. 实现方式：</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* _config.mcss */</span></span><br><span class="line">$safeAreaHeight = ($height, $isImportant)&#123;</span><br><span class="line">    @<span class="keyword">if</span> $isImportant &#123;</span><br><span class="line">      height: $height !important;</span><br><span class="line">      height: t('calc( constant(safe-area-inset-bottom) + ' + $height + ')') !important; </span><br><span class="line">      height: t('calc( env(safe-area-inset-bottom) + ' + $height + ')') !important;</span><br><span class="line">    &#125;</span><br><span class="line">    @<span class="keyword">else</span> &#123;</span><br><span class="line">      height: $height;</span><br><span class="line">      height: t('calc( constant(safe-area-inset-bottom) + ' + $height + ')'); </span><br><span class="line">      height: t('calc( env(safe-area-inset-bottom) + ' + $height + ')');</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$safeAreaTop = ($height, $isImportant)&#123;</span><br><span class="line">    @<span class="keyword">if</span> $isImportant &#123;</span><br><span class="line">      top: $height !important;</span><br><span class="line">      top: t('calc( constant(safe-area-inset-top) + ' + $height + ')') !important; </span><br><span class="line">      top: t('calc( env(safe-area-inset-top) + ' + $height + ')') !important;</span><br><span class="line">    &#125;</span><br><span class="line">    @<span class="keyword">else</span> &#123;</span><br><span class="line">      top: $height;</span><br><span class="line">      top: t('calc( constant(safe-area-inset-top) + ' + $height + ')'); </span><br><span class="line">      top: t('calc( env(safe-area-inset-top) + ' + $height + ')');</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$safeAreaLeft = ($left, $isImportant)&#123;</span><br><span class="line">    @<span class="keyword">if</span> $isImportant &#123;</span><br><span class="line">      left: $left !important;</span><br><span class="line">      left: t('calc( constant(safe-area-inset-left) + ' + $left + ')') !important; </span><br><span class="line">      left: t('calc( env(safe-area-inset-left) + ' + $left + ')') !important;</span><br><span class="line">    &#125;</span><br><span class="line">    @<span class="keyword">else</span> &#123;</span><br><span class="line">      left: $left;</span><br><span class="line">      left: t('calc( constant(safe-area-inset-left) + ' + $left + ')'); </span><br><span class="line">      left: t('calc( env(safe-area-inset-left) + ' + $left + ')'); </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$safeAreaRight = ($right, $isImportant)&#123;</span><br><span class="line">    @<span class="keyword">if</span> $isImportant &#123;</span><br><span class="line">      right: $right !important;</span><br><span class="line">      right: t('calc( constant(safe-area-inset-right) + ' + $right + ')') !important; </span><br><span class="line">      right: t('calc( env(safe-area-inset-right) + ' + $right + ')') !important;</span><br><span class="line">    &#125;</span><br><span class="line">    @<span class="keyword">else</span> &#123;</span><br><span class="line">      right: $right;</span><br><span class="line">      right: t('calc( constant(safe-area-inset-right) + ' + $right + ')'); </span><br><span class="line">      right: t('calc( env(safe-area-inset-right) + ' + $right + ')'); </span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$safeAreaBottom = ($height, $isImportant)&#123;</span><br><span class="line">    @<span class="keyword">if</span> $isImportant &#123;</span><br><span class="line">      bottom: $height !important;</span><br><span class="line">      bottom: t('calc( constant(safe-area-inset-bottom) + ' + $height + ')') !important; </span><br><span class="line">      bottom: t('calc( env(safe-area-inset-bottom) + ' + $height + ')') !important;</span><br><span class="line">    &#125;</span><br><span class="line">    @<span class="keyword">else</span> &#123;</span><br><span class="line">      bottom: $height;</span><br><span class="line">      bottom: t('calc( constant(safe-area-inset-bottom) + ' + $height + ')'); </span><br><span class="line">      bottom: t('calc( env(safe-area-inset-bottom) + ' + $height + ')');</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* base.mcss */</span></span><br><span class="line"><span class="selector-tag">body</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">    $safeAreaHeight(0px, true);</span><br><span class="line">    <span class="selector-tag">display</span>: <span class="selector-tag">block</span>;</span><br><span class="line">    content: '';</span><br><span class="line">    <span class="selector-tag">width</span>: 100%;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* module.mcss */</span></span><br><span class="line"><span class="comment">/* iPhone X适配 */</span></span><br><span class="line"><span class="selector-class">.f-safeArea</span> &#123;</span><br><span class="line">    $safeAreaBottom(0px, true);</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.f-safeArea</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">    $safeAreaHeight(0px, true);</span><br><span class="line">    <span class="selector-tag">display</span>: <span class="selector-tag">block</span> !<span class="selector-tag">important</span>;</span><br><span class="line">    content: '' !important;</span><br><span class="line">    <span class="selector-tag">position</span>: <span class="selector-tag">fixed</span> !<span class="selector-tag">important</span>;</span><br><span class="line">    <span class="selector-tag">left</span>: 0 !<span class="selector-tag">important</span>;</span><br><span class="line">    <span class="selector-tag">bottom</span>: 0 !<span class="selector-tag">important</span>;</span><br><span class="line">    <span class="selector-tag">width</span>: 100% !<span class="selector-tag">important</span>;</span><br><span class="line">    <span class="selector-tag">background</span>: <span class="selector-id">#fff</span> !<span class="selector-tag">important</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- common.ftl --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span> <span class="attr">content</span>=<span class="string">"width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CSS/">CSS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WEB/">WEB</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/11/13/wap适配iPhone X方案实践/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-封装一个复制组件" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/29/封装一个复制组件/" class="article-date">
+  	<time datetime="2017-09-28T16:00:00.000Z" itemprop="datePublished">2017-09-29</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/29/封装一个复制组件/">封装一个复制组件</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>应用场景： WEB/WAP 工程中有一些复制文本的需求，目的是为了减少用户的操作步骤。既然该功能比较常用，那就封装成组件吧。</p>
+</blockquote>
+<h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2><p> <strong>1. document.execCommand</strong></p>
+<blockquote>
+<p>当一个HTML文档切换到设计模式(designMode)时，文档对象暴露execCommand方法，该方法允许运行命令来操纵可编辑区域的内容。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">*若bool = false 则表示document.execCommand方法不被当前浏览器支持或未被启用</span></span><br><span class="line"><span class="comment">*@property &#123;String&#125; aCommandName 命令的名称，如：copy/cut/paste【必选】</span></span><br><span class="line"><span class="comment">*@property &#123;Boolean&#125; aShowDefaultUI 是否展示用户界面，默认false【可选】</span></span><br><span class="line"><span class="comment">*@property &#123;String&#125; aValueArgument 一些命令（例如insertImage）需要额外的参数（insertImage需要提供插入image的url），默认null【可选】</span></span><br><span class="line"><span class="comment">**/</span></span><br><span class="line">bool = <span class="built_in">document</span>.execCommand(aCommandName, aShowDefaultUI, aValueArgument);</span><br></pre></td></tr></table></figure>
+<p><strong>2. ClipboardEvent.clipboardData(注：实验中的功能)</strong></p>
+<blockquote>
+<p>ClipboardEvent.clipboardData 属性保存了一个 DataTransfer 对象，这个对象可用于：</p>
+<ol>
+<li>描述哪些数据可以由 cut 和 copy 事件处理器放入剪切板，通常通过调用 setData(format, data) 方法；</li>
+<li>获取由 paste 事件处理器拷贝进剪切板的数据，通常通过调用 getData(format) 方法</li>
+</ol>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data = ClipboardEvent.clipboardData</span><br></pre></td></tr></table></figure>
+<p>Q: 那既然ClipboardEvent.clipboardData是实验中的功能，那兼容性就需要考虑了，那在IE低版本下如何实现将内容传给剪切板呢？<br>A：通过插入input节点，再通过input.select()方法选中内容的方式去hack，这总hack方式浏览器的兼容性更好。</p>
+<h2 id="基于Regular实现copy组件"><a href="#基于Regular实现copy组件" class="headerlink" title="基于Regular实现copy组件"></a>基于Regular实现copy组件</h2><p>Component - HTML：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"command-container"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"content &#123;extendClass_content&#125;"</span> <span class="attr">r-modal</span>=<span class="string">&#123;content&#125;</span>&gt;</span>&#123;content&#125;<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"u-btn u-btn_copy &#123;extendClass_copy&#125;"</span> <span class="attr">href</span>=<span class="string">"javascript:void(0)"</span> <span class="attr">on-tap</span>=<span class="string">&#123;this.copy()&#125;</span>&gt;</span>&#123;buttonTxt || '复制'&#125;<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>Component - JS：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">define([</span><br><span class="line">    <span class="string">'pro/widget/BaseComponent'</span>,</span><br><span class="line">    <span class="string">'pro/components/toast/toast'</span>,</span><br><span class="line">    <span class="string">'text!./copy.html'</span>,</span><br><span class="line">], <span class="function"><span class="keyword">function</span>(<span class="params">BaseComponent, toast, tpl</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> Copy = BaseComponent.extend(&#123;</span><br><span class="line">        template: tpl,</span><br><span class="line">        config: <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.supr(data);</span><br><span class="line">        &#125;,</span><br><span class="line">        copy: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                <span class="keyword">this</span>.clipCopy();</span><br><span class="line">            &#125; <span class="keyword">catch</span>(e) &#123;</span><br><span class="line">                <span class="comment">//低版本浏览器通过input方式hack复制兼容</span></span><br><span class="line">                <span class="keyword">this</span>.inputCopy(); </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">        clipCopy: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> data = <span class="keyword">this</span>.data;</span><br><span class="line">            <span class="built_in">document</span>.addEventListener(<span class="string">'copy'</span>, <span class="function"><span class="keyword">function</span> <span class="title">copy</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">                <span class="comment">//将需要复制的内容传给系统的剪切板</span></span><br><span class="line">                evt.clipboardData.setData(<span class="string">'text/plain'</span>, data.content);</span><br><span class="line">                evt.preventDefault();</span><br><span class="line">            &#125;);</span><br><span class="line">            <span class="keyword">var</span> isCopySuc = <span class="built_in">document</span>.execCommand(<span class="string">'copy'</span>);</span><br><span class="line">            <span class="built_in">document</span>.removeEventListener(<span class="string">'copy'</span>, <span class="string">'copy'</span>);</span><br><span class="line">            <span class="keyword">this</span>.callback(isCopySuc);</span><br><span class="line">        &#125;,</span><br><span class="line">        inputCopy: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> data = <span class="keyword">this</span>.data;</span><br><span class="line">            <span class="keyword">var</span> input = <span class="built_in">document</span>.createElement(<span class="string">'input'</span>);</span><br><span class="line">            input.style.display = <span class="string">'none'</span>;</span><br><span class="line">            input.setAttribute(<span class="string">'value'</span>, data.content);</span><br><span class="line">            <span class="built_in">document</span>.body.appendChild(input);</span><br><span class="line">            input.select();</span><br><span class="line">            <span class="keyword">var</span> isCopySuc = <span class="built_in">document</span>.execCommand(<span class="string">'copy'</span>);</span><br><span class="line">            <span class="built_in">document</span>.body.removeChild(input);</span><br><span class="line">            <span class="keyword">this</span>.callback(isCopySuc);</span><br><span class="line">        &#125;,</span><br><span class="line">        callback: <span class="function"><span class="keyword">function</span>(<span class="params">isCopySuc</span>) </span>&#123;</span><br><span class="line">            <span class="keyword">var</span> data = <span class="keyword">this</span>.data;</span><br><span class="line">            <span class="keyword">if</span> (data.onSuccess &amp;&amp; isCopySuc) &#123; <span class="comment">//copy组件实例复制成功回调</span></span><br><span class="line">                data.onSuccess();</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (data.onFail &amp;&amp; !isCopySuc) &#123; <span class="comment">//copy组件实例复制失败回调</span></span><br><span class="line">                data.onFail();</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 若copy组件实例无相关回调，触发默认的toast</span></span><br><span class="line">            <span class="keyword">var</span> message = isCopySuc? <span class="string">'复制成功'</span>: <span class="string">'不支持复制，请手动复制'</span>;</span><br><span class="line">            toast.toast(&#123;<span class="attr">message</span>: message, <span class="attr">singleMsg</span>: <span class="literal">true</span>&#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Copy;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>兼容性：IE9+, AOS4.1+, iOS7.1+ （部分待验证）</p>
+<h2 id="copy组件使用文档："><a href="#copy组件使用文档：" class="headerlink" title="copy组件使用文档："></a>copy组件使用文档：</h2><h3 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Copy</span> <span class="attr">content</span>=<span class="string">&#123;</span> <span class="attr">content</span> &#125;&gt;</span><span class="tag">&lt;/<span class="name">Copy</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="Props"><a href="#Props" class="headerlink" title="Props"></a>Props</h3><table>
+<thead>
+<tr>
+<th style="text-align:left">参数</th>
+<th style="text-align:left">类型</th>
+<th style="text-align:left">默认值</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">content</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">【必选】复制的内容</td>
+</tr>
+<tr>
+<td style="text-align:left">extendClass_content</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">【可选】内容框自定义class</td>
+</tr>
+<tr>
+<td style="text-align:left">extendClass_copy</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">【可选】复制按钮自定义class</td>
+</tr>
+<tr>
+<td style="text-align:left">buttonTxt</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">【可选】复制按钮自定义文字</td>
+</tr>
+<tr>
+<td style="text-align:left">onSuccess</td>
+<td style="text-align:left">Function</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">【可选】复制成功回调函数</td>
+</tr>
+<tr>
+<td style="text-align:left">onFail</td>
+<td style="text-align:left">Function</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">【可选】复制失败回调函数</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Component/">Component</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-跨域" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/01/跨域/" class="article-date">
+  	<time datetime="2017-08-31T16:00:00.000Z" itemprop="datePublished">2017-09-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/01/跨域/">跨域</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文主要涉及三种跨域方法：JSONP、CORS、postMessage。</p>
+<blockquote>
+<p>Q：为什么会出现跨域问题？<br>  A：出于浏览器的同源策略限制，浏览器会拒绝跨域请求。<br>  *注：严格的说，浏览器并不是拒绝所有的跨域请求，实际上拒绝的是跨域的读操作。浏览器的同源限制策略是这样执行的：</p>
+<ul>
+<li>通常浏览器允许进行跨域写操作（Cross-origin writes），如链接，重定向；</li>
+<li>通常浏览器允许跨域资源嵌入（Cross-origin embedding），如 img、script 标签；</li>
+<li>通常浏览器不允许跨域读操作（Cross-origin reads）。*</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Q：什么情况才算作跨域？<br>  A：非同源请求，均为跨域。名词解释：<em>同源 —— 如果两个页面拥有相同的协议（protocol），端口（port）和主机（host），那么这两个页面就属于同一个源（origin）。</em><br><img src="https://haitao.nos.netease.com/b895d6b7-2c27-47ea-937f-cac4d034b090.png" alt="img01"></p>
+</blockquote>
+<blockquote>
+<p>Q：为什么有跨域需求?<br>  A：场景 —— 工程服务化后，不同职责的服务分散在不同的工程中，往往这些工程的域名是不同的，但一个需求可能需要对应到多个服务，这时便需要调用不同服务的接口，因此会出现跨域。</p>
+</blockquote>
+<h2 id="如何实现跨域"><a href="#如何实现跨域" class="headerlink" title="如何实现跨域"></a>如何实现跨域</h2><p>通常，最常用的跨域方式有以下三种：JSONP、CORS、postMessage。</p>
+<h3 id="JSONP"><a href="#JSONP" class="headerlink" title="JSONP"></a>JSONP</h3><p><strong>单纯地为了实现跨域请求而创造的一个 trick。</strong><br>【实现原理】<br>虽然因为同源策略的影响，不能通过XMLHttpRequest请求不同域上的数据（Cross-origin reads）。但是，在页面上引入不同域上的js脚本文件却是可以的（Cross-origin embedding）。因此在js文件载入完毕之后，触发回调，可以将需要的data作为参数传入。<br>【实现方式（需前后端配合）】<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">dosomething</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">        <span class="comment">//处理获得的数据</span></span><br><span class="line">    &#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp">&lt;script src="http:/</span><span class="regexp">/example.com/</span>data.php?callback=dosomething<span class="string">"&gt;&lt;/script&gt;</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$callback = $_GET[<span class="string">'callback'</span>];<span class="comment">//得到回调函数名</span></span><br><span class="line">$data = <span class="keyword">array</span>(<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>);<span class="comment">//要返回的数据</span></span><br><span class="line"><span class="keyword">echo</span> $callback.<span class="string">'('</span>.json_encode($data).<span class="string">')'</span>;<span class="comment">//输出</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>【JSONP的优缺点】<br>优点：兼容性好（兼容低版本IE）<br>缺点：1.JSONP只支持GET请求； 2.XMLHttpRequest相对于JSONP有着更好的错误处理机制</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WEB/">WEB</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/跨域/">跨域</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/09/01/跨域/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+  
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+    </nav>
+  
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 张金新
+        <span>--联系我：15757116071@163.com</span>
+    	</div>
+      	<div class="footer-right">
+      		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

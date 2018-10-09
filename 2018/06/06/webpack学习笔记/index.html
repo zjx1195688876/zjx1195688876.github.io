@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>webpack学习笔记 | 张金新的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="webpack 注意点： 1.起步： webpack配置文件自定义位置时： npm run start  – “start”: “webpack –config ./deploy/webpack.prod.conf.js” 在dist/index.html中引入js： 12345678dist/index.html&amp;lt;script src=&quot;./bundle.js&quot;&amp;gt;&amp;lt;/scrip">
+<meta name="keywords" content="前端,webpack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="webpack学习笔记">
+<meta property="og:url" content="http://zhangjinxin.com/2018/06/06/webpack学习笔记/index.html">
+<meta property="og:site_name" content="张金新的博客">
+<meta property="og:description" content="webpack 注意点： 1.起步： webpack配置文件自定义位置时： npm run start  – “start”: “webpack –config ./deploy/webpack.prod.conf.js” 在dist/index.html中引入js： 12345678dist/index.html&amp;lt;script src=&quot;./bundle.js&quot;&amp;gt;&amp;lt;/scrip">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-06-10T14:21:47.144Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="webpack学习笔记">
+<meta name="twitter:description" content="webpack 注意点： 1.起步： webpack配置文件自定义位置时： npm run start  – “start”: “webpack –config ./deploy/webpack.prod.conf.js” 在dist/index.html中引入js： 12345678dist/index.html&amp;lt;script src=&quot;./bundle.js&quot;&amp;gt;&amp;lt;/scrip">
+  
+    <link rel="alternative" href="/atom.xml" title="张金新的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/star.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">张金新</a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+				        	<li><a href="/file/resume.pdf" target="_blank">我的简历</a></li>
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://taobaofed.org/">淘宝前端团队</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://efe.baidu.com">百度EFE技术体系</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">张金新</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/star.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">张金新</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-webpack学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/06/06/webpack学习笔记/" class="article-date">
+  	<time datetime="2018-06-05T16:00:00.000Z" itemprop="datePublished">2018-06-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      webpack学习笔记
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/webpack/">webpack</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>webpack 注意点：</p>
+<h1 id="1-起步："><a href="#1-起步：" class="headerlink" title="1.起步："></a>1.起步：</h1><ol>
+<li>webpack配置文件自定义位置时： npm run start  – “start”: “webpack –config ./deploy/webpack.prod.conf.js”</li>
+<li>在dist/index.html中引入js： <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">dist/index.html</span><br><span class="line">&lt;script src=<span class="string">"./bundle.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"></span><br><span class="line">deploy/webpack.prod.config.js</span><br><span class="line">output: &#123;</span><br><span class="line">    filename: <span class="string">'bundle.js'</span> -- 就是dist/index.html引入的js名称</span><br><span class="line">    path: path.resolve(__dirname, <span class="string">'../dist'</span>) -- ！！注意输入路径</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="2-管理资源"><a href="#2-管理资源" class="headerlink" title="2.管理资源"></a>2.管理资源</h1><ol>
+<li>比如管理css资源，需要加载相应的css loader<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save-dev style-loader css-loader</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>webpack配置文件中如何使用css loader:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// deploy/webpack.prod.conf.js</span></span><br><span class="line"><span class="built_in">module</span> = &#123;</span><br><span class="line">    rules: [</span><br><span class="line">        &#123;</span><br><span class="line">            test: <span class="regexp">/\.css$/</span>,</span><br><span class="line">            use: [</span><br><span class="line">                <span class="string">'style-loader'</span>,</span><br><span class="line">                <span class="string">'css-loader'</span></span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>业务中如何引入css:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// dist/bundle.js</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">'./css/style.css'</span>; -- 直接引入，之后会被css loader解析，作为&lt;style&gt;插入到引入该js文件的html文件的&lt;header&gt;</span><br></pre></td></tr></table></figure></p>
+<p>具体见 资源管理.html / webpack.prod.config_css.js。 其他的资源管理，比如image / data file / …一样的逻辑，只是loader换一下</p>
+<h1 id="3-输出管理"><a href="#3-输出管理" class="headerlink" title="3.输出管理"></a>3.输出管理</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 多入口配置及使用HtmlWebpackPlugin</span></span><br><span class="line">entry: &#123;</span><br><span class="line">    app: <span class="string">'./src/index.js'</span>,</span><br><span class="line">    print: <span class="string">'./src/log.js'</span></span><br><span class="line">&#125;,</span><br><span class="line">output: &#123;</span><br><span class="line">    filename: <span class="string">'bundle_[name].js'</span>,</span><br><span class="line">    path: path.resolve(__dirname, <span class="string">'../dist'</span>)</span><br><span class="line">&#125;,</span><br><span class="line">plugins: [</span><br><span class="line">    <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">        title: <span class="string">'HtmlWebpackPlugin'</span>,</span><br><span class="line">        filename: <span class="string">'HtmlWebpackPlugin2.html'</span>,</span><br><span class="line">        template: path.resolve(__dirname, <span class="string">'../dist/index.html'</span>)</span><br><span class="line">    &#125;),</span><br><span class="line">    <span class="comment">/** 等同于</span></span><br><span class="line"><span class="comment">    * new HtmlWebpackPlugin(&#123;</span></span><br><span class="line"><span class="comment">        title: 'HtmlWebpackPlugin',</span></span><br><span class="line"><span class="comment">        filename: '../dist/HtmlWebpackPlugin2.html'</span></span><br><span class="line"><span class="comment">    &#125;),</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h1 id="4-Tree-Shaking"><a href="#4-Tree-Shaking" class="headerlink" title="4.Tree Shaking"></a>4.Tree Shaking</h1><p>为了学会使用 tree shaking，你必须……</p>
+<ol>
+<li>使用 ES2015 模块语法（即 import 和 export）。</li>
+<li>在项目 package.json 文件中，添加一个 “sideEffects” 入口。!!!</li>
+<li>引入一个能够删除未引用代码(dead code)的压缩工具(minifier)（例如 UglifyJSPlugin）。 或者在webppack4.0以上直接设置mode: ‘prodution’就会自动调用UglifyJSPlugin压缩代码</li>
+</ol>
+<h1 id="5-生产环境构建"><a href="#5-生产环境构建" class="headerlink" title="5.生产环境构建"></a>5.生产环境构建</h1><ol>
+<li>webpack-merge的使用</li>
+<li><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// webpack.base.js</span></span><br><span class="line"> <span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"> <span class="keyword">const</span> CleanWebpackPlugin = <span class="built_in">require</span>(<span class="string">'clean-webpack-plugin'</span>);</span><br><span class="line"> <span class="keyword">const</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">'html-webpack-plugin'</span>);</span><br><span class="line"></span><br><span class="line"> <span class="built_in">module</span>.exports = &#123;</span><br><span class="line">   entry: &#123;</span><br><span class="line">     app: <span class="string">'./src/index.js'</span></span><br><span class="line">   &#125;,</span><br><span class="line">   plugins: [</span><br><span class="line">     <span class="keyword">new</span> CleanWebpackPlugin([<span class="string">'dist'</span>]),</span><br><span class="line">    <span class="comment">/**相对路径的时候，一定要设置root</span></span><br><span class="line"><span class="comment">    new CleanWebpackPlugin([</span></span><br><span class="line"><span class="comment">        'dist/*'</span></span><br><span class="line"><span class="comment">    ],&#123;</span></span><br><span class="line"><span class="comment">        root: path.resolve(__dirname, '../../'),</span></span><br><span class="line"><span class="comment">        verbose: true,</span></span><br><span class="line"><span class="comment">        dry: false</span></span><br><span class="line"><span class="comment">    &#125;),</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">     <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">       title: <span class="string">'Production'</span></span><br><span class="line">     &#125;)</span><br><span class="line">   ],</span><br><span class="line">   output: &#123;</span><br><span class="line">     filename: <span class="string">'[name].bundle.js'</span>,</span><br><span class="line">     path: path.resolve(__dirname, <span class="string">'dist'</span>)</span><br><span class="line">   &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">webpack.dev.js</span><br><span class="line"><span class="built_in">module</span>.exports = merge(common, &#123;</span><br><span class="line">   devtool: <span class="string">'inline-source-map'</span>, <span class="comment">//建议可以使用cheap-module-eval-source-map</span></span><br><span class="line">   devServer: &#123;</span><br><span class="line">     contentBase: <span class="string">'./dist'</span></span><br><span class="line">   &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">webpack.prod.js</span><br><span class="line"><span class="built_in">module</span>.exports = merge(common, &#123;</span><br><span class="line">    devtool: <span class="string">'source-map'</span>,</span><br><span class="line">    plugins: [</span><br><span class="line">        <span class="keyword">new</span> UglifyJSPlugin(&#123;</span><br><span class="line">            sourceMap: <span class="literal">true</span></span><br><span class="line">        &#125;),</span><br><span class="line">        <span class="comment">// 构建的时候制定环境</span></span><br><span class="line">        <span class="keyword">new</span> webpack.DefinePlugin(&#123;</span><br><span class="line">            <span class="string">'process.env.NODE_ENV'</span>: <span class="built_in">JSON</span>.stringify(<span class="string">'production'</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">    ]</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>package.json</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">"start": "webpack-dev-server --open --config webpack.dev.js",</span><br><span class="line">"build": "webpack --config webpack.prod.js"</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用 ExtractTextPlugin 进行split css</p>
+</li>
+</ol>
+<h1 id="6-code-splitting-–-代码分离：主要目的是分离出公共的代码，不重复加载"><a href="#6-code-splitting-–-代码分离：主要目的是分离出公共的代码，不重复加载" class="headerlink" title="6.code splitting  – 代码分离：主要目的是分离出公共的代码，不重复加载"></a>6.code splitting  – 代码分离：主要目的是分离出公共的代码，不重复加载</h1><ol>
+<li>使用CommonsChunkPlugin自动提取功能的代码模块<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// webpack.config.js</span></span><br><span class="line"><span class="keyword">new</span> webpack.optimize.CommonsChunkPlugin(&#123;</span><br><span class="line">    name: <span class="string">'common'</span> <span class="comment">// 指定公共 bundle 的名称。</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<a id="more"></a>
+<h1 id="7-动态导入-dynamic-imports-和-懒加载"><a href="#7-动态导入-dynamic-imports-和-懒加载" class="headerlink" title="7.动态导入(dynamic imports) 和 懒加载"></a>7.动态导入(dynamic imports) 和 懒加载</h1><ol>
+<li>在业务js代码中动态地import</li>
+</ol>
+<h1 id="8-缓存"><a href="#8-缓存" class="headerlink" title="8.缓存"></a>8.缓存</h1><ol>
+<li><p>浏览器有缓存，在生产环境上线新代码的情况避免走缓存，需要通过hash来来避免缓存，因此可以使用chunkhash</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// webpack.config.js</span></span><br><span class="line">output: &#123;</span><br><span class="line">    filename: <span class="string">'[name].[chunkhash].js'</span>, <span class="comment">// chunkhash，当文件内容变更时，hash值就会发生变化</span></span><br><span class="line">    path: path.resolve(__dirname, <span class="string">'dist'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用HashedModuleIdsPlugin,修复改一个文件全部文件的hash值全部改变的bug</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// webpack.config.js</span></span><br><span class="line">plugins: &#123;</span><br><span class="line">    <span class="keyword">new</span> webpack.HashedModuleIdsPlugin()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p> 注：dllPlugin的使用,对不频繁改动的代码进行单独编译，用于打包出一个个动态连接库,目的是提高 <strong>构建</strong> 时的速度</p>
+</blockquote>
+<h1 id="9-注意点："><a href="#9-注意点：" class="headerlink" title="9. 注意点："></a>9. 注意点：</h1><ol>
+<li>可以使用resolve.extensions自动解析扩展，使用resolve.alias自定义别名<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">webpack.config.js</span><br><span class="line">resolve: &#123;</span><br><span class="line">    extensions: [&apos;.js&apos;, &apos;.json&apos;]</span><br><span class="line">    alias: &#123;</span><br><span class="line">        &apos;@&apos;: path.resolve(__dirname, &apos;../../src&apos;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h1 id="10-完整工程示例："><a href="#10-完整工程示例：" class="headerlink" title="10. 完整工程示例："></a>10. 完整工程示例：</h1><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// webpack.conf.base.js</span></span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>);</span><br><span class="line"><span class="keyword">const</span> HtmlWebpackPlugin = <span class="built_in">require</span>(<span class="string">'html-webpack-plugin'</span>);</span><br><span class="line"><span class="keyword">const</span> CopyWebpackPlugin = <span class="built_in">require</span>(<span class="string">'copy-webpack-plugin'</span>);</span><br><span class="line"><span class="keyword">const</span> FriendlyErrorsPlugin = <span class="built_in">require</span>(<span class="string">'friendly-errors-webpack-plugin'</span>); <span class="comment">// 编译时有详细的报错信息</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ROOT_PATH = path.resolve(__dirname, <span class="string">'../../'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    resolve: &#123;</span><br><span class="line">        extensions: [<span class="string">'.js'</span>, <span class="string">'.json'</span>], <span class="comment">// 自动解析扩展</span></span><br><span class="line">        alias: &#123;</span><br><span class="line">            pro: path.join(ROOT_PATH, <span class="string">'src'</span>) <span class="comment">// 定义src目录别名</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    entry: path.join(ROOT_PATH, <span class="string">'src/javascript/main.js'</span>), <span class="comment">// spa 入口js文件</span></span><br><span class="line">    <span class="built_in">module</span>: &#123;</span><br><span class="line">        rules: [</span><br><span class="line">            &#123;</span><br><span class="line">                test: <span class="regexp">/\.html$/</span>,</span><br><span class="line">                include: [</span><br><span class="line">                    path.join(ROOT_PATH, <span class="string">'src/javascript'</span>),</span><br><span class="line">                    path.join(ROOT_PATH, <span class="string">'src/template/pages'</span>)</span><br><span class="line">                ],</span><br><span class="line">                use: <span class="string">'html-loader'</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                test: <span class="regexp">/\.js$/</span>,</span><br><span class="line">                include: path.join(ROOT_PATH, <span class="string">'src/javascript'</span>), </span><br><span class="line">                use: <span class="string">'babel-loader'</span></span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                test: <span class="regexp">/\.(png|svg|jpg|gif)$/</span>,</span><br><span class="line">                include: path.join(ROOT_PATH, <span class="string">'src'</span>),</span><br><span class="line">                use: [<span class="string">'file-loader'</span>]</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                test: <span class="regexp">/\.(woff|woff2|eot|ttf|otf)$/</span>,</span><br><span class="line">                include: path.join(ROOT_PATH, <span class="string">'src'</span>),</span><br><span class="line">                use: [<span class="string">'file-loader'</span>]</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">    optimization: &#123;</span><br><span class="line">        runtimeChunk: &#123;</span><br><span class="line">            name: <span class="string">"manifest"</span></span><br><span class="line">        &#125;,</span><br><span class="line">        splitChunks: &#123;</span><br><span class="line">            chunks: <span class="string">"all"</span>,</span><br><span class="line">            minSize: <span class="number">3000</span>,</span><br><span class="line">            minChunks: <span class="number">1</span>,</span><br><span class="line">            maxAsyncRequests: <span class="number">5</span>,</span><br><span class="line">            maxInitialRequests: <span class="number">5</span>,</span><br><span class="line">            automaticNameDelimiter: <span class="string">'~'</span>,</span><br><span class="line">            name: <span class="literal">true</span>,</span><br><span class="line">            cacheGroups: &#123;</span><br><span class="line">                <span class="comment">// vendors: &#123;</span></span><br><span class="line">                <span class="comment">//     test: /[\\/]node_modules[\\/]/,</span></span><br><span class="line">                <span class="comment">//     priority: -10,</span></span><br><span class="line">                <span class="comment">//     name: "vendors",</span></span><br><span class="line">                <span class="comment">// &#125;,</span></span><br><span class="line">                vendors: &#123;</span><br><span class="line">                    test: <span class="regexp">/node_modules\/(regularjs|regular-state|nek-ui)/</span>,</span><br><span class="line">                    priority: <span class="number">-8</span>,</span><br><span class="line">                    name: <span class="string">"vendors"</span>,</span><br><span class="line">                &#125;,</span><br><span class="line">                axios: &#123;</span><br><span class="line">                    test: <span class="regexp">/node_modules\/axios/</span>,</span><br><span class="line">                    priority: <span class="number">-9</span>,</span><br><span class="line">                    name: <span class="string">"axios"</span>,</span><br><span class="line">                &#125;,</span><br><span class="line">                echarts: &#123;</span><br><span class="line">                    test: <span class="regexp">/node_modules\/echarts/</span>,</span><br><span class="line">                    priority: <span class="number">-10</span>,</span><br><span class="line">                    name: <span class="string">"echarts"</span>,</span><br><span class="line">                &#125;,</span><br><span class="line">                common: &#123;</span><br><span class="line">                    test: <span class="regexp">/node_modules/</span>,</span><br><span class="line">                    priority: <span class="number">-11</span>,</span><br><span class="line">                    name: <span class="string">"common"</span>,</span><br><span class="line">                &#125;,</span><br><span class="line">                <span class="keyword">default</span>: &#123;</span><br><span class="line">                    minChunks: <span class="number">2</span>,</span><br><span class="line">                    priority: <span class="number">-20</span>,</span><br><span class="line">                    reuseExistingChunk: <span class="literal">true</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    plugins: [</span><br><span class="line">        <span class="keyword">new</span> webpack.HashedModuleIdsPlugin(),</span><br><span class="line">        <span class="keyword">new</span> HtmlWebpackPlugin(&#123;</span><br><span class="line">            title: <span class="string">'demo'</span>,</span><br><span class="line">            filename: path.join(ROOT_PATH, <span class="string">'dist-template/pages/index.ftl'</span>), </span><br><span class="line">            template: path.join(ROOT_PATH, <span class="string">'src/template/pages/index.ftl'</span>),</span><br><span class="line">        &#125;),</span><br><span class="line">        <span class="keyword">new</span> FriendlyErrorsPlugin()</span><br><span class="line">    ]</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// webpack.conf.dev.js</span></span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> merge = <span class="built_in">require</span>(<span class="string">'webpack-merge'</span>);</span><br><span class="line"><span class="keyword">const</span> CleanWebpackPlugin = <span class="built_in">require</span>(<span class="string">'clean-webpack-plugin'</span>);</span><br><span class="line"><span class="keyword">const</span> WebpackBaseConf = <span class="built_in">require</span>(<span class="string">'./webpack.base.conf.js'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ROOT_PATH = path.resolve(__dirname, <span class="string">'../../'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = merge(WebpackBaseConf, &#123;</span><br><span class="line">    devtool: <span class="string">'cheap-module-eval-source-map'</span>,</span><br><span class="line">    output: &#123;</span><br><span class="line">        filename: <span class="string">'[name].js'</span>,</span><br><span class="line">        path: path.join(ROOT_PATH, <span class="string">'dist'</span>),</span><br><span class="line">        publicPath: <span class="string">'/dist/'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="built_in">module</span>: &#123;</span><br><span class="line">        rules: [</span><br><span class="line">            &#123;</span><br><span class="line">                test: <span class="regexp">/\.css$/</span>,</span><br><span class="line">                include: [</span><br><span class="line">                    path.join(ROOT_PATH, <span class="string">'src/css'</span>),</span><br><span class="line">                    path.join(ROOT_PATH, <span class="string">'src/javascript'</span>),</span><br><span class="line">                ],</span><br><span class="line">                use: [</span><br><span class="line">                    <span class="string">'style-loader'</span>,</span><br><span class="line">                    <span class="string">'css-loader'</span></span><br><span class="line">                ]</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">    plugins: [</span><br><span class="line">        <span class="keyword">new</span> CleanWebpackPlugin([</span><br><span class="line">            <span class="string">'dist/*'</span></span><br><span class="line">        ],&#123;</span><br><span class="line">            root: ROOT_PATH,</span><br><span class="line">            verbose: <span class="literal">true</span>,</span><br><span class="line">            dry: <span class="literal">false</span></span><br><span class="line">        &#125;),</span><br><span class="line">    ],</span><br><span class="line">    mode: <span class="string">'development'</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// webpack.conf.prod.js</span></span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">'path'</span>);</span><br><span class="line"><span class="keyword">const</span> webpack = <span class="built_in">require</span>(<span class="string">'webpack'</span>);</span><br><span class="line"><span class="keyword">const</span> merge = <span class="built_in">require</span>(<span class="string">'webpack-merge'</span>);</span><br><span class="line"><span class="keyword">const</span> CleanWebpackPlugin = <span class="built_in">require</span>(<span class="string">'clean-webpack-plugin'</span>);</span><br><span class="line"><span class="keyword">const</span> UglifyJSPlugin = <span class="built_in">require</span>(<span class="string">'uglifyjs-webpack-plugin'</span>);</span><br><span class="line"><span class="keyword">const</span> ExtractTextPlugin = <span class="built_in">require</span>(<span class="string">'extract-text-webpack-plugin'</span>);</span><br><span class="line"><span class="keyword">const</span> WebpackBaseConf = <span class="built_in">require</span>(<span class="string">'./webpack.base.conf.js'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ROOT_PATH = path.resolve(__dirname, <span class="string">'../../'</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = merge(WebpackBaseConf, &#123;</span><br><span class="line">    devtool: <span class="string">'source-map'</span>,</span><br><span class="line">    output: &#123;</span><br><span class="line">        filename: <span class="string">'[name].[chunkhash:8].js'</span>,</span><br><span class="line">        path: path.join(ROOT_PATH, <span class="string">'dist'</span>),</span><br><span class="line">        publicPath: <span class="string">'/dist/'</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="built_in">module</span>: &#123;</span><br><span class="line">        rules: [</span><br><span class="line">            &#123;</span><br><span class="line">                test: <span class="regexp">/\.css$/</span>,</span><br><span class="line">                include: [</span><br><span class="line">                    path.join(ROOT_PATH, <span class="string">'src/css'</span>),</span><br><span class="line">                    path.join(ROOT_PATH, <span class="string">'src/javascript'</span>)</span><br><span class="line">                ],</span><br><span class="line">                use: ExtractTextPlugin.extract(&#123;</span><br><span class="line">                    fallback: <span class="string">"style-loader"</span>,</span><br><span class="line">                    use: <span class="string">"css-loader"</span></span><br><span class="line">                &#125;)</span><br><span class="line">            &#125;</span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">    plugins: [</span><br><span class="line">        <span class="keyword">new</span> CleanWebpackPlugin([</span><br><span class="line">            <span class="string">'dist/*'</span>,</span><br><span class="line">            <span class="string">'dist-template/*'</span></span><br><span class="line">        ],&#123;</span><br><span class="line">            root: ROOT_PATH,</span><br><span class="line">            verbose: <span class="literal">true</span>,</span><br><span class="line">            dry: <span class="literal">false</span></span><br><span class="line">        &#125;),</span><br><span class="line">        <span class="keyword">new</span> ExtractTextPlugin(<span class="string">'[name].[chunkhash:8].css'</span>),</span><br><span class="line">        <span class="keyword">new</span> UglifyJSPlugin(&#123;</span><br><span class="line">            sourceMap: <span class="literal">true</span></span><br><span class="line">        &#125;),</span><br><span class="line">        <span class="comment">// 构建的时候制定环境</span></span><br><span class="line">        <span class="keyword">new</span> webpack.DefinePlugin(&#123;</span><br><span class="line">            <span class="string">'process.env.NODE_ENV'</span>: <span class="built_in">JSON</span>.stringify(<span class="string">'production'</span>)</span><br><span class="line">        &#125;)</span><br><span class="line">    ],</span><br><span class="line">    mode: <span class="string">'production'</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// package.json</span><br><span class="line">'script': &#123;</span><br><span class="line">    'build_dev': 'cross-env NODE_ENV=dev &amp;&amp; webpack --config ./src/deploy/build/webpack.dev.conf.js',</span><br><span class="line">    'build_prod': 'cross-env NODE_ENV=prod &amp;&amp; webpack -- config ./src/deploy/build/webpack.prod.conf.js'</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/06/10/Vue源码分析/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Vue源码分析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/06/05/JSBridge的原理/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JSBridge的原理</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 张金新
+        <span>--联系我：15757116071@163.com</span>
+    	</div>
+      	<div class="footer-right">
+      		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

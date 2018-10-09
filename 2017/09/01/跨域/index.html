@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>跨域 | 张金新的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文主要涉及三种跨域方法：JSONP、CORS、postMessage。  Q：为什么会出现跨域问题？  A：出于浏览器的同源策略限制，浏览器会拒绝跨域请求。  *注：严格的说，浏览器并不是拒绝所有的跨域请求，实际上拒绝的是跨域的读操作。浏览器的同源限制策略是这样执行的：  通常浏览器允许进行跨域写操作（Cross-origin writes），如链接，重定向； 通常浏览器允许跨域资源嵌入（Cro">
+<meta name="keywords" content="前端,WEB,跨域">
+<meta property="og:type" content="article">
+<meta property="og:title" content="跨域">
+<meta property="og:url" content="http://zhangjinxin.com/2017/09/01/跨域/index.html">
+<meta property="og:site_name" content="张金新的博客">
+<meta property="og:description" content="本文主要涉及三种跨域方法：JSONP、CORS、postMessage。  Q：为什么会出现跨域问题？  A：出于浏览器的同源策略限制，浏览器会拒绝跨域请求。  *注：严格的说，浏览器并不是拒绝所有的跨域请求，实际上拒绝的是跨域的读操作。浏览器的同源限制策略是这样执行的：  通常浏览器允许进行跨域写操作（Cross-origin writes），如链接，重定向； 通常浏览器允许跨域资源嵌入（Cro">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://haitao.nos.netease.com/b895d6b7-2c27-47ea-937f-cac4d034b090.png">
+<meta property="og:image" content="https://mdn.mozillademos.org/files/14289/prelight.png">
+<meta property="og:image" content="https://mdn.mozillademos.org/files/14291/cred-req.png">
+<meta property="og:updated_time" content="2017-12-17T11:25:37.332Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="跨域">
+<meta name="twitter:description" content="本文主要涉及三种跨域方法：JSONP、CORS、postMessage。  Q：为什么会出现跨域问题？  A：出于浏览器的同源策略限制，浏览器会拒绝跨域请求。  *注：严格的说，浏览器并不是拒绝所有的跨域请求，实际上拒绝的是跨域的读操作。浏览器的同源限制策略是这样执行的：  通常浏览器允许进行跨域写操作（Cross-origin writes），如链接，重定向； 通常浏览器允许跨域资源嵌入（Cro">
+<meta name="twitter:image" content="https://haitao.nos.netease.com/b895d6b7-2c27-47ea-937f-cac4d034b090.png">
+  
+    <link rel="alternative" href="/atom.xml" title="张金新的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/star.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">张金新</a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+				        	<li><a href="/file/resume.pdf" target="_blank">我的简历</a></li>
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://taobaofed.org/">淘宝前端团队</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://efe.baidu.com">百度EFE技术体系</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">张金新</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/star.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">张金新</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-跨域" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/01/跨域/" class="article-date">
+  	<time datetime="2017-08-31T16:00:00.000Z" itemprop="datePublished">2017-09-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      跨域
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WEB/">WEB</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/跨域/">跨域</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文主要涉及三种跨域方法：JSONP、CORS、postMessage。</p>
+<blockquote>
+<p>Q：为什么会出现跨域问题？<br>  A：出于浏览器的同源策略限制，浏览器会拒绝跨域请求。<br>  *注：严格的说，浏览器并不是拒绝所有的跨域请求，实际上拒绝的是跨域的读操作。浏览器的同源限制策略是这样执行的：</p>
+<ul>
+<li>通常浏览器允许进行跨域写操作（Cross-origin writes），如链接，重定向；</li>
+<li>通常浏览器允许跨域资源嵌入（Cross-origin embedding），如 img、script 标签；</li>
+<li>通常浏览器不允许跨域读操作（Cross-origin reads）。*</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Q：什么情况才算作跨域？<br>  A：非同源请求，均为跨域。名词解释：<em>同源 —— 如果两个页面拥有相同的协议（protocol），端口（port）和主机（host），那么这两个页面就属于同一个源（origin）。</em><br><img src="https://haitao.nos.netease.com/b895d6b7-2c27-47ea-937f-cac4d034b090.png" alt="img01"></p>
+</blockquote>
+<blockquote>
+<p>Q：为什么有跨域需求?<br>  A：场景 —— 工程服务化后，不同职责的服务分散在不同的工程中，往往这些工程的域名是不同的，但一个需求可能需要对应到多个服务，这时便需要调用不同服务的接口，因此会出现跨域。</p>
+</blockquote>
+<h2 id="如何实现跨域"><a href="#如何实现跨域" class="headerlink" title="如何实现跨域"></a>如何实现跨域</h2><p>通常，最常用的跨域方式有以下三种：JSONP、CORS、postMessage。</p>
+<h3 id="JSONP"><a href="#JSONP" class="headerlink" title="JSONP"></a>JSONP</h3><p><strong>单纯地为了实现跨域请求而创造的一个 trick。</strong><br>【实现原理】<br>虽然因为同源策略的影响，不能通过XMLHttpRequest请求不同域上的数据（Cross-origin reads）。但是，在页面上引入不同域上的js脚本文件却是可以的（Cross-origin embedding）。因此在js文件载入完毕之后，触发回调，可以将需要的data作为参数传入。<br>【实现方式（需前后端配合）】<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">dosomething</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">        <span class="comment">//处理获得的数据</span></span><br><span class="line">    &#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp">&lt;script src="http:/</span><span class="regexp">/example.com/</span>data.php?callback=dosomething<span class="string">"&gt;&lt;/script&gt;</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$callback = $_GET[<span class="string">'callback'</span>];<span class="comment">//得到回调函数名</span></span><br><span class="line">$data = <span class="keyword">array</span>(<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>);<span class="comment">//要返回的数据</span></span><br><span class="line"><span class="keyword">echo</span> $callback.<span class="string">'('</span>.json_encode($data).<span class="string">')'</span>;<span class="comment">//输出</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>【JSONP的优缺点】<br>优点：兼容性好（兼容低版本IE）<br>缺点：1.JSONP只支持GET请求； 2.XMLHttpRequest相对于JSONP有着更好的错误处理机制</p>
+<a id="more"></a>
+<h3 id="CORS"><a href="#CORS" class="headerlink" title="CORS"></a>CORS</h3><p>CORS 是W3C 推荐的一种新的官方方案，能使服务器支持 XMLHttpRequest 的跨域请求。CORS 实现起来非常方便，只需要增加一些 HTTP 头，让服务器能声明允许的访问来源。</p>
+<p>值得注意的是，通常使用CORS时，异步请求会被分为简单请求和非简单请求，非简单请求的区别是会先发一次预检请求。<br>【简单请求】<br>使用下列方法之一且没有人为设置对 CORS 安全的首部字段集合之外的其他首部字段：</p>
+<ul>
+<li>GET</li>
+<li>HEAD</li>
+<li>POST<ul>
+<li>仅当POST方法的Content-Type值等于下列之一才算作简单请求<ul>
+<li>text/plain</li>
+<li>multipart/form-data</li>
+<li>application/x-www-form-urlencoded</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>请求报文：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">GET /resources/public-data/ HTTP/<span class="number">1.1</span></span><br><span class="line">Host: bar.other</span><br><span class="line">User-Agent: Mozilla/<span class="number">5.0</span> (Macintosh; U; Intel Mac OS X <span class="number">10.5</span>; en-US; rv:<span class="number">1.9</span><span class="number">.1</span>b3pre) Gecko/<span class="number">20081130</span> Minefield/<span class="number">3.1</span>b3pre</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=<span class="number">0.9</span>,*<span class="comment">/*;q=0.8</span></span><br><span class="line"><span class="comment">Accept-Language: en-us,en;q=0.5</span></span><br><span class="line"><span class="comment">Accept-Encoding: gzip,deflate</span></span><br><span class="line"><span class="comment">Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7</span></span><br><span class="line"><span class="comment">Connection: keep-alive</span></span><br><span class="line"><span class="comment">Referer: http://foo.example/examples/access-control/simpleXSInvocation.html</span></span><br><span class="line"><span class="comment">Origin: http://foo.example</span></span><br></pre></td></tr></table></figure></p>
+<p>请求报文的第10行：Origin: <a href="http://foo.example" target="_blank" rel="noopener">http://foo.example</a> 表明该请求来源于 <a href="http://foo.exmaple。" target="_blank" rel="noopener">http://foo.exmaple。</a><br>响应报文：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">HTTP/<span class="number">1.1</span> <span class="number">200</span> OK</span><br><span class="line"><span class="built_in">Date</span>: Mon, <span class="number">01</span> Dec <span class="number">2008</span> <span class="number">00</span>:<span class="number">23</span>:<span class="number">53</span> GMT</span><br><span class="line">Server: Apache/<span class="number">2.0</span><span class="number">.61</span> </span><br><span class="line">Access-Control-Allow-Origin: *</span><br><span class="line">Keep-Alive: timeout=<span class="number">2</span>, max=<span class="number">100</span></span><br><span class="line">Connection: Keep-Alive</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line">Content-Type: application/xml</span><br><span class="line">[XML Data]</span><br></pre></td></tr></table></figure></p>
+<p>响应报文的第4行：Access-Control-Allow-Origin: *  表明该资源可以被任意外域访问。</p>
+<p>【非简单请求】</p>
+<ol>
+<li>使用了下面任一 HTTP 方法：</li>
+</ol>
+<ul>
+<li>PUT</li>
+<li>DELETE</li>
+<li>CONNECT</li>
+<li>OPTIONS</li>
+<li>TRACE</li>
+<li>PATCH</li>
+</ul>
+<ol start="2">
+<li>人为设置了对 CORS 安全的首部字段集合之外的其他首部字段。该集合为：</li>
+</ol>
+<ul>
+<li>Accept</li>
+<li>Accept-Language</li>
+<li>Content-Language</li>
+<li>Content-Type (but note the additional requirements below)</li>
+<li>DPR</li>
+<li>Downlink</li>
+<li>Save-Data</li>
+<li>Viewport-Width</li>
+<li>Width</li>
+</ul>
+<ol start="3">
+<li>Content-Type 的值不属于下列之一:</li>
+</ol>
+<ul>
+<li>application/x-www-form-urlencoded</li>
+<li>multipart/form-data</li>
+<li>text/plain</li>
+</ul>
+<p>发送真正请求前会先发送预检请求，如图所示：<br><img src="https://mdn.mozillademos.org/files/14289/prelight.png" alt="img02"><br>1.第一条OPTIONS为预检请求，中同时携带了下面两个首部字段：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Access-Control-Request-Method: POST</span><br><span class="line">Access-Control-Request-Headers: X-PINGOTHER</span><br></pre></td></tr></table></figure></p>
+<p>预检请求的Request中的Access-Control-Request-Method: POST，是告诉服务器，之后的实际请求将使用POST方式。<br>Access-Control-Request-Headers 是告诉服务器，实际请求将携带两个自定义请求首部字段：X-PINGOTHER 与 Content-Type。服务器据此决定，该实际请求是否被允许</p>
+<p>预检请求的Response中的</p>
+<blockquote>
+<p>Access-Control-Allow-Origin: <a href="http://foo.example" target="_blank" rel="noopener">http://foo.example</a>    // 标识可接受的跨域请求源；<br>  Access-Control-Allow-Methods: POST, GET, OPTIONS   //标识可接受的跨域请求方法,如GET、POST、OPTIONS；<br>  Access-Control-Allow-Headers: X-PINGOTHER, Content-Type //标识可接受的跨域请求自定义头；<br>  Access-Control-Max-Age: 86400。 //标识本次预请求的有效时间（秒），期间内无需再发送预请求；</p>
+</blockquote>
+<p>XMLHttpRequest 请求可以发送凭证请求（HTTP Cookies 和验证信息），通常<strong>不会</strong>跨域发送凭证信息，但也有一些情况需要打通不同的登录态，因此如果要发送凭证信息，需要设置 XMLHttpRequest 的某个特殊标志位。比如下面代码，可以把 XMLHttpRequest 的 withCredentials 设置为 true，这样浏览器就能跨域发送凭证信息。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">xhr.withCredentials = <span class="literal">true</span>;</span><br></pre></td></tr></table></figure></p>
+<p>服务端返回的响应头中的 Access-Control-Allow-Credentials 字段存在且为 true 时，浏览器才会将响应结果传递给客户端程序。另外，Access-Control-Allow-Origin 必须指定请求源的域名，否则响应失败。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">HTTP/<span class="number">1.1</span> <span class="number">200</span> OK</span><br><span class="line">Access-Control-Allow-Origin: http:<span class="comment">//foo.com</span></span><br><span class="line">Access-Control-Allow-Credentials: <span class="literal">true</span></span><br><span class="line"><span class="built_in">Set</span>-Cookie: pageAccess=<span class="number">3</span>; expires=Wed, <span class="number">31</span>-Dec<span class="number">-2008</span> <span class="number">01</span>:<span class="number">34</span>:<span class="number">53</span> GMT</span><br><span class="line">Keep-Alive: timeout=<span class="number">2</span>, max=<span class="number">100</span></span><br><span class="line">Connection: Keep-Alive</span><br><span class="line">Content-Type: text/plain</span><br></pre></td></tr></table></figure></p>
+<p>如下图所示为附带身份凭证的请求流程图：<br><img src="https://mdn.mozillademos.org/files/14291/cred-req.png" alt="img03"></p>
+<h3 id="postMessage"><a href="#postMessage" class="headerlink" title="postMessage"></a>postMessage</h3><p>window.postMessage(message,targetOrigin) 方法是html5新引进的特性，可以使用它来向其它的window对象发送消息，无论这个window对象是属于同源或不同源，目前IE8+、FireFox、Chrome、Opera等浏览器都已经支持window.postMessage方法。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">otherWindow.postMessage(message, targetOrigin, [transfer]);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2017/09/29/封装一个复制组件/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          封装一个复制组件
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/08/01/HTTPS浅析/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">HTTPS协议浅析</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 张金新
+        <span>--联系我：15757116071@163.com</span>
+    	</div>
+      	<div class="footer-right">
+      		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>require() 源码解读 | 张金新的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="部分转载自： http://www.ruanyifeng.com/blog/2015/05/require.html 一. require() 的基本用法分析源码之前，先介绍 require 语句的内部逻辑。如果你只想了解 require 的用法，只看这一段就够了。 下面的内容翻译自《Node使用手册》。  当 Node 遇到 require(X) 时，按下面的顺序处理。 （1）如果 X 是内置模">
+<meta name="keywords" content="前端,Node,require,模块">
+<meta property="og:type" content="article">
+<meta property="og:title" content="require() 源码解读">
+<meta property="og:url" content="http://zhangjinxin.com/2018/06/25/require() 源码解读/index.html">
+<meta property="og:site_name" content="张金新的博客">
+<meta property="og:description" content="部分转载自： http://www.ruanyifeng.com/blog/2015/05/require.html 一. require() 的基本用法分析源码之前，先介绍 require 语句的内部逻辑。如果你只想了解 require 的用法，只看这一段就够了。 下面的内容翻译自《Node使用手册》。  当 Node 遇到 require(X) 时，按下面的顺序处理。 （1）如果 X 是内置模">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://efe.baidu.com/blog/nodejs-module-analyze/process2.png">
+<meta property="og:updated_time" content="2018-06-24T16:54:37.570Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="require() 源码解读">
+<meta name="twitter:description" content="部分转载自： http://www.ruanyifeng.com/blog/2015/05/require.html 一. require() 的基本用法分析源码之前，先介绍 require 语句的内部逻辑。如果你只想了解 require 的用法，只看这一段就够了。 下面的内容翻译自《Node使用手册》。  当 Node 遇到 require(X) 时，按下面的顺序处理。 （1）如果 X 是内置模">
+<meta name="twitter:image" content="http://efe.baidu.com/blog/nodejs-module-analyze/process2.png">
+  
+    <link rel="alternative" href="/atom.xml" title="张金新的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/star.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">张金新</a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+				        	<li><a href="/file/resume.pdf" target="_blank">我的简历</a></li>
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://taobaofed.org/">淘宝前端团队</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://efe.baidu.com">百度EFE技术体系</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">张金新</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/star.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">张金新</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-require() 源码解读" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/06/25/require() 源码解读/" class="article-date">
+  	<time datetime="2018-06-24T16:00:00.000Z" itemprop="datePublished">2018-06-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      require() 源码解读
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node/">Node</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/require/">require</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/模块/">模块</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>部分转载自： <a href="http://www.ruanyifeng.com/blog/2015/05/require.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2015/05/require.html</a></p>
+<h1 id="一-require-的基本用法"><a href="#一-require-的基本用法" class="headerlink" title="一. require() 的基本用法"></a>一. require() 的基本用法</h1><p>分析源码之前，先介绍 require 语句的内部逻辑。如果你只想了解 require 的用法，只看这一段就够了。</p>
+<p>下面的内容翻译自《Node使用手册》。</p>
+<blockquote>
+<p>当 Node 遇到 require(X) 时，按下面的顺序处理。<br> （1）如果 X 是内置模块（比如 require(‘http’）)<br>　　  a. 返回该模块。<br>　　  b. 不再继续执行。<br> （2）如果 X 以 “./“ 或者 “/“ 或者 “../“ 开头<br>　　  a. 根据 X 所在的父模块，确定 X 的绝对路径。<br>　　  b. 将 X 当成文件，依次查找[X, X.js, X.json, X.node]文件，只要其中有一个存在，就返回该文件，不再继续执行。<br>　　  c. 将 X 当成目录，依次查找[X/package.json（main字段）, X/index.js, X/index.json, X/index.node]文件，只要其中有一个存在，就返回该文件，不再继续执行。<br> （3）如果 X 不带路径<br>　　  a. 根据 X 所在的父模块，确定 X 可能的安装目录。<br>　　  b. 依次在每个目录中，将 X 当成文件名或目录名加载。<br> （4） 抛出 “not found”</p>
+</blockquote>
+<p>请看一个例子。</p>
+<p>(1) 当前脚本文件 /home/ry/projects/foo.js 执行了 require(‘bar’) ，这属于上面的第三种情况。Node 内部运行过程如下。<br>首先，确定 x 的绝对路径可能是下面这些位置，依次搜索每一个目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/home/ry/projects/node_modules/bar</span><br><span class="line">/home/ry/node_modules/bar</span><br><span class="line">/home/node_modules/bar</span><br><span class="line">/node_modules/bar</span><br></pre></td></tr></table></figure>
+<p>(2) 搜索时，Node 先将 bar 当成文件名，依次尝试加载下面这些文件，只要有一个成功就返回。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bar</span><br><span class="line">bar.js</span><br><span class="line">bar.json</span><br><span class="line">bar.node</span><br></pre></td></tr></table></figure></p>
+<p>(3) 如果都不成功，说明 bar 可能是目录名，于是依次尝试加载下面这些文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bar/package.json（main字段）</span><br><span class="line">bar/index.js</span><br><span class="line">bar/index.json</span><br><span class="line">bar/index.node</span><br></pre></td></tr></table></figure></p>
+<p>(4) 如果在所有目录中，都无法找到 bar 对应的文件或目录，就抛出一个错误。</p>
+<h1 id="二-Module-构造函数"><a href="#二-Module-构造函数" class="headerlink" title="二. Module 构造函数"></a>二. Module 构造函数</h1><p>了解内部逻辑以后，下面就来看源码。<br>require 的源码在 Node 的 (lib/module.js)[<a href="https://github.com/nodejs/node-v0.x-archive/blob/master/lib/module.js]" target="_blank" rel="noopener">https://github.com/nodejs/node-v0.x-archive/blob/master/lib/module.js]</a> 文件。为了便于理解，本文引用的源码是简化过的，并且删除了原作者的注释。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Module</span>(<span class="params">id, parent</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.id = id;</span><br><span class="line">  <span class="keyword">this</span>.exports = &#123;&#125;;</span><br><span class="line">  <span class="keyword">this</span>.parent = parent;</span><br><span class="line">  <span class="keyword">this</span>.filename = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">this</span>.loaded = <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">this</span>.children = [];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = Module;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> <span class="built_in">module</span> = <span class="keyword">new</span> Module(filename, parent);</span><br></pre></td></tr></table></figure></p>
+<p>上面代码中，Node 定义了一个构造函数 Module，所有的模块都是 Module 的实例。可以看到，当前模块（module.js）也是 Module 的一个实例。<br>每个实例都有自己的属性。下面通过一个例子，看看这些属性的值是什么。新建一个脚本文件 a.js 。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.js</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'module.id: '</span>, <span class="built_in">module</span>.id);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'module.exports: '</span>, <span class="built_in">module</span>.exports);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'module.parent: '</span>, <span class="built_in">module</span>.parent);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'module.filename: '</span>, <span class="built_in">module</span>.filename);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'module.loaded: '</span>, <span class="built_in">module</span>.loaded);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'module.children: '</span>, <span class="built_in">module</span>.children);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'module.paths: '</span>, <span class="built_in">module</span>.paths);</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>运行这个脚本。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ node a.js</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.id:  .</span><br><span class="line"><span class="built_in">module</span>.exports:  &#123;&#125;</span><br><span class="line"><span class="built_in">module</span>.parent:  <span class="literal">null</span></span><br><span class="line"><span class="built_in">module</span>.filename:  <span class="regexp">/home/</span>ruanyf/tmp/a.js</span><br><span class="line"><span class="built_in">module</span>.loaded:  <span class="literal">false</span></span><br><span class="line"><span class="built_in">module</span>.children:  []</span><br><span class="line"><span class="built_in">module</span>.paths:  [ <span class="string">'/home/ruanyf/tmp/node_modules'</span>,</span><br><span class="line">  <span class="string">'/home/ruanyf/node_modules'</span>,</span><br><span class="line">  <span class="string">'/home/node_modules'</span>,</span><br><span class="line">  <span class="string">'/node_modules'</span> ]</span><br></pre></td></tr></table></figure></p>
+<p>可以看到，如果没有父模块，直接调用当前模块，parent 属性就是 null，id 属性就是一个点。filename 属性是模块的绝对路径，path 属性是一个数组，包含了模块可能的位置。另外，输出这些内容时，模块还没有全部加载，所以 loaded 属性为 false 。</p>
+<p>新建另一个脚本文件 b.js，让其调用 a.js 。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// b.js</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="built_in">require</span>(<span class="string">'./a.js'</span>);</span><br></pre></td></tr></table></figure></p>
+<p>运行 b.js 。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ node b.js</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.id:  <span class="regexp">/home/</span>ruanyf/tmp/a.js</span><br><span class="line"><span class="built_in">module</span>.exports:  &#123;&#125;</span><br><span class="line"><span class="built_in">module</span>.parent:  &#123; object &#125;</span><br><span class="line"><span class="built_in">module</span>.filename:  <span class="regexp">/home/</span>ruanyf/tmp/a.js</span><br><span class="line"><span class="built_in">module</span>.loaded:  <span class="literal">false</span></span><br><span class="line"><span class="built_in">module</span>.children:  []</span><br><span class="line"><span class="built_in">module</span>.paths:  [ <span class="string">'/home/ruanyf/tmp/node_modules'</span>,</span><br><span class="line">  <span class="string">'/home/ruanyf/node_modules'</span>,</span><br><span class="line">  <span class="string">'/home/node_modules'</span>,</span><br><span class="line">  <span class="string">'/node_modules'</span> ]</span><br></pre></td></tr></table></figure></p>
+<p>上面代码中，由于 a.js 被 b.js 调用，所以 parent 属性指向 b.js 模块，id 属性和 filename 属性一致，都是模块的绝对路径。</p>
+<h1 id="三-模块实例的-require-方法"><a href="#三-模块实例的-require-方法" class="headerlink" title="三. 模块实例的 require 方法"></a>三. 模块实例的 require 方法</h1><p>每个模块实例都有一个 require 方法。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Module.prototype.require = <span class="function"><span class="keyword">function</span>(<span class="params">path</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> Module._load(path, <span class="keyword">this</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>下面来看 Module._load 的源码。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Check the cache for the requested file.</span></span><br><span class="line"><span class="comment">// 1. If a module already exists in the cache: return its exports object.</span></span><br><span class="line"><span class="comment">// 2. If the module is native: call `NativeModule.require()` with the</span></span><br><span class="line"><span class="comment">//    filename and return the result.</span></span><br><span class="line"><span class="comment">// 3. Otherwise, create a new module for the file and save it to the cache.</span></span><br><span class="line"><span class="comment">//    Then have it load  the file contents before returning its exports</span></span><br><span class="line"><span class="comment">//    object.</span></span><br><span class="line">Module._load = <span class="function"><span class="keyword">function</span>(<span class="params">request, parent, isMain</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">//  计算绝对路径</span></span><br><span class="line">  <span class="keyword">var</span> filename = Module._resolveFilename(request, parent);</span><br><span class="line"></span><br><span class="line">  <span class="comment">//  第一步：如果有缓存，取出缓存</span></span><br><span class="line">  <span class="keyword">var</span> cachedModule = Module._cache[filename];</span><br><span class="line">  <span class="keyword">if</span> (cachedModule) &#123;</span><br><span class="line">    <span class="keyword">return</span> cachedModule.exports;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第二步：是否为核心模块</span></span><br><span class="line">  <span class="keyword">if</span> (NativeModule.exists(filename)) &#123;</span><br><span class="line">    <span class="keyword">return</span> NativeModule.require(filename);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第三步：生成模块实例，存入缓存</span></span><br><span class="line">  <span class="keyword">var</span> <span class="built_in">module</span> = <span class="keyword">new</span> Module(filename, parent);</span><br><span class="line">  Module._cache[filename] = <span class="built_in">module</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第四步：加载模块</span></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="built_in">module</span>.load(filename);</span><br><span class="line">    hadException = <span class="literal">false</span>;</span><br><span class="line">  &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (hadException) &#123;</span><br><span class="line">      <span class="keyword">delete</span> Module._cache[filename];</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第五步：输出模块的exports属性</span></span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">module</span>.exports;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>上面代码中，首先解析出模块的绝对路径（filename），以它作为模块的识别符。然后，如果模块已经在缓存中，就从缓存取出；如果不在缓存中，就加载模块。<br>因此，Module._load 的关键步骤是两个。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Module._resolveFilename() ：确定模块的绝对路径</span><br><span class="line">module.load()：加载模块</span><br></pre></td></tr></table></figure></p>
+<p>值得注意的一点是，第二步是判断require的是否是核心模块（native模块和built_in模块）。如果是直接返回NativeModule.require(filename);<br>NativeModule的定义在 bootstrap_node.js 中，附上 github 链接： <a href="https://github.com/nodejs/node/blob/v6.x/lib/internal/bootstrap_node.js#L401" target="_blank" rel="noopener">https://github.com/nodejs/node/blob/v6.x/lib/internal/bootstrap_node.js#L401</a><br>从代码中可以看到，NativeModule.require 的流程如下：</p>
+<blockquote>
+<ol>
+<li>判断 cache 中是否已经加载过，如果有，直接返回 exports</li>
+<li>新建 nativeModule 对象，然后缓存，并加载编译</li>
+</ol>
+</blockquote>
+<p>首先我们来看一下如何编译，从代码中看是调用了 compile 方法，而在 NativeModule.prototype.compile 方法中，首先是通过 NativeModule.getSource 获取了要加载模块的源码，那么这个源码是如何获取的呢？看一下 getSource 方法的定义：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lib/internal/bootstrap_node.js</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">NativeModule._source = process.binding(<span class="string">'natives'</span>);</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">NativeModule.getSource = <span class="function"><span class="keyword">function</span>(<span class="params">id</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> NativeModule._source[id];</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>直接从 NativeModule._source 获取的，而这个又是在哪里赋值的呢？在上述代码中也截取了出来，是通过 NativeModule._source = process.binding(‘natives’) 获取的。<br>这里就要插入介绍一下 JavaScript native 模块代码是如何存储的了。Node.js 源码编译的时候，会采用 v8 附带的 js2c.py 工具，将 lib 文件夹下面的 js 模块的代码都转换成 C 里面的数组，生成一个 node_natives.h 头文件，记录这个数组：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> node &#123;</span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> node_native[] = &#123;<span class="number">47</span>, <span class="number">47</span>, <span class="number">32</span>, <span class="number">67</span>, <span class="number">112</span> …&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> console_native[] = &#123;<span class="number">47</span>, <span class="number">47</span>, <span class="number">32</span>, <span class="number">67</span>, <span class="number">112</span> …&#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="keyword">char</span> buffer_native[] = &#123;<span class="number">47</span>, <span class="number">47</span>, <span class="number">32</span>, <span class="number">67</span>, <span class="number">112</span> …&#125;</span><br><span class="line"></span><br><span class="line">  …</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct _native &#123;<span class="keyword">const</span> <span class="keyword">char</span> name;  <span class="keyword">const</span> <span class="keyword">char</span>* source;  <span class="keyword">size_t</span> source_len;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> _<span class="title">native</span> <span class="title">natives</span>[] = &#123;</span></span><br><span class="line"></span><br><span class="line">  &#123; “node”, node_native, <span class="keyword">sizeof</span>(node_native)<span class="number">-1</span> &#125;,</span><br><span class="line"></span><br><span class="line">  &#123;“dgram”, dgram_native, <span class="keyword">sizeof</span>(dgram_native)<span class="number">-1</span> &#125;,</span><br><span class="line"></span><br><span class="line">  &#123;“console”, console_native, <span class="keyword">sizeof</span>(console_native)<span class="number">-1</span> &#125;,</span><br><span class="line"></span><br><span class="line">  &#123;“buffer”, buffer_native, <span class="keyword">sizeof</span>(buffer_native)<span class="number">-1</span> &#125;,</span><br><span class="line"></span><br><span class="line">  …</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>而上文中 NativeModule._source = process.binding(‘natives’); 的作用，就是取出这个 natives 数组，赋值给NativeModule._source，所以在 getSource 方法中，直接可以使用模块名作为索引，从数组中取出模块的源代码。</p>
+<p>在这里我们插入回顾一下上文，在介绍 Node.js 编译的时候，我们介绍了 node.gyp，其中有一个任务是 node_js2c，当时笔者提到从名称看这个任务是将 JavaScript 转换为 C 代码，而这里的 natives 数组中的 C 代码，正是这个构建任务的产物。而到了这里，我们终于知道了这个编译任务的作用了。</p>
+<p>知道了源码的获取，继续往下看 compile 方法，看看源码是如何编译的：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lib/internal/bootstrap_node.js</span></span><br><span class="line">  NativeModule.wrap = <span class="function"><span class="keyword">function</span>(<span class="params">script</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> NativeModule.wrapper[<span class="number">0</span>] + script + NativeModule.wrapper[<span class="number">1</span>];</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  NativeModule.wrapper = [</span><br><span class="line">    <span class="string">'(function (exports, require, module, __filename, __dirname) &#123; '</span>,</span><br><span class="line">    <span class="string">'\n&#125;);'</span></span><br><span class="line">  ];</span><br><span class="line"></span><br><span class="line">  NativeModule.prototype.compile = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> source = NativeModule.getSource(<span class="keyword">this</span>.id);</span><br><span class="line">    source = NativeModule.wrap(source);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">this</span>.loading = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> fn = runInThisContext(source, &#123;</span><br><span class="line">        filename: <span class="keyword">this</span>.filename,</span><br><span class="line">        lineOffset: <span class="number">0</span>,</span><br><span class="line">        displayErrors: <span class="literal">true</span></span><br><span class="line">      &#125;);</span><br><span class="line">      fn(<span class="keyword">this</span>.exports, NativeModule.require, <span class="keyword">this</span>, <span class="keyword">this</span>.filename);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">this</span>.loaded = <span class="literal">true</span>;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">      <span class="keyword">this</span>.loading = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="comment">// ...</span></span><br></pre></td></tr></table></figure></p>
+<p>NativeModule.prototype.compile 在获取到源码之后，它主要做了：使用 wrap 方法处理源代码，最后调用 runInThisContext 进行编译得到一个函数，最后执行该函数。其中 wrap 方法，是给源代码加上了一头一尾，其实相当于是将源码包在了一个函数中，这个函数的参数有 exports, require, module 等。这就是为什么我们写模块的时候，不需要定义 exports, require, module 就可以直接用的原因。</p>
+<p>至此就基本讲清楚了 Node.js 核心模块的加载过程。说到这里大家可能有一个疑惑，上述分析过程，好像只涉及到了核心模块中的 JavaScript native模块，那么对于 C/C++ built-in 模块呢？</p>
+<p>其实是这样的，对于 built-in 模块而言，它们不是通过 require 来引入的，而是通过 precess.binding(‘模块名’) 引入的。一般我们很少在自己的代码中直接使用 process.binding 来引入built-in模块，而是通过 require 引用native模块，而 native 模块里面会引入 built-in 模块。比如我们常用的 buffer 模块，其内部实现中就引入了 C/C++ built-in 模块，这是为了避开 v8 的内存限制：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// lib/buffer.js</span></span><br><span class="line"><span class="meta">'use strict'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过 process.binding 引入名为 buffer 的 C/C++ built-in 模块</span></span><br><span class="line"><span class="keyword">const</span> binding = process.binding(<span class="string">'buffer'</span>);</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure></p>
+<p>这样，我们在 require(‘buffer’) 的时候，其实是间接的使用了 C/C++ built-in 模块。<br>这里再次出现了 process.binding！事实上，process.binding 这个方法定义在 node.cc 中：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/node.cc</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">Binding</span><span class="params">(<span class="keyword">const</span> FunctionCallbackInfo&lt;Value&gt;&amp; args)</span> </span>&#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">  node_module* mod = get_builtin_module(*module_v);</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line">env-&gt;SetMethod(process, <span class="string">"binding"</span>, Binding);</span><br><span class="line"><span class="comment">// ...</span></span><br></pre></td></tr></table></figure></p>
+<p>Binding 这个函数中关键的一步是 get_builtin_module。这里需要再次插入介绍一下 C/C++ 内建模块的存储方式：</p>
+<p>在 Node.js 中，内建模块是通过一个名为 node_module_struct 的结构体定义的。所以的内建模块会被放入一个叫做 node_module_list 的数组中。而 process.binding 的作用，正是使用 get_builtin_module 从这个数组中取出相应的内建模块代码。</p>
+<p>综上，我们就完整介绍了核心模块的加载原理，主要是区分 JavaScript 类型的 native 模块和 C/C++ 类型的 built-in 模块。这里绘制一张图来描述一下核心模块加载过程：<br><img src="http://efe.baidu.com/blog/nodejs-module-analyze/process2.png" alt="核心模块加载过程"></p>
+<h1 id="四-模块的绝对路径"><a href="#四-模块的绝对路径" class="headerlink" title="四. 模块的绝对路径"></a>四. 模块的绝对路径</h1><p>下面是 Module._resolveFilename 方法的源码。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Module._resolveFilename = <span class="function"><span class="keyword">function</span>(<span class="params">request, parent</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第一步：如果是内置模块，不含路径返回</span></span><br><span class="line">  <span class="keyword">if</span> (NativeModule.exists(request)) &#123;</span><br><span class="line">    <span class="keyword">return</span> request;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第二步：确定所有可能的路径</span></span><br><span class="line">  <span class="keyword">var</span> resolvedModule = Module._resolveLookupPaths(request, parent);</span><br><span class="line">  <span class="keyword">var</span> id = resolvedModule[<span class="number">0</span>];</span><br><span class="line">  <span class="keyword">var</span> paths = resolvedModule[<span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第三步：确定哪一个路径为真</span></span><br><span class="line">  <span class="keyword">var</span> filename = Module._findPath(request, paths);</span><br><span class="line">  <span class="keyword">if</span> (!filename) &#123;</span><br><span class="line">    <span class="keyword">var</span> err = <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"Cannot find module '"</span> + request + <span class="string">"'"</span>);</span><br><span class="line">    err.code = <span class="string">'MODULE_NOT_FOUND'</span>;</span><br><span class="line">    <span class="keyword">throw</span> err;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> filename;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>上面代码中，在 Module.resolveFilename 方法内部，又调用了两个方法 Module.resolveLookupPaths() 和 Module._findPath() ，前者用来列出可能的路径，后者用来确认哪一个路径为真。<br>为了简洁起见，这里只给出 Module._resolveLookupPaths() 的运行结果。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[   <span class="string">'/home/ruanyf/tmp/node_modules'</span>,</span><br><span class="line">    <span class="string">'/home/ruanyf/node_modules'</span>,</span><br><span class="line">    <span class="string">'/home/node_modules'</span>,</span><br><span class="line">    <span class="string">'/node_modules'</span> </span><br><span class="line">    <span class="string">'/home/ruanyf/.node_modules'</span>,</span><br><span class="line">    <span class="string">'/home/ruanyf/.node_libraries'</span>，</span><br><span class="line">    <span class="string">'$Prefix/lib/node'</span> </span><br><span class="line">]</span><br></pre></td></tr></table></figure></p>
+<p>上面的数组，就是模块所有可能的路径。基本上是，从当前路径开始一级级向上寻找 node_modules 子目录。最后那三个路径，主要是为了历史原因保持兼容，实际上已经很少用了。<br>有了可能的路径以后，下面就是 Module._findPath() 的源码，用来确定到底哪一个是正确路径。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">Module._findPath = <span class="function"><span class="keyword">function</span>(<span class="params">request, paths</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 列出所有可能的后缀名：.js，.json, .node</span></span><br><span class="line">  <span class="keyword">var</span> exts = <span class="built_in">Object</span>.keys(Module._extensions);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 如果是绝对路径，就不再搜索</span></span><br><span class="line">  <span class="keyword">if</span> (request.charAt(<span class="number">0</span>) === <span class="string">'/'</span>) &#123;</span><br><span class="line">    paths = [<span class="string">''</span>];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 是否有后缀的目录斜杠</span></span><br><span class="line">  <span class="keyword">var</span> trailingSlash = (request.slice(<span class="number">-1</span>) === <span class="string">'/'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第一步：如果当前路径已在缓存中，就直接返回缓存</span></span><br><span class="line">  <span class="keyword">var</span> cacheKey = <span class="built_in">JSON</span>.stringify(&#123;<span class="attr">request</span>: request, <span class="attr">paths</span>: paths&#125;);</span><br><span class="line">  <span class="keyword">if</span> (Module._pathCache[cacheKey]) &#123;</span><br><span class="line">    <span class="keyword">return</span> Module._pathCache[cacheKey];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第二步：依次遍历所有路径</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, PL = paths.length; i &lt; PL; i++) &#123;</span><br><span class="line">    <span class="keyword">var</span> basePath = path.resolve(paths[i], request);</span><br><span class="line">    <span class="keyword">var</span> filename;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!trailingSlash) &#123;</span><br><span class="line">      <span class="comment">// 第三步：是否存在该模块文件</span></span><br><span class="line">      filename = tryFile(basePath);</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span> (!filename &amp;&amp; !trailingSlash) &#123;</span><br><span class="line">        <span class="comment">// 第四步：该模块文件加上后缀名，是否存在</span></span><br><span class="line">        filename = tryExtensions(basePath, exts);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第五步：目录中是否存在 package.json </span></span><br><span class="line">    <span class="keyword">if</span> (!filename) &#123;</span><br><span class="line">      filename = tryPackage(basePath, exts);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!filename) &#123;</span><br><span class="line">      <span class="comment">// 第六步：是否存在目录名 + index + 后缀名 </span></span><br><span class="line">      filename = tryExtensions(path.resolve(basePath, <span class="string">'index'</span>), exts);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 第七步：将找到的文件路径存入返回缓存，然后返回</span></span><br><span class="line">    <span class="keyword">if</span> (filename) &#123;</span><br><span class="line">      Module._pathCache[cacheKey] = filename;</span><br><span class="line">      <span class="keyword">return</span> filename;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 第八步：没有找到文件，返回false </span></span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>经过上面代码，就可以找到模块的绝对路径了。<br>有时在项目代码中，需要调用模块的绝对路径，那么除了 module.filename ，Node 还提供一个 require.resolve 方法，供外部调用，用于从模块名取到绝对路径。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">require</span>.resolve = <span class="function"><span class="keyword">function</span>(<span class="params">request</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> Module._resolveFilename(request, self);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用法</span></span><br><span class="line"><span class="built_in">require</span>.resolve(<span class="string">'a.js'</span>)</span><br><span class="line"><span class="comment">// 返回 /home/ruanyf/tmp/a.js</span></span><br></pre></td></tr></table></figure></p>
+<h1 id="五-加载模块"><a href="#五-加载模块" class="headerlink" title="五. 加载模块"></a>五. 加载模块</h1><p>有了模块的绝对路径，就可以加载该模块了。下面是 module.load 方法的源码。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Module.prototype.load = <span class="function"><span class="keyword">function</span>(<span class="params">filename</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> extension = path.extname(filename) || <span class="string">'.js'</span>;</span><br><span class="line">  <span class="keyword">if</span> (!Module._extensions[extension]) extension = <span class="string">'.js'</span>;</span><br><span class="line">  Module._extensions[extension](<span class="keyword">this</span>, filename);</span><br><span class="line">  <span class="keyword">this</span>.loaded = <span class="literal">true</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>上面代码中，首先确定模块的后缀名，不同的后缀名对应不同的加载方法。下面是 .js 和 .json 后缀名对应的处理方法。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">Module._extensions[<span class="string">'.js'</span>] = <span class="function"><span class="keyword">function</span>(<span class="params">module, filename</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> content = fs.readFileSync(filename, <span class="string">'utf8'</span>);</span><br><span class="line">  <span class="built_in">module</span>._compile(stripBOM(content), filename);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Module._extensions[<span class="string">'.json'</span>] = <span class="function"><span class="keyword">function</span>(<span class="params">module, filename</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> content = fs.readFileSync(filename, <span class="string">'utf8'</span>);</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="built_in">module</span>.exports = <span class="built_in">JSON</span>.parse(stripBOM(content));</span><br><span class="line">  &#125; <span class="keyword">catch</span> (err) &#123;</span><br><span class="line">    err.message = filename + <span class="string">': '</span> + err.message;</span><br><span class="line">    <span class="keyword">throw</span> err;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>这里只讨论 js 文件的加载。首先，将模块文件读取成字符串，然后剥离 utf8 编码特有的BOM文件头，最后编译该模块。<br>module._compile 方法用于模块的编译。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Module.prototype._compile = <span class="function"><span class="keyword">function</span>(<span class="params">content, filename</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> self = <span class="keyword">this</span>;</span><br><span class="line">  <span class="keyword">var</span> args = [self.exports, <span class="built_in">require</span>, self, filename, dirname];</span><br><span class="line">  <span class="keyword">return</span> compiledWrapper.apply(self.exports, args);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>上面的代码基本等同于下面的形式。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params">exports, require, module, __filename, __dirname</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 模块源码</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>也就是说，模块的加载实质上就是，注入exports、require、module三个全局变量，然后执行模块的源码，然后将模块的 exports 变量的值输出。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/10/08/函数防抖与函数节流/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          函数防抖和函数节流
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/06/24/ES6解构赋值/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">ES6解构赋值</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 张金新
+        <span>--联系我：15757116071@163.com</span>
+    	</div>
+      	<div class="footer-right">
+      		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>
