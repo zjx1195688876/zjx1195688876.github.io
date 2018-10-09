@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>javascript链式调用 | 张金新的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="转载自：https://www.cnblogs.com/youxin/p/3410185.html 方法链一般适合对一个对象进行连续操作(集中在一句代码)。一定程度上可以减少代码量，缺点是它占用了函数的返回值。 一、方法体内返回对象实例自身(this)12345678910111213141516171819function ClassA()&amp;#123;    this.prop1 = null;">
+<meta name="keywords" content="前端,设计模式,链式调用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javascript链式调用">
+<meta property="og:url" content="http://zhangjinxin.com/2018/10/09/javascript链式调用/index.html">
+<meta property="og:site_name" content="张金新的博客">
+<meta property="og:description" content="转载自：https://www.cnblogs.com/youxin/p/3410185.html 方法链一般适合对一个对象进行连续操作(集中在一句代码)。一定程度上可以减少代码量，缺点是它占用了函数的返回值。 一、方法体内返回对象实例自身(this)12345678910111213141516171819function ClassA()&amp;#123;    this.prop1 = null;">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-10-09T14:52:49.524Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="javascript链式调用">
+<meta name="twitter:description" content="转载自：https://www.cnblogs.com/youxin/p/3410185.html 方法链一般适合对一个对象进行连续操作(集中在一句代码)。一定程度上可以减少代码量，缺点是它占用了函数的返回值。 一、方法体内返回对象实例自身(this)12345678910111213141516171819function ClassA()&amp;#123;    this.prop1 = null;">
+  
+    <link rel="alternative" href="/atom.xml" title="张金新的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/star.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">张金新</a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+				        	<li><a href="/file/resume.pdf" target="_blank">我的简历</a></li>
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://taobaofed.org/">淘宝前端团队</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://efe.baidu.com">百度EFE技术体系</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">张金新</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/star.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">张金新</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-javascript链式调用" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/10/09/javascript链式调用/" class="article-date">
+  	<time datetime="2018-10-08T16:00:00.000Z" itemprop="datePublished">2018-10-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      javascript链式调用
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/设计模式/">设计模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/链式调用/">链式调用</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>转载自：<a href="https://www.cnblogs.com/youxin/p/3410185.html" target="_blank" rel="noopener">https://www.cnblogs.com/youxin/p/3410185.html</a></p>
+<p>方法链一般适合对一个对象进行连续操作(集中在一句代码)。一定程度上可以减少代码量，缺点是它占用了函数的返回值。</p>
+<h3 id="一、方法体内返回对象实例自身-this"><a href="#一、方法体内返回对象实例自身-this" class="headerlink" title="一、方法体内返回对象实例自身(this)"></a>一、方法体内返回对象实例自身(this)</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ClassA</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.prop1 = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">this</span>.prop2 = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">this</span>.prop3 = <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br><span class="line">ClassA.prototype = &#123;</span><br><span class="line">    method1 : <span class="function"><span class="keyword">function</span>(<span class="params">p1</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.prop1 = p1;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">    method2 : <span class="function"><span class="keyword">function</span>(<span class="params">p2</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.prop2 = p2;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">    method3 : <span class="function"><span class="keyword">function</span>(<span class="params">p3</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.prop3 = p3;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>定义了function/类ClassA。有三个属性/字段prop1,prop2,prop3，三个方法methed1,method2,method3分别设置prop1,prop2,prop3。</p>
+<p>链式调用如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> ClassA();  </span><br><span class="line">obj.method1(<span class="number">1</span>).method2(<span class="number">2</span>).method3(<span class="number">3</span>); <span class="comment">// obj -&gt; prop1=1,prop2=2,prop3=3</span></span><br></pre></td></tr></table></figure>
+<p>可以看到对obj进行了连续三次操作，只要愿意ClassA的N多方法都这样定义，调用链会一直延续。</p>
+<p>该方式缺点是链方法唯一地绑定于一种对象类型(ClaaaA)，按这种方式实现链式操作，每定义一个类，其方法体中都要返回this。第二种方式可以解决这个问题。</p>
+<a id="more"></a>
+<h3 id="二、对象传入后每次调用返回函数自身"><a href="#二、对象传入后每次调用返回函数自身" class="headerlink" title="二、对象传入后每次调用返回函数自身"></a>二、对象传入后每次调用返回函数自身</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * chain 最易读版</span></span><br><span class="line"><span class="comment"> * @param &#123;Object&#125; obj</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">singleChain1</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">chain</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">arguments</span>.length == <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> chain.obj;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> methodName = <span class="built_in">arguments</span>[<span class="number">0</span>], methodArgs = [].slice.call(<span class="built_in">arguments</span>,<span class="number">1</span>);</span><br><span class="line">        chain.obj[methodName].apply(chain.obj,methodArgs);</span><br><span class="line">        <span class="keyword">return</span> chain;</span><br><span class="line">    &#125;</span><br><span class="line">    chain.obj = obj;</span><br><span class="line">    <span class="keyword">return</span> chain;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * chain 易读版</span></span><br><span class="line"><span class="comment"> * @param &#123;Object&#125; obj</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">singleChain2</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> Self = <span class="built_in">arguments</span>.callee; Self.obj = obj;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">arguments</span>.length==<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> Self.obj;</span><br><span class="line">        &#125;     </span><br><span class="line">        <span class="keyword">var</span> methodName = <span class="built_in">arguments</span>[<span class="number">0</span>], methodArgs = [].slice.call(<span class="built_in">arguments</span>,<span class="number">1</span>);</span><br><span class="line">        Self.obj[methodName].apply(Self.obj,methodArgs);</span><br><span class="line">        <span class="keyword">return</span> Self;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * chain 精简版</span></span><br><span class="line"><span class="comment"> * @param &#123;Object&#125; obj</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">singleChain3</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> Self = <span class="built_in">arguments</span>.callee; Self.obj = obj;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">arguments</span>.length==<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> Self.obj;</span><br><span class="line">        &#125; </span><br><span class="line">        Self.obj[<span class="built_in">arguments</span>[<span class="number">0</span>]].apply(Self.obj,[].slice.call(<span class="built_in">arguments</span>,<span class="number">1</span>));</span><br><span class="line">        <span class="keyword">return</span> Self;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * chain 精简版</span></span><br><span class="line"><span class="comment"> * @param &#123;Object&#125; obj</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">chain</span>(<span class="params">obj</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> Self = <span class="built_in">arguments</span>.callee; Self.obj = obj;</span><br><span class="line">        <span class="keyword">if</span>(<span class="built_in">arguments</span>.length==<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> Self.obj;</span><br><span class="line">        &#125; </span><br><span class="line">        Self.obj[<span class="built_in">arguments</span>[<span class="number">0</span>]].apply(Self.obj,[].slice.call(<span class="built_in">arguments</span>,<span class="number">1</span>));</span><br><span class="line">        <span class="keyword">return</span> Self;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//定义的function/类ClassB</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ClassB</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.prop1 = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">this</span>.prop2 = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">this</span>.prop3 = <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br><span class="line">ClassB.prototype = &#123;</span><br><span class="line">    method1 : <span class="function"><span class="keyword">function</span>(<span class="params">p1</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.prop1 = p1;</span><br><span class="line">    &#125;,</span><br><span class="line">    method2 : <span class="function"><span class="keyword">function</span>(<span class="params">p2</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.prop2 = p2;</span><br><span class="line">    &#125;,</span><br><span class="line">    method3 : <span class="function"><span class="keyword">function</span>(<span class="params">p3</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.prop3 = p3;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意ClassB的method1,method2,method3中不再返回this了。</p>
+<p>链式调用如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = <span class="keyword">new</span> ClassB();  </span><br><span class="line">chain(obj)(<span class="string">'method1'</span>,<span class="number">4</span>)(<span class="string">'method2'</span>,<span class="number">5</span>)(<span class="string">'method3'</span>,<span class="number">6</span>); <span class="comment">// obj -&gt; prop1=4,prop2=5,prop3=6</span></span><br></pre></td></tr></table></figure>
+<p>第一种方式3次调用后返回了对象自身，这里使用一个空”()”取回对象</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// result -&gt; prop1=4,prop2=5,prop3=6  </span></span><br><span class="line"><span class="keyword">var</span> result = chain(obj)(<span class="string">'method1'</span>,<span class="number">4</span>)(<span class="string">'method2'</span>,<span class="number">5</span>)(<span class="string">'method3'</span>,<span class="number">6</span>)();</span><br></pre></td></tr></table></figure>
+<p>这种方式写类时方法体中无须返回this，且可以对任何对象进行链式调用。</p>
+<p>接下来介绍YUI中Node类实现的链式调用方法。</p>
+<p>在YUI3中，Node类的基础是Dom，很多Node类的方法都是调用Dom类的同名方法，如上面提到的setAttribute、setStyle等，</p>
+<p>在Dom类源码中也未设置返回本对象，在Node类提供了importMethods方法来导入Dom中相同的方法并支持链式调用。示例代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Dom类及静态方法</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Dom</span>(<span class="params">id</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.dom = <span class="built_in">document</span>.getElementById(id);</span><br><span class="line">&#125; </span><br><span class="line">Dom.setStyle = <span class="function"><span class="keyword">function</span>(<span class="params">node,name,value</span>)</span>&#123;</span><br><span class="line">    node.dom.style[name] = value;</span><br><span class="line">&#125;</span><br><span class="line">Dom.setAttribute = <span class="function"><span class="keyword">function</span>(<span class="params">node,name,v</span>)</span>&#123;</span><br><span class="line">    node.dom.setAttribute(name,v);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//Node类</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Node</span>(<span class="params">id</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.dom = <span class="built_in">document</span>.getElementById(id);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//添加方法的函数</span></span><br><span class="line">Node.addMethod = <span class="function"><span class="keyword">function</span>(<span class="params">method,fn</span>)</span>&#123;<span class="comment">//,context</span></span><br><span class="line">    Node.prototype[method] = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> me = <span class="keyword">this</span>;</span><br><span class="line">        <span class="comment">//Array.prototype.unshift.call(arguments,me);</span></span><br><span class="line">        <span class="comment">//or                                               </span></span><br><span class="line">        <span class="built_in">arguments</span> = <span class="built_in">Array</span>.prototype.slice.call(<span class="built_in">arguments</span>);</span><br><span class="line">        <span class="built_in">arguments</span>.unshift(me);</span><br><span class="line">        fn.apply(me,<span class="built_in">arguments</span>);</span><br><span class="line">        <span class="keyword">return</span> me;</span><br><span class="line">    &#125;     </span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//批量添加方法的函数</span></span><br><span class="line">Node.importMethods = <span class="function"><span class="keyword">function</span>(<span class="params">host,methods</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> methods)&#123;</span><br><span class="line">                <span class="keyword">var</span> m = methods[i];</span><br><span class="line">        <span class="keyword">var</span> fn = host[m];</span><br><span class="line">        Node.addMethod(m,fn);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//定义需要给Node类添加的方法名 列表</span></span><br><span class="line"><span class="keyword">var</span> methods = [<span class="string">'setStyle'</span>,<span class="string">'setAttribute'</span>];</span><br><span class="line"><span class="comment">//使用批量添加方法的函数将Dom中的相关方法添加到Node中 </span></span><br><span class="line">Node.importMethods(Dom,methods); </span><br><span class="line"><span class="comment">//可以在Node中进行链式调用</span></span><br><span class="line"><span class="keyword">var</span> n = <span class="keyword">new</span> Node(<span class="string">'log'</span>).setStyle(<span class="string">'border'</span>,<span class="string">'2px solid red'</span>).setAttribute(<span class="string">'t'</span>,<span class="number">22</span>);</span><br></pre></td></tr></table></figure>
+<p>在实际使用中，可以对原有的对象方法（如Dom中的方法）扩展到另一个类中（如Node类），在Node类中进行链式调用。当然也可以使用同样的方式（importMethods）不扩展而是覆盖Dom中的方法。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/10/08/函数防抖与函数节流/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">函数防抖和函数节流</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 张金新
+        <span>--联系我：15757116071@163.com</span>
+    	</div>
+      	<div class="footer-right">
+      		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

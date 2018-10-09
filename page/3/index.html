@@ -114,6 +114,84 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-跨域" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/01/跨域/" class="article-date">
+  	<time datetime="2017-08-31T16:00:00.000Z" itemprop="datePublished">2017-09-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/01/跨域/">跨域</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文主要涉及三种跨域方法：JSONP、CORS、postMessage。</p>
+<blockquote>
+<p>Q：为什么会出现跨域问题？<br>  A：出于浏览器的同源策略限制，浏览器会拒绝跨域请求。<br>  *注：严格的说，浏览器并不是拒绝所有的跨域请求，实际上拒绝的是跨域的读操作。浏览器的同源限制策略是这样执行的：</p>
+<ul>
+<li>通常浏览器允许进行跨域写操作（Cross-origin writes），如链接，重定向；</li>
+<li>通常浏览器允许跨域资源嵌入（Cross-origin embedding），如 img、script 标签；</li>
+<li>通常浏览器不允许跨域读操作（Cross-origin reads）。*</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Q：什么情况才算作跨域？<br>  A：非同源请求，均为跨域。名词解释：<em>同源 —— 如果两个页面拥有相同的协议（protocol），端口（port）和主机（host），那么这两个页面就属于同一个源（origin）。</em><br><img src="https://haitao.nos.netease.com/b895d6b7-2c27-47ea-937f-cac4d034b090.png" alt="img01"></p>
+</blockquote>
+<blockquote>
+<p>Q：为什么有跨域需求?<br>  A：场景 —— 工程服务化后，不同职责的服务分散在不同的工程中，往往这些工程的域名是不同的，但一个需求可能需要对应到多个服务，这时便需要调用不同服务的接口，因此会出现跨域。</p>
+</blockquote>
+<h2 id="如何实现跨域"><a href="#如何实现跨域" class="headerlink" title="如何实现跨域"></a>如何实现跨域</h2><p>通常，最常用的跨域方式有以下三种：JSONP、CORS、postMessage。</p>
+<h3 id="JSONP"><a href="#JSONP" class="headerlink" title="JSONP"></a>JSONP</h3><p><strong>单纯地为了实现跨域请求而创造的一个 trick。</strong><br>【实现原理】<br>虽然因为同源策略的影响，不能通过XMLHttpRequest请求不同域上的数据（Cross-origin reads）。但是，在页面上引入不同域上的js脚本文件却是可以的（Cross-origin embedding）。因此在js文件载入完毕之后，触发回调，可以将需要的data作为参数传入。<br>【实现方式（需前后端配合）】<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">dosomething</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line">        <span class="comment">//处理获得的数据</span></span><br><span class="line">    &#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br><span class="line"><span class="regexp">&lt;script src="http:/</span><span class="regexp">/example.com/</span>data.php?callback=dosomething<span class="string">"&gt;&lt;/script&gt;</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$callback = $_GET[<span class="string">'callback'</span>];<span class="comment">//得到回调函数名</span></span><br><span class="line">$data = <span class="keyword">array</span>(<span class="string">'a'</span>,<span class="string">'b'</span>,<span class="string">'c'</span>);<span class="comment">//要返回的数据</span></span><br><span class="line"><span class="keyword">echo</span> $callback.<span class="string">'('</span>.json_encode($data).<span class="string">')'</span>;<span class="comment">//输出</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<p>【JSONP的优缺点】<br>优点：兼容性好（兼容低版本IE）<br>缺点：1.JSONP只支持GET请求； 2.XMLHttpRequest相对于JSONP有着更好的错误处理机制</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WEB/">WEB</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/跨域/">跨域</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/09/01/跨域/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-HTTPS浅析" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -451,77 +529,6 @@
 	</div>
 
 
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-JavaScript设计模式" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/03/20/JavaScript设计模式/" class="article-date">
-  	<time datetime="2017-03-19T16:00:00.000Z" itemprop="datePublished">2017-03-20</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/20/JavaScript设计模式/">JavaScript设计模式</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>设计模式的定义：在面向对象软件设计过程中针对特定问题的简洁而优雅的解决方案</p>
-</blockquote>
-<p>当然我们可以用一个通俗的说法：设计模式是解决某个特定场景下对某种问题的解决方案。因此，当我们遇到合适的场景时，我们可能会条件反射一样自然而然想到符合这种场景的设计模式。</p>
-<p>比如，当系统中某个接口的结构已经无法满足我们现在的业务需求，但又不能改动这个接口，因为可能原来的系统很多功能都依赖于这个接口，改动接口会牵扯到太多文件。因此应对这种场景，我们可以很快地想到可以用适配器模式来解决这个问题。</p>
-<p><em>下面介绍几种在JavaScript中常见的几种设计模式：</em></p>
-<p>##1.单例模式</p>
-<blockquote>
-<p>单例模式的定义：保证一个类仅有一个实例，并提供一个访问它的全局访问点。实现的方法为先判断实例存在与否，如果存在则直接返回，如果不存在就创建了再返回，这就确保了一个类只有一个实例对象。</p>
-</blockquote>
-<p>适用场景：一个单一对象。比如：弹窗，无论点击多少次，弹窗只应该被创建一次。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CreateUser</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(name) &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.getName();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    getName() &#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 代理实现单例模式</span></span><br><span class="line"><span class="keyword">var</span> ProxyMode = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> instance = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!instance) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> CreateUser(name);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="comment">// 测试单体模式的实例</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> ProxyMode(<span class="string">"aaa"</span>);</span><br><span class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> ProxyMode(<span class="string">"bbb"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 因为单体模式是只实例化一次，所以下面的实例是相等的</span></span><br><span class="line"><span class="built_in">console</span>.log(a === b);    <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/博客/">博客</a>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a  href="/2017/03/20/JavaScript设计模式/#more">阅读全文 >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>

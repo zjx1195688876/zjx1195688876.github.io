@@ -114,6 +114,77 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-JavaScript设计模式" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/20/JavaScript设计模式/" class="article-date">
+  	<time datetime="2017-03-19T16:00:00.000Z" itemprop="datePublished">2017-03-20</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/20/JavaScript设计模式/">JavaScript设计模式</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>设计模式的定义：在面向对象软件设计过程中针对特定问题的简洁而优雅的解决方案</p>
+</blockquote>
+<p>当然我们可以用一个通俗的说法：设计模式是解决某个特定场景下对某种问题的解决方案。因此，当我们遇到合适的场景时，我们可能会条件反射一样自然而然想到符合这种场景的设计模式。</p>
+<p>比如，当系统中某个接口的结构已经无法满足我们现在的业务需求，但又不能改动这个接口，因为可能原来的系统很多功能都依赖于这个接口，改动接口会牵扯到太多文件。因此应对这种场景，我们可以很快地想到可以用适配器模式来解决这个问题。</p>
+<p><em>下面介绍几种在JavaScript中常见的几种设计模式：</em></p>
+<p>##1.单例模式</p>
+<blockquote>
+<p>单例模式的定义：保证一个类仅有一个实例，并提供一个访问它的全局访问点。实现的方法为先判断实例存在与否，如果存在则直接返回，如果不存在就创建了再返回，这就确保了一个类只有一个实例对象。</p>
+</blockquote>
+<p>适用场景：一个单一对象。比如：弹窗，无论点击多少次，弹窗只应该被创建一次。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CreateUser</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constructor</span>(name) &#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.getName();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    getName() &#123;</span><br><span class="line">         <span class="keyword">return</span> <span class="keyword">this</span>.name;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 代理实现单例模式</span></span><br><span class="line"><span class="keyword">var</span> ProxyMode = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> instance = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(!instance) &#123;</span><br><span class="line">            instance = <span class="keyword">new</span> CreateUser(name);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="comment">// 测试单体模式的实例</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> ProxyMode(<span class="string">"aaa"</span>);</span><br><span class="line"><span class="keyword">var</span> b = <span class="keyword">new</span> ProxyMode(<span class="string">"bbb"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 因为单体模式是只实例化一次，所以下面的实例是相等的</span></span><br><span class="line"><span class="built_in">console</span>.log(a === b);    <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2017/03/20/JavaScript设计模式/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-ES6 类" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -263,65 +334,6 @@
 
 
   
-    <article id="post-执行上下文this" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/05/15/执行上下文this/" class="article-date">
-  	<time datetime="2016-05-14T16:00:00.000Z" itemprop="datePublished">2016-05-15</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/15/执行上下文this/">执行上下文this</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>this指向window的两种情况：1.new function 2.全局对象this</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = <span class="string">"jim"</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">//this 指向 window</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name); <span class="comment">//this 指向 window</span></span><br><span class="line">&#125;</span><br><span class="line">func1();</span><br><span class="line">func2();</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">//this 指向 window</span></span><br></pre></td></tr></table></figure>
-<p>通过构造器创建对象，this指向该创建的对象，如var harry = new Persion(‘Harry’,18,’female’)，this指向harry对象</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Persion</span>(<span class="params">name,age,sex</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.age = age;</span><br><span class="line">    <span class="keyword">this</span>.sex = sex;</span><br><span class="line">    <span class="keyword">this</span>.changeAge = <span class="function"><span class="keyword">function</span>(<span class="params">age</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">//this 指向 harry对象</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">//this 指向 harry对象</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> harry = <span class="keyword">new</span> Persion(<span class="string">'Harry'</span>,<span class="number">18</span>,<span class="string">'female'</span>);</span><br><span class="line">harry.changeAge(<span class="number">22</span>);</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/执行上下文this/">执行上下文this</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/博客/">博客</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
     <article id="post-构造器和表达式" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -382,11 +394,11 @@
 
 
   
-    <article id="post-冒泡与阻止冒泡" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-执行上下文this" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/03/12/冒泡与阻止冒泡/" class="article-date">
-  	<time datetime="2016-03-11T16:00:00.000Z" itemprop="datePublished">2016-03-12</time>
+      <a href="/2016/05/15/执行上下文this/" class="article-date">
+  	<time datetime="2016-05-14T16:00:00.000Z" itemprop="datePublished">2016-05-15</time>
 </a>
     </div>
   
@@ -399,7 +411,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/12/冒泡与阻止冒泡/">冒泡与阻止冒泡</a>
+      <a class="article-title" href="/2016/05/15/执行上下文this/">执行上下文this</a>
     </h1>
   
 
@@ -408,16 +420,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"box"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h1</span>&gt;</span>标题标题标题标题标题标题标题标题<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">id</span>=<span class="string">"img_test"</span> <span class="attr">width</span>=<span class="string">"500px"</span> <span class="attr">height</span>=<span class="string">"300px"</span> <span class="attr">src</span>=<span class="string">""</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">p</span>&gt;</span>这是段落这是段落这是段落这是段落这是段落这是段落这是段落这是段落这是段落<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line">    (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> __box = <span class="built_in">document</span>.getElementById(<span class="string">'box'</span>);</span><br><span class="line">        <span class="keyword">var</span> __imgTest = <span class="built_in">document</span>.getElementById(<span class="string">'img_test'</span>);</span><br><span class="line">        __box.addEventListener(<span class="string">'click'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            alert(<span class="string">"点击box"</span>);</span><br><span class="line">        &#125;,<span class="literal">false</span>);</span><br><span class="line">        __imgTest.addEventListener(<span class="string">'click'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            alert(<span class="string">"点击选中图片"</span>);</span><br><span class="line">            <span class="built_in">window</span>.event? <span class="built_in">window</span>.event.cancelBubble = <span class="literal">true</span> : e.stopPropagation();</span><br><span class="line">        &#125;,<span class="literal">false</span>);</span><br><span class="line">    &#125;)();</span><br><span class="line">    &lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
-
+        <p>this指向window的两种情况：1.new function 2.全局对象this</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = <span class="string">"jim"</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">//this 指向 window</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">func2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name); <span class="comment">//this 指向 window</span></span><br><span class="line">&#125;</span><br><span class="line">func1();</span><br><span class="line">func2();</span><br><span class="line"><span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">//this 指向 window</span></span><br></pre></td></tr></table></figure>
+<p>通过构造器创建对象，this指向该创建的对象，如var harry = new Persion(‘Harry’,18,’female’)，this指向harry对象</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Persion</span>(<span class="params">name,age,sex</span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">    <span class="keyword">this</span>.age = age;</span><br><span class="line">    <span class="keyword">this</span>.sex = sex;</span><br><span class="line">    <span class="keyword">this</span>.changeAge = <span class="function"><span class="keyword">function</span>(<span class="params">age</span>)</span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">//this 指向 harry对象</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">//this 指向 harry对象</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> harry = <span class="keyword">new</span> Persion(<span class="string">'Harry'</span>,<span class="number">18</span>,<span class="string">'female'</span>);</span><br><span class="line">harry.changeAge(<span class="number">22</span>);</span><br></pre></td></tr></table></figure>
       
     </div>
     
     <div class="article-info article-info-index">
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/执行上下文this/">执行上下文this</a></li></ul>
 	</div>
 
       
