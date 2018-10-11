@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>观察者模式与发布-订阅模式 | 张金新的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="转载自：https://www.cnblogs.com/lovesong/p/5272752.html 在翻阅资料的时候，有人把观察者（Observer）模式等同于发布（Publish）/订阅（Subscribe）模式，也有人认为这两种模式还是存在差异，具体的差异为调度的地方不同。 观察者模式比较概念的解释是，目标和观察者是基类，目标提供维护观察者的一系列方法，观察者提供更新接口。具体观察者和具体">
+<meta name="keywords" content="前端,设计模式,发布&#x2F;订阅模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="观察者模式与发布-订阅模式">
+<meta property="og:url" content="http://zhangjinxin.com/2018/10/11/观察者模式与发布-订阅模式/index.html">
+<meta property="og:site_name" content="张金新的博客">
+<meta property="og:description" content="转载自：https://www.cnblogs.com/lovesong/p/5272752.html 在翻阅资料的时候，有人把观察者（Observer）模式等同于发布（Publish）/订阅（Subscribe）模式，也有人认为这两种模式还是存在差异，具体的差异为调度的地方不同。 观察者模式比较概念的解释是，目标和观察者是基类，目标提供维护观察者的一系列方法，观察者提供更新接口。具体观察者和具体">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/555379/201603/555379-20160313183429007-1351424959.png">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/555379/201603/555379-20160313183439366-1623019133.png">
+<meta property="og:updated_time" content="2018-10-11T13:56:39.247Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="观察者模式与发布-订阅模式">
+<meta name="twitter:description" content="转载自：https://www.cnblogs.com/lovesong/p/5272752.html 在翻阅资料的时候，有人把观察者（Observer）模式等同于发布（Publish）/订阅（Subscribe）模式，也有人认为这两种模式还是存在差异，具体的差异为调度的地方不同。 观察者模式比较概念的解释是，目标和观察者是基类，目标提供维护观察者的一系列方法，观察者提供更新接口。具体观察者和具体">
+<meta name="twitter:image" content="https://images2015.cnblogs.com/blog/555379/201603/555379-20160313183429007-1351424959.png">
+  
+    <link rel="alternative" href="/atom.xml" title="张金新的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/star.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">张金新</a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+				        	<li><a href="/file/resume.pdf" target="_blank">我的简历</a></li>
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://taobaofed.org/">淘宝前端团队</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://efe.baidu.com">百度EFE技术体系</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">张金新</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/star.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">张金新</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-观察者模式与发布-订阅模式" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/10/11/观察者模式与发布-订阅模式/" class="article-date">
+  	<time datetime="2018-10-10T16:00:00.000Z" itemprop="datePublished">2018-10-11</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      观察者模式与发布-订阅模式
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/发布-订阅模式/">发布/订阅模式</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/设计模式/">设计模式</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>转载自：<a href="https://www.cnblogs.com/lovesong/p/5272752.html" target="_blank" rel="noopener">https://www.cnblogs.com/lovesong/p/5272752.html</a></p>
+<p>在翻阅资料的时候，有人把观察者（Observer）模式等同于发布（Publish）/订阅（Subscribe）模式，也有人认为这两种模式还是存在差异，具体的差异为调度的地方不同。</p>
+<h3 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h3><p>比较概念的解释是，目标和观察者是基类，目标提供维护观察者的一系列方法，观察者提供更新接口。具体观察者和具体目标继承各自的基类，然后具体观察者把自己注册到具体目标里，在具体目标发生变化时候，调度观察者的更新方法。</p>
+<p>比如有个“天气中心”的具体目标A，专门监听天气变化，而有个显示天气的界面的观察者B，B就把自己注册到A里，当A触发天气变化，就调度B的更新方法，并带上自己的上下文。</p>
+<p><img src="https://images2015.cnblogs.com/blog/555379/201603/555379-20160313183429007-1351424959.png" alt="图一"></p>
+<h3 id="发布-订阅模式"><a href="#发布-订阅模式" class="headerlink" title="发布/订阅模式"></a>发布/订阅模式</h3><p>比较概念的解释是，订阅者把自己想订阅的事件注册到调度中心，当该事件触发时候，发布者发布该事件到调度中心（顺带上下文），由调度中心统一调度订阅者注册到调度中心的处理代码。</p>
+<p>比如有个界面是实时显示天气，它就订阅天气事件（注册到调度中心，包括处理程序），当天气变化时（定时获取数据），就作为发布者发布天气信息到调度中心，调度中心就调度订阅者的天气处理程序。</p>
+<p><img src="https://images2015.cnblogs.com/blog/555379/201603/555379-20160313183439366-1623019133.png" alt="图二"></p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li>从两张图片可以看到，最大的区别是调度的地方。</li>
+</ol>
+<p>虽然两种模式都存在订阅者和发布者（具体观察者可认为是订阅者、具体目标可认为是发布者），但是观察者模式是由具体目标调度的，而发布/订阅模式是统一由调度中心调的，所以观察者模式的订阅者与发布者之间是存在依赖的，而发布/订阅模式则不会。</p>
+<ol start="2">
+<li>两种模式都可以用于松散耦合，改进代码管理和潜在的复用。</li>
+</ol>
+<a id="more"></a>
+<h3 id="DEMO"><a href="#DEMO" class="headerlink" title="DEMO"></a>DEMO</h3><p>观察者模式实现代码（JavaScript版）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//观察者列表</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ObserverList</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.observerList = [];</span><br><span class="line">&#125;</span><br><span class="line">ObserverList.prototype.add = <span class="function"><span class="keyword">function</span>(<span class="params"> obj </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.observerList.push( obj );</span><br><span class="line">&#125;;</span><br><span class="line">ObserverList.prototype.count = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.observerList.length;</span><br><span class="line">&#125;;</span><br><span class="line">ObserverList.prototype.get = <span class="function"><span class="keyword">function</span>(<span class="params"> index </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">if</span>( index &gt; <span class="number">-1</span> &amp;&amp; index &lt; <span class="keyword">this</span>.observerList.length )&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.observerList[ index ];</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">ObserverList.prototype.indexOf = <span class="function"><span class="keyword">function</span>(<span class="params"> obj, startIndex </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> i = startIndex;</span><br><span class="line">  <span class="keyword">while</span>( i &lt; <span class="keyword">this</span>.observerList.length )&#123;</span><br><span class="line">    <span class="keyword">if</span>( <span class="keyword">this</span>.observerList[i] === obj )&#123;</span><br><span class="line">      <span class="keyword">return</span> i;</span><br><span class="line">    &#125;</span><br><span class="line">    i++;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;;</span><br><span class="line">ObserverList.prototype.removeAt = <span class="function"><span class="keyword">function</span>(<span class="params"> index </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.observerList.splice( index, <span class="number">1</span> );</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//目标</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Subject</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.observers = <span class="keyword">new</span> ObserverList();</span><br><span class="line">&#125;</span><br><span class="line">Subject.prototype.addObserver = <span class="function"><span class="keyword">function</span>(<span class="params"> observer </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.observers.add( observer );</span><br><span class="line">&#125;;</span><br><span class="line">Subject.prototype.removeObserver = <span class="function"><span class="keyword">function</span>(<span class="params"> observer </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.observers.removeAt( <span class="keyword">this</span>.observers.indexOf( observer, <span class="number">0</span> ) );</span><br><span class="line">&#125;;</span><br><span class="line">Subject.prototype.notify = <span class="function"><span class="keyword">function</span>(<span class="params"> context </span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> observerCount = <span class="keyword">this</span>.observers.count();</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> i=<span class="number">0</span>; i &lt; observerCount; i++)&#123;</span><br><span class="line">    <span class="keyword">this</span>.observers.get(i).update( context );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//观察者</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Observer</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.update = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>发布/订阅模式实现代码（JavaScript经典版）：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> pubsub = &#123;&#125;;</span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params">myObject</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// Storage for topics that can be broadcast</span></span><br><span class="line">    <span class="comment">// or listened to</span></span><br><span class="line">    <span class="keyword">var</span> topics = &#123;&#125;;</span><br><span class="line">    <span class="comment">// An topic identifier</span></span><br><span class="line">    <span class="keyword">var</span> subUid = <span class="number">-1</span>;</span><br><span class="line">    <span class="comment">// Publish or broadcast events of interest</span></span><br><span class="line">    <span class="comment">// with a specific topic name and arguments</span></span><br><span class="line">    <span class="comment">// such as the data to pass along</span></span><br><span class="line">    myObject.publish = <span class="function"><span class="keyword">function</span>(<span class="params"> topic, args </span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> ( !topics[topic] ) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> subscribers = topics[topic],</span><br><span class="line">            len = subscribers ? subscribers.length : <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> (len--) &#123;</span><br><span class="line">            subscribers[len].func( topic, args );</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">// Subscribe to events of interest</span></span><br><span class="line">    <span class="comment">// with a specific topic name and a</span></span><br><span class="line">    <span class="comment">// callback function, to be executed</span></span><br><span class="line">    <span class="comment">// when the topic/event is observed</span></span><br><span class="line">    myObject.subscribe = <span class="function"><span class="keyword">function</span>(<span class="params"> topic, func </span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!topics[topic]) &#123;</span><br><span class="line">            topics[topic] = [];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">var</span> token = ( ++subUid ).toString();</span><br><span class="line">        topics[topic].push(&#123;</span><br><span class="line">            token: token,</span><br><span class="line">            func: func</span><br><span class="line">        &#125;);</span><br><span class="line">        <span class="keyword">return</span> token;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="comment">// Unsubscribe from a specific</span></span><br><span class="line">    <span class="comment">// topic, based on a tokenized reference</span></span><br><span class="line">    <span class="comment">// to the subscription</span></span><br><span class="line">    myObject.unsubscribe = <span class="function"><span class="keyword">function</span>(<span class="params"> token </span>) </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> ( <span class="keyword">var</span> m <span class="keyword">in</span> topics ) &#123;</span><br><span class="line">            <span class="keyword">if</span> ( topics[m] ) &#123;</span><br><span class="line">                <span class="keyword">for</span> ( <span class="keyword">var</span> i = <span class="number">0</span>, j = topics[m].length; i &lt; j; i++ ) &#123;</span><br><span class="line">                    <span class="keyword">if</span> ( topics[m][i].token === token ) &#123;</span><br><span class="line">                        topics[m].splice( i, <span class="number">1</span> );</span><br><span class="line">                        <span class="keyword">return</span> token;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;( pubsub ));</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/10/09/javascript链式调用/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">javascript链式调用</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 张金新
+        <span>--联系我：15757116071@163.com</span>
+    	</div>
+      	<div class="footer-right">
+      		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

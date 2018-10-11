@@ -114,6 +114,82 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-自定义浏览器返回逻辑" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/03/27/自定义浏览器返回逻辑/" class="article-date">
+  	<time datetime="2017-03-26T16:00:00.000Z" itemprop="datePublished">2017-03-27</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/27/自定义浏览器返回逻辑/">自定义浏览器返回逻辑</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>业务场景：当某一页面有重要信息，返回操作可能会导致信息丢失或无法再回到该页面。如：用户随机抽奖，获取某实物奖品需要用户填写地址来寄送奖品，若用户返回则无法获取到获奖用户地址信息且无法再次回到填写地址的页面。</p>
+</blockquote>
+<p>因此，类似于填写地址的页面，通常会有返回二次确认的逻辑。在APP里实现很简单，只需要订阅appbridge实例的自定义返回事件即可。但在其他APP内置浏览器和普通浏览器返回就不能拦截了。</p>
+<p>这种情况下我们通过 history.pushState() + popstate event 的方法来实现自定义浏览器返回的需求。</p>
+<h2 id="关于-history-pushState"><a href="#关于-history-pushState" class="headerlink" title="关于 history.pushState"></a>关于 history.pushState</h2><p>通过history.pushState() 方法可以向浏览器历史添加了一个状态。</p>
+<blockquote>
+<p>语法 history.pushState(state, title, url); [state：状态对象，title：标题，url：新历史纪录的地址]</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向history中添加一条状态</span></span><br><span class="line"><span class="keyword">var</span> state = &#123; <span class="string">'page_id'</span>: <span class="number">1</span>, <span class="string">'user_id'</span>: <span class="number">5</span> &#125;;</span><br><span class="line"><span class="keyword">var</span> title = <span class="string">'Hello World'</span>;</span><br><span class="line"><span class="keyword">var</span> url = <span class="string">'hello-world.html'</span>;</span><br><span class="line"></span><br><span class="line">history.pushState(state, title, url);</span><br></pre></td></tr></table></figure>
+<p>浏览器兼容良好，兼容情况可查看下方的 “MDN: History.pushState()详解”</p>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/History/pushState" target="_blank" rel="noopener">MDN: History.pushState()详解</a></p>
+<h2 id="关于-popstate-event"><a href="#关于-popstate-event" class="headerlink" title="关于 popstate event"></a>关于 popstate event</h2><p> 浏览器的前进后退行为(或者在JavaScript中调用history.back()、history.forward()、history.go()方法)会触发popstate事件。【注：history.pushState()或者history.replaceState()不会触发popstate事件】</p>
+<blockquote>
+<p>语法 window.onpopstate = function() {};</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.onpopstate = <span class="function"><span class="keyword">function</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">JSON</span>.stringify(event.state));</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">history.pushState(&#123;<span class="string">'page_id'</span>: <span class="number">1</span>&#125;, <span class="string">"title 1"</span>, <span class="string">"?page=1"</span>);    <span class="comment">//添加并激活一个历史记录条目</span></span><br></pre></td></tr></table></figure>
+<p><a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Window/onpopstate" target="_blank" rel="noopener">MDN: window.onpopstate详解</a></p>
+<h2 id="通过结合history-pushState-和popstate-event实现自定义返回的例子"><a href="#通过结合history-pushState-和popstate-event实现自定义返回的例子" class="headerlink" title="通过结合history.pushState()和popstate event实现自定义返回的例子"></a>通过结合history.pushState()和popstate event实现自定义返回的例子</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//向history中添加一条状态</span></span><br><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">//调用history.pushState()方法，向history对象中添加一条状态</span></span><br><span class="line">    history.pushState(&#123;</span><br><span class="line">            <span class="string">'page_id'</span>: <span class="number">1</span>,</span><br><span class="line">        &#125;,<span class="string">'after'</span>,<span class="string">'/after.html'</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="built_in">window</span>.onpopstate = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//Modal让用户选择是确定返回还是继续留在本页面</span></span><br><span class="line">    <span class="keyword">var</span> modal = <span class="built_in">document</span>.createElement(<span class="string">'div'</span>);</span><br><span class="line">    modal.innerHTML = <span class="string">'&lt;div class="content" &gt;\</span></span><br><span class="line"><span class="string">                        &lt;p&gt;文案&lt;/p&gt;\</span></span><br><span class="line"><span class="string">                    &lt;/div&gt;\</span></span><br><span class="line"><span class="string">                    &lt;div class="btn-box"&gt;\</span></span><br><span class="line"><span class="string">                        &lt;a id="btn-cancel"class="btn btn-cancel" href="javascript: void(0)"&gt;取消&lt;/a&gt;\</span></span><br><span class="line"><span class="string">                        &lt;a id="btn-confirm" class="btn btn-confirm" href="javascript: void(0)"&gt;确定&lt;/a&gt;\</span></span><br><span class="line"><span class="string">                    &lt;/div&gt;'</span>;</span><br><span class="line">    <span class="built_in">document</span>.body.appendChild(modal);</span><br><span class="line">    <span class="keyword">var</span> cancelBtn = <span class="built_in">document</span>.getElementById(<span class="string">'btn-cancel'</span>);</span><br><span class="line">    <span class="keyword">var</span> confirmBtn = <span class="built_in">document</span>.getElementById(<span class="string">'btn-confirm'</span>);</span><br><span class="line"></span><br><span class="line">    cancelBtn.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        history.pushState(&#123;</span><br><span class="line">            <span class="string">'page_id'</span>: <span class="number">1</span>,</span><br><span class="line">        &#125;,<span class="string">'after'</span>,<span class="string">'/after.html'</span>);</span><br><span class="line">        <span class="built_in">document</span>.body.removeChild(modal);</span><br><span class="line">    &#125;;</span><br><span class="line">    confirmBtn.onclick = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        history.go(<span class="number">-1</span>);</span><br><span class="line">        <span class="built_in">document</span>.body.removeChild(modal);</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><strong>点击查看实现效果</strong>：<a href="http://5.zhangjinxin.applinzi.com/before.html" target="_blank" rel="noopener">http://5.zhangjinxin.applinzi.com/before.html</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-JavaScript设计模式" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -334,66 +410,6 @@
 
 
   
-    <article id="post-构造器和表达式" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/05/15/构造器和表达式/" class="article-date">
-  	<time datetime="2016-05-14T16:00:00.000Z" itemprop="datePublished">2016-05-15</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/15/构造器和表达式/">构造器和表达式</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>通过构造器创建的变量和表达式创建的变量，虽然值相同，但是构造器创建的变量类型是对象而表达式不是</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> _bool = <span class="keyword">new</span> <span class="built_in">Boolean</span>(<span class="literal">false</span>); <span class="comment">//_bool is Object</span></span><br><span class="line"><span class="keyword">var</span> _bool2 = <span class="literal">false</span>; <span class="comment">//_bool is boolean</span></span><br><span class="line">_bool == _bool2; <span class="comment">//true</span></span><br><span class="line">_bool === _bool2; <span class="comment">//false</span></span><br><span class="line">_bool.valueOf() === _bool2; <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
-<p>通过上述例子，我们看出new Boolean(false)创建的变量类型为object，原始值为false,原始值的类型是boolean,通过var _bool2 = false表达式赋值得到的变量类型是boolean。</p>
-<p>相同的,通过new String()创建的变量也是object类型，表达式赋值的变量也是string类型<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> _string = <span class="keyword">new</span> <span class="built_in">String</span>(<span class="string">"this is string"</span>); <span class="comment">//_string is Object</span></span><br><span class="line"><span class="keyword">var</span> _string2 = <span class="string">"this is string"</span>; <span class="comment">//_string2 is string</span></span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/博客/">博客</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
     <article id="post-执行上下文this" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -455,7 +471,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
     </nav>
   
 </div>
