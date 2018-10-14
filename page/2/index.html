@@ -114,6 +114,154 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-函数防抖与函数节流" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/10/08/函数防抖与函数节流/" class="article-date">
+  	<time datetime="2018-10-07T16:00:00.000Z" itemprop="datePublished">2018-10-08</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/08/函数防抖与函数节流/">函数防抖和函数节流</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>转载自：<a href="https://zhuanlan.zhihu.com/p/38313717" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/38313717</a></p>
+<p>函数防抖与节流是很相似的概念，但它们的应用场景不太一样。</p>
+<p>我们先从概念上深刻理解它们。</p>
+<p>先说函数防抖，debounce。其概念其实是从机械开关和继电器的“去弹跳”（debounce）衍生 出来的，基本思路就是把多个信号合并为一个信号。</p>
+<p>单反也有相似的概念，在拍照的时候手如果拿不稳晃的时候拍照一般手机是拍不出好照片的，因此智能手机是在你按一下时连续拍许多张， 能过合成手段，生成一张。翻译成JS就是，事件内的N个动作会变忽略，只有事件后<code>由程序触发</code>的动作只是有效。</p>
+<p>实现思路如下，将目标方法（动作）包装在setTimeout里面，然后这个方法是一个事件的回调函数，如果这个回调一直执行，那么这些动作就一直不执行。为什么不执行呢，我们搞了一个clearTimeout，这样setTimeout里的方法就不会执行！ 为什么要clearTimeout呢，我们就需要将事件内的连续动作删掉嘛！待到用户不触发这事件了。那么setTimeout就自然会执行这个方法。</p>
+<p>那么这个方法用在什么地方呢，就是用于input输入框架的格式验证，假如只是验证都是字母也罢了，太简单了，不怎么耗性能，如果是验证是否身份证，这性能消耗大，你可以隔170ms才验证一次。这时就需要这个东西。或者你这个是自动完全，需要将已有的输入数据往后端拉一个列表，频繁的交互，后端肯定耗不起，这时也需要这个，如隔350ms。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">debounce</span>(<span class="params">func, delay</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> timeout;</span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"清除"</span>,timeout,e.target.value)</span><br><span class="line">        clearTimeout(timeout);</span><br><span class="line">        <span class="keyword">var</span> context = <span class="keyword">this</span>, args = <span class="built_in">arguments</span></span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"新的"</span>,timeout, e.target.value)</span><br><span class="line">        timeout = setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">          <span class="built_in">console</span>.log(<span class="string">"----"</span>)</span><br><span class="line">          func.apply(context, args);</span><br><span class="line">        &#125;,delay)</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> validate = debounce(<span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"change"</span>, e.target.value, <span class="keyword">new</span> <span class="built_in">Date</span><span class="number">-0</span>)</span><br><span class="line">&#125;, <span class="number">380</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 绑定监听</span></span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">"input"</span>).addEventListener(<span class="string">'input'</span>, validate);</span><br></pre></td></tr></table></figure>
+<p><img src="https://pic1.zhimg.com/80/v2-4f3411408b2dffe1da17a64177e1ce77_hd.jpg" alt="图一"></p>
+<p>这个保证了正常的用户每输入1，2个字符就能触发一次。如果用户是输入法狂魔，也可以狠制他每输入3～6个字符触发一次。</p>
+<p>这个方法的重点是，它在用户不触发事件的时，才触发动作，并且抑制了本来在事件中要执行的动作。</p>
+<p>其他应用场合：提交按钮的点击事件。</p>
+<p>再看节流，throttle。节流的概念可以想象一下水坝，你建了水坝在河道中，不能让水流动不了，你只能让水流慢些。换言之，你不能让用户的方法都不执行。如果这样干，就是debounce了。为了让用户的方法在某个时间段内只执行一次，我们需要保存上次执行的时间点与定时器。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">'panel'</span> <span class="attr">style</span>=<span class="string">"background:red;width:200px;height:200px"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">throttle</span>(<span class="params">fn, threshhold</span>) </span>&#123;</span><br><span class="line"> <span class="keyword">var</span> timeout</span><br><span class="line"> <span class="keyword">var</span> start = <span class="keyword">new</span> <span class="built_in">Date</span>;</span><br><span class="line"> <span class="keyword">var</span> threshhold = threshhold || <span class="number">160</span></span><br><span class="line"> <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">var</span> context = <span class="keyword">this</span>, args = <span class="built_in">arguments</span>, curr = <span class="keyword">new</span> <span class="built_in">Date</span>() - <span class="number">0</span></span><br><span class="line"> </span><br><span class="line"> clearTimeout(timeout)<span class="comment">//总是干掉事件回调</span></span><br><span class="line"> <span class="keyword">if</span>(curr - start &gt;= threshhold)&#123; </span><br><span class="line">     <span class="built_in">console</span>.log(<span class="string">"now"</span>, curr, curr - start)<span class="comment">//注意这里相减的结果，都差不多是160左右</span></span><br><span class="line">     fn.apply(context, args) <span class="comment">//只执行一部分方法，这些方法是在某个时间段内执行一次</span></span><br><span class="line">     start = curr</span><br><span class="line"> &#125;<span class="keyword">else</span>&#123;</span><br><span class="line"> <span class="comment">//让方法在脱离事件后也能执行一次</span></span><br><span class="line">     timeout = setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        fn.apply(context, args) </span><br><span class="line">     &#125;, threshhold);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> mousemove = throttle(<span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span><br><span class="line"> <span class="built_in">console</span>.log(e.pageX, e.pageY)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 绑定监听</span></span><br><span class="line"><span class="built_in">document</span>.querySelector(<span class="string">"#panel"</span>).addEventListener(<span class="string">'mousemove'</span>, mousemove);</span><br></pre></td></tr></table></figure>
+<p><img src="https://pic4.zhimg.com/80/v2-2840419e2e26624dd5a7fca70dfa7e81_hd.jpg" alt="图二"></p>
+<p>函数节流会用在比input, keyup更频繁触发的事件中，如resize, touchmove, mousemove, scroll。throttle 会强制函数以固定的速率执行。因此这个方法比较适合应用于动画相关的场景。</p>
+<p>如果还是不能完全体会 debounce 和 throttle 的差异，可以到 这个页面 看一下两者可视化的比较。</p>
+<p><img src="https://pic4.zhimg.com/80/v2-0661986f20db2d17f1f206397934746e_hd.jpg" alt="图三"></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/节流/">节流</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/防抖/">防抖</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-require() 源码解读" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/06/25/require() 源码解读/" class="article-date">
+  	<time datetime="2018-06-24T16:00:00.000Z" itemprop="datePublished">2018-06-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/25/require() 源码解读/">require() 源码解读</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>部分转载自： <a href="http://www.ruanyifeng.com/blog/2015/05/require.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2015/05/require.html</a></p>
+<h1 id="一-require-的基本用法"><a href="#一-require-的基本用法" class="headerlink" title="一. require() 的基本用法"></a>一. require() 的基本用法</h1><p>分析源码之前，先介绍 require 语句的内部逻辑。如果你只想了解 require 的用法，只看这一段就够了。</p>
+<p>下面的内容翻译自《Node使用手册》。</p>
+<blockquote>
+<p>当 Node 遇到 require(X) 时，按下面的顺序处理。<br> （1）如果 X 是内置模块（比如 require(‘http’）)<br>　　  a. 返回该模块。<br>　　  b. 不再继续执行。<br> （2）如果 X 以 “./“ 或者 “/“ 或者 “../“ 开头<br>　　  a. 根据 X 所在的父模块，确定 X 的绝对路径。<br>　　  b. 将 X 当成文件，依次查找[X, X.js, X.json, X.node]文件，只要其中有一个存在，就返回该文件，不再继续执行。<br>　　  c. 将 X 当成目录，依次查找[X/package.json（main字段）, X/index.js, X/index.json, X/index.node]文件，只要其中有一个存在，就返回该文件，不再继续执行。<br> （3）如果 X 不带路径<br>　　  a. 根据 X 所在的父模块，确定 X 可能的安装目录。<br>　　  b. 依次在每个目录中，将 X 当成文件名或目录名加载。<br> （4） 抛出 “not found”</p>
+</blockquote>
+<p>请看一个例子。</p>
+<p>(1) 当前脚本文件 /home/ry/projects/foo.js 执行了 require(‘bar’) ，这属于上面的第三种情况。Node 内部运行过程如下。<br>首先，确定 x 的绝对路径可能是下面这些位置，依次搜索每一个目录。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/home/ry/projects/node_modules/bar</span><br><span class="line">/home/ry/node_modules/bar</span><br><span class="line">/home/node_modules/bar</span><br><span class="line">/node_modules/bar</span><br></pre></td></tr></table></figure>
+<p>(2) 搜索时，Node 先将 bar 当成文件名，依次尝试加载下面这些文件，只要有一个成功就返回。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bar</span><br><span class="line">bar.js</span><br><span class="line">bar.json</span><br><span class="line">bar.node</span><br></pre></td></tr></table></figure></p>
+<p>(3) 如果都不成功，说明 bar 可能是目录名，于是依次尝试加载下面这些文件。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bar/package.json（main字段）</span><br><span class="line">bar/index.js</span><br><span class="line">bar/index.json</span><br><span class="line">bar/index.node</span><br></pre></td></tr></table></figure></p>
+<p>(4) 如果在所有目录中，都无法找到 bar 对应的文件或目录，就抛出一个错误。</p>
+<h1 id="二-Module-构造函数"><a href="#二-Module-构造函数" class="headerlink" title="二. Module 构造函数"></a>二. Module 构造函数</h1><p>了解内部逻辑以后，下面就来看源码。<br>require 的源码在 Node 的 (lib/module.js)[<a href="https://github.com/nodejs/node-v0.x-archive/blob/master/lib/module.js]" target="_blank" rel="noopener">https://github.com/nodejs/node-v0.x-archive/blob/master/lib/module.js]</a> 文件。为了便于理解，本文引用的源码是简化过的，并且删除了原作者的注释。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Module</span>(<span class="params">id, parent</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.id = id;</span><br><span class="line">  <span class="keyword">this</span>.exports = &#123;&#125;;</span><br><span class="line">  <span class="keyword">this</span>.parent = parent;</span><br><span class="line">  <span class="keyword">this</span>.filename = <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">this</span>.loaded = <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">this</span>.children = [];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">module</span>.exports = Module;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> <span class="built_in">module</span> = <span class="keyword">new</span> Module(filename, parent);</span><br></pre></td></tr></table></figure></p>
+<p>上面代码中，Node 定义了一个构造函数 Module，所有的模块都是 Module 的实例。可以看到，当前模块（module.js）也是 Module 的一个实例。<br>每个实例都有自己的属性。下面通过一个例子，看看这些属性的值是什么。新建一个脚本文件 a.js 。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// a.js</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'module.id: '</span>, <span class="built_in">module</span>.id);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'module.exports: '</span>, <span class="built_in">module</span>.exports);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'module.parent: '</span>, <span class="built_in">module</span>.parent);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'module.filename: '</span>, <span class="built_in">module</span>.filename);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'module.loaded: '</span>, <span class="built_in">module</span>.loaded);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'module.children: '</span>, <span class="built_in">module</span>.children);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'module.paths: '</span>, <span class="built_in">module</span>.paths);</span><br></pre></td></tr></table></figure></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node/">Node</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/require/">require</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/模块/">模块</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2018/06/25/require() 源码解读/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-ES6解构赋值" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -313,151 +461,6 @@
         <p class="article-more-link">
           <a  href="/2018/06/06/webpack学习笔记/#more">阅读全文 >></a>
         </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-JSBridge的原理" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2018/06/05/JSBridge的原理/" class="article-date">
-  	<time datetime="2018-06-04T16:00:00.000Z" itemprop="datePublished">2018-06-05</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/05/JSBridge的原理/">JSBridge的原理</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <blockquote>
-<p>转载自掘金：<a href="https://juejin.im/post/5abca877f265da238155b6bc" target="_blank" rel="noopener">https://juejin.im/post/5abca877f265da238155b6bc</a></p>
-</blockquote>
-<p>关于 JSBridge，绝大多数同学最早遇到的是微信的 WeiXinJSBridge（现在被封装成 JSSDK），各种 Web 页面可以通过 Bridge 调用微信提供的一些原生功能，为用户提供相关的功能。其实，JSBridge很早就出现在软件开发中，在一些桌面软件中很早就运用了这样的形式，多用在通知、产品详情、广告等模块中，然后这些模块中，使用的是 WebUI，而相关按钮点击后，调用的是Native功能。现在移动端盛行，不管是Hybrid应用，还是React-Native都离不开JSBridge，当然也包括在国内举足轻重的微信小程序。那么，JSBridge到底是什么？它的出现是为了什么？它究竟是怎么实现的？在这篇文章中，会在移动混合开发的范畴内，将给大家带来 JSBridge 的深入剖析。</p>
-<p><img src="https://user-gold-cdn.xitu.io/2018/3/29/16270f34f02109eb?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="图1"><br><img src="https://user-gold-cdn.xitu.io/2018/3/29/16270f45ca45db54?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="图2"></p>
-<h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1 前言"></a>1 前言</h1><p>有些童鞋听到JSBridge这个名词，就是觉得非常高上大，有了它Web和Native可以进行交互，就像『进化药水』，让Web摇身一变，成为移动战场的『上将一名』。其实并非如此，JSBridge 其实真是一个很简单的东西，更多的是一种形式、一种思想。</p>
-<h1 id="2-JSBridge-的起源"><a href="#2-JSBridge-的起源" class="headerlink" title="2 JSBridge 的起源"></a>2 JSBridge 的起源</h1><p>为什么是 JSBridge ？而不是 PythonBridge 或是 RubyBridge ？</p>
-<p>当然不是因为 JavaScript 语言高人一等（虽然斯坦福大学已经把算法导论的语言从 Java 改成 JavaScript，小得意一下，嘻嘻），主要的原因还是因为 JavaScript 主要载体 Web 是当前世界上的<strong>最易编写、最易维护、最易部署</strong>的UI构建方式。工程师可以用很简单的HTML标签和CSS样式快速的构建出一个页面，并且在服务端部署后，用户不需要主动更新，就能看到最新的 UI 展现。</p>
-<p>因此，<strong>开发维护成本</strong>和 <strong>更新成本</strong>较低的 Web 技术成为混合开发中几乎不二的选择，而作为Web技术逻辑核心的JavaScript也理所应当肩负起与其他技术『桥接』的职责，并且作为移动不可缺少的一部分，任何一个移动操作系统中都包含可运行JavaScript的容器，例如WebView和JSCore。所以，运行JavaScript不用像运行其他语言时，要额外添加运行环境。因此，基于上面种种原因，JSBridge 应运而生。PhoneGap（Codova 的前身）作为 Hybrid 鼻祖框架，应该是最先被开发者广泛认知的 JSBridge 的应用场景；而对于 JSBridge的应用在国内真正兴盛起来，则是因为杀手级应用微信的出现，主要用途是在网页中通过JSBridge设置分享内容。移动端混合开发中的JSBridge，主要被应用在两种形式的技术方案上：</p>
-<ol>
-<li>基于 Web 的 Hybrid 解决方案：例如微信浏览器、各公司的 Hybrid 方案</li>
-<li>非基于 Web UI 但业务逻辑基于 JavaScript 的解决方案：例如 React-Native</li>
-</ol>
-<p>【注】：微信小程序基于 Web UI，但是为了追求运行效率，对 UI 展现逻辑和业务逻辑的 JavaScript 进行了隔离。因此小程序的技术方案介于上面描述的两种方式之间。</p>
-<h1 id="3-JSBridge-的用途"><a href="#3-JSBridge-的用途" class="headerlink" title="3 JSBridge 的用途"></a>3 JSBridge 的用途</h1><p>JSBridge 简单来讲，主要是 给 JavaScript 提供调用 Native 功能的接口，让混合开发中的『前端部分』可以方便地使用地址位置、摄像头甚至支付等 Native 功能。<br>既然是『简单来讲』，那么 JSBridge 的用途肯定不只『调用 Native 功能』这么简单宽泛。实际上，JSBridge 就像其名称中的『Bridge』的意义一样，是 Native 和非 Native 之间的桥梁，它的核心是 构建 Native 和非 Native 间消息通信的通道，而且是 双向通信的通道。</p>
-<p><img src="https://user-gold-cdn.xitu.io/2018/3/29/16270f744a3e61f2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="图3"></p>
-<p>所谓 双向通信的通道:</p>
-<ol>
-<li>JS 向 Native 发送消息 : 调用相关功能、通知 Native 当前 JS 的相关状态等。</li>
-<li>Native 向 JS 发送消息 : 回溯调用结果、消息推送、通知 JS 当前 Native 的状态等。</li>
-</ol>
-<p>这里有些同学有疑问了：消息都是单向的，那么调用 Native 功能时 Callback 怎么实现的？对于这个问题，在下一节里会给出解释。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JSBridge/">JSBridge</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/博客/">博客</a>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a  href="/2018/06/05/JSBridge的原理/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-在JavaScript中使用mixin" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2018/06/04/在JavaScript中使用mixin/" class="article-date">
-  	<time datetime="2018-06-03T16:00:00.000Z" itemprop="datePublished">2018-06-04</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/04/在JavaScript中使用mixin/">在JavaScript中使用mixin</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>mixin:多重继承，也称为extend</p>
-<p>mixin(混合)的本质就是将一个对象的属性拷贝到另一个对象上，其实就是对象的融合。</p>
-<p>Q: 这个和原型链的继承有什么区别？<br>A: mixin是直接在混合后的对象本身的属性上查找的，而不是在prototype上查找的</p>
-<p>Q: 这个和Object.assigin()有什么区别？<br>A: 虽然Object.assigin()也在对象属性进行合并，但Object.assigin()不会复制原型链上的属性，<br>   而mixin会将原型链上的属性一并复制过去（for … in …）</p>
-<p>demo:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mixin.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> mixin (source, target) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> source) &#123;</span><br><span class="line">        <span class="keyword">if</span> (source[key] !== target[key]) &#123;</span><br><span class="line">            target[key] = source[key];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> target;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="keyword">import</span> mixin <span class="keyword">from</span> <span class="string">'mixin'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Book = &#123;</span><br><span class="line">    type: <span class="string">'book'</span>,</span><br><span class="line">    log () &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Tech_book = mixin (Book, &#123;</span><br><span class="line">    name: <span class="string">'tech_book'</span>,</span><br><span class="line">    log () &#123;</span><br><span class="line">        Book.log.call(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Tech_book.log();</span><br><span class="line"><span class="comment">// this: &#123;</span></span><br><span class="line">    type: <span class="string">'book'</span>,</span><br><span class="line">    name: <span class="string">'tech_book'</span>,</span><br><span class="line">    log: f log()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>注： mixin.js 扩展参数的写法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mixin.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> mixin (...objs) &#123;</span><br><span class="line">    <span class="keyword">return</span> objs.reduce(<span class="function">(<span class="params">dest, src</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> src) &#123;</span><br><span class="line">            dest[key] = src[key]</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dest;    </span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/博客/">博客</a>
-	</div>
-
-
       
       <div class="clearfix"></div>
     </div>

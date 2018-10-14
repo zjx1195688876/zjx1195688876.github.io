@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>JavaScript引擎的工作原理 | 张金新的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="转载自：https://www.cnblogs.com/mrxiaohe/p/5072034.html 1. 什么是JavaScript解析引擎？简单地说，JavaScript解析引擎就是能够“读懂”JavaScript代码，并准确地给出代码运行结果的一段程序。比方说，当你写了 var a = 1 + 1; 这样一段代码，JavaScript引擎做的事情就是看懂（解析）你这段代码，并且将a的值变为">
+<meta name="keywords" content="前端,执行引擎">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript引擎的工作原理">
+<meta property="og:url" content="http://zhangjinxin.com/2018/10/15/JavaScript引擎的工作原理/index.html">
+<meta property="og:site_name" content="张金新的博客">
+<meta property="og:description" content="转载自：https://www.cnblogs.com/mrxiaohe/p/5072034.html 1. 什么是JavaScript解析引擎？简单地说，JavaScript解析引擎就是能够“读懂”JavaScript代码，并准确地给出代码运行结果的一段程序。比方说，当你写了 var a = 1 + 1; 这样一段代码，JavaScript引擎做的事情就是看懂（解析）你这段代码，并且将a的值变为">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-10-14T16:30:04.143Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript引擎的工作原理">
+<meta name="twitter:description" content="转载自：https://www.cnblogs.com/mrxiaohe/p/5072034.html 1. 什么是JavaScript解析引擎？简单地说，JavaScript解析引擎就是能够“读懂”JavaScript代码，并准确地给出代码运行结果的一段程序。比方说，当你写了 var a = 1 + 1; 这样一段代码，JavaScript引擎做的事情就是看懂（解析）你这段代码，并且将a的值变为">
+  
+    <link rel="alternative" href="/atom.xml" title="张金新的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/star.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">张金新</a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+				        	<li><a href="/file/resume.pdf" target="_blank">我的简历</a></li>
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://taobaofed.org/">淘宝前端团队</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://efe.baidu.com">百度EFE技术体系</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">张金新</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/star.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">张金新</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-JavaScript引擎的工作原理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/10/15/JavaScript引擎的工作原理/" class="article-date">
+  	<time datetime="2018-10-14T16:00:00.000Z" itemprop="datePublished">2018-10-15</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      JavaScript引擎的工作原理
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/执行引擎/">执行引擎</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>转载自：<a href="https://www.cnblogs.com/mrxiaohe/p/5072034.html" target="_blank" rel="noopener">https://www.cnblogs.com/mrxiaohe/p/5072034.html</a></p>
+<h3 id="1-什么是JavaScript解析引擎？"><a href="#1-什么是JavaScript解析引擎？" class="headerlink" title="1. 什么是JavaScript解析引擎？"></a>1. 什么是JavaScript解析引擎？</h3><p>简单地说，JavaScript解析引擎就是能够“读懂”JavaScript代码，并准确地给出代码运行结果的一段程序。比方说，当你写了 var a = 1 + 1; 这样一段代码，JavaScript引擎做的事情就是看懂（解析）你这段代码，并且将a的值变为2。</p>
+<p>学过编译原理的人都知道，对于静态语言来说（如Java、C++、C），处理上述这些事情的叫<strong>编译器（Compiler）</strong>，相应地对于JavaScript这样的动态语言则叫<strong>解释器（Interpreter）</strong>。这两者的区别用一句话来概括就是：<strong>编译器是将源代码编译为另外一种代码（比如机器码，或者字节码），而解释器是直接解析并将代码运行结果输出</strong>。 比方说，firebug的console就是一个JavaScript的解释器。</p>
+<p>但是，现在很难去界定说，JavaScript引擎它到底算是个解释器还是个编译器，因为，比如像V8（Chrome的JS引擎），它其实为了提高JS的运行性能，在运行之前会先将JS编译为本地的机器码（native machine code），然后再去执行机器码（这样速度就快很多），相信大家对<strong>JIT（Just In Time Compilation）</strong>一定不陌生吧。</p>
+<p>我个人认为，不需要过分去强调JavaScript解析引擎到底是什么，了解它究竟做了什么事情我个人认为就可以了。对于编译器或者解释器究竟是如何看懂代码的，翻出大学编译课的教材就可以了。</p>
+<p>这里还要强调的就是，JavaScript引擎本身也是程序，代码编写而成。比如V8就是用C/C++写的。</p>
+<h3 id="2-JavaScript解析引擎与ECMAScript是什么关系？"><a href="#2-JavaScript解析引擎与ECMAScript是什么关系？" class="headerlink" title="2. JavaScript解析引擎与ECMAScript是什么关系？"></a>2. JavaScript解析引擎与ECMAScript是什么关系？</h3><p>JavaScript引擎是一段程序，我们写的JavaScript代码也是程序，如何让程序去读懂程序呢？这就需要定义规则。比如，之前提到的var a = 1 + 1;，它表示：</p>
+<ul>
+<li>左边var代表了这是申明（declaration），它申明了a这个变量</li>
+<li>右边的+表示要将1和1做加法</li>
+<li>中间的等号表示了这是个赋值语句</li>
+<li>最后的分号表示这句语句结束了</li>
+</ul>
+<p>上述这些就是规则，有了它就等于有了衡量的标准，JavaScript引擎就可以根据这个标准去解析JavaScript代码了。那么这里的ECMAScript就是定义了这些规则。其中ECMAScript 262这份文档，就是对JavaScript这门语言定义了一整套完整的标准。其中包括：</p>
+<ul>
+<li>var，if，else，break，continue等是JavaScript的关键词</li>
+<li>abstract，int，long等是JavaScript保留词</li>
+<li>怎么样算是数字、怎么样算是字符串等等</li>
+<li>定义了操作符（+，-，&gt;，&lt;等）</li>
+<li>定义了JavaScript的语法</li>
+<li>定义了对表达式，语句等标准的处理算法，比如遇到==该如何处理</li>
+<li>⋯⋯</li>
+</ul>
+<p><strong>注:js兼容性问题的原因</strong></p>
+<p>标准的JavaScript引擎就会根据这套文档去实现，注意这里强调了标准，因为也有不按照标准来实现的，比如IE的JS引擎。这也是为什么JavaScript会有兼容性的问题。至于为什么IE的JS引擎不按照标准来实现，就要说到浏览器大战了，这里就不赘述了，自行Google之。</p>
+<p>所以，简单的说，ECMAScript定义了语言的标准，JavaScript引擎根据它来实现，这就是两者的关系。</p>
+<h3 id="3-JavaScript解析引擎与浏览器又是什么关系？"><a href="#3-JavaScript解析引擎与浏览器又是什么关系？" class="headerlink" title="3. JavaScript解析引擎与浏览器又是什么关系？"></a>3. JavaScript解析引擎与浏览器又是什么关系？</h3><p>简单地说，JavaScript引擎是浏览器的组成部分之一。因为浏览器还要做很多别的事情，比如解析页面、渲染页面、Cookie管理、历史记录等等。那么，既然是组成部分，因此一般情况下JavaScript引擎都是浏览器开发商自行开发的。比如：IE9的Chakra、Firefox的TraceMonkey、Chrome的V8等等。</p>
+<p>从而也看出，不同浏览器都采用了不同的JavaScript引擎。因此，我们只能说要深入了解哪个JavaScript引擎。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/10/15/Node.js异步IO的流程及Event Loop/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Node.js异步IO的流程及Event Loop</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 张金新
+        <span>--联系我：15757116071@163.com</span>
+    	</div>
+      	<div class="footer-right">
+      		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

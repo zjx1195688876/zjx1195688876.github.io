@@ -3,20 +3,23 @@
 <head>
   <meta charset="utf-8">
   
-  <title>构造器和表达式 | 张金新的博客</title>
+  <title>Node.js异步IO的流程及Event Loop | 张金新的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="通过构造器创建的变量和表达式创建的变量，虽然值相同，但是构造器创建的变量类型是对象而表达式不是 12345var _bool = new Boolean(false); //_bool is Objectvar _bool2 = false; //_bool is boolean_bool == _bool2; //true_bool === _bool2; //false_bool.valueO">
-<meta name="keywords" content="JavaScript,前端">
+  <meta name="description" content="异步IO流程 Event Loop">
+<meta name="keywords" content="前端,Node.js,IO,Event Loop">
 <meta property="og:type" content="article">
-<meta property="og:title" content="构造器和表达式">
-<meta property="og:url" content="http://zhangjinxin.com/2016/05/15/构造器和表达式/index.html">
+<meta property="og:title" content="Node.js异步IO的流程及Event Loop">
+<meta property="og:url" content="http://zhangjinxin.com/2018/10/15/Node.js异步IO的流程及Event Loop/index.html">
 <meta property="og:site_name" content="张金新的博客">
-<meta property="og:description" content="通过构造器创建的变量和表达式创建的变量，虽然值相同，但是构造器创建的变量类型是对象而表达式不是 12345var _bool = new Boolean(false); //_bool is Objectvar _bool2 = false; //_bool is boolean_bool == _bool2; //true_bool === _bool2; //false_bool.valueO">
+<meta property="og:description" content="异步IO流程 Event Loop">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2016-05-15T10:38:45.657Z">
+<meta property="og:image" content="https://s3.51cto.com/wyfs02/M01/8D/7B/wKiom1idZSaA0j60AAUYQrMtf_g794.png-wh_500x0-wm_3-wmp_4-s_3806008514.png">
+<meta property="og:image" content="https://img-blog.csdn.net/20141216194247656?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGVmdGZpc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center">
+<meta property="og:updated_time" content="2018-10-14T16:23:12.048Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="构造器和表达式">
-<meta name="twitter:description" content="通过构造器创建的变量和表达式创建的变量，虽然值相同，但是构造器创建的变量类型是对象而表达式不是 12345var _bool = new Boolean(false); //_bool is Objectvar _bool2 = false; //_bool is boolean_bool == _bool2; //true_bool === _bool2; //false_bool.valueO">
+<meta name="twitter:title" content="Node.js异步IO的流程及Event Loop">
+<meta name="twitter:description" content="异步IO流程 Event Loop">
+<meta name="twitter:image" content="https://s3.51cto.com/wyfs02/M01/8D/7B/wKiom1idZSaA0j60AAUYQrMtf_g794.png-wh_500x0-wm_3-wmp_4-s_3806008514.png">
   
     <link rel="alternative" href="/atom.xml" title="张金新的博客" type="application/atom+xml">
   
@@ -117,11 +120,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-构造器和表达式" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Node.js异步IO的流程及Event Loop" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/05/15/构造器和表达式/" class="article-date">
-  	<time datetime="2016-05-14T16:00:00.000Z" itemprop="datePublished">2016-05-15</time>
+      <a href="/2018/10/15/Node.js异步IO的流程及Event Loop/" class="article-date">
+  	<time datetime="2018-10-14T16:00:00.000Z" itemprop="datePublished">2018-10-15</time>
 </a>
     </div>
   
@@ -134,7 +137,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      构造器和表达式
+      Node.js异步IO的流程及Event Loop
     </h1>
   
 
@@ -143,7 +146,7 @@
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Event-Loop/">Event Loop</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IO/">IO</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Node-js/">Node.js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
 	</div>
 
         
@@ -158,10 +161,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>通过构造器创建的变量和表达式创建的变量，虽然值相同，但是构造器创建的变量类型是对象而表达式不是</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> _bool = <span class="keyword">new</span> <span class="built_in">Boolean</span>(<span class="literal">false</span>); <span class="comment">//_bool is Object</span></span><br><span class="line"><span class="keyword">var</span> _bool2 = <span class="literal">false</span>; <span class="comment">//_bool is boolean</span></span><br><span class="line">_bool == _bool2; <span class="comment">//true</span></span><br><span class="line">_bool === _bool2; <span class="comment">//false</span></span><br><span class="line">_bool.valueOf() === _bool2; <span class="comment">//true</span></span><br></pre></td></tr></table></figure>
-<p>通过上述例子，我们看出new Boolean(false)创建的变量类型为object，原始值为false,原始值的类型是boolean,通过var _bool2 = false表达式赋值得到的变量类型是boolean。</p>
-<p>相同的,通过new String()创建的变量也是object类型，表达式赋值的变量也是string类型<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> _string = <span class="keyword">new</span> <span class="built_in">String</span>(<span class="string">"this is string"</span>); <span class="comment">//_string is Object</span></span><br><span class="line"><span class="keyword">var</span> _string2 = <span class="string">"this is string"</span>; <span class="comment">//_string2 is string</span></span><br></pre></td></tr></table></figure></p>
+        <h3 id="异步IO流程"><a href="#异步IO流程" class="headerlink" title="异步IO流程"></a>异步IO流程</h3><p><img src="https://s3.51cto.com/wyfs02/M01/8D/7B/wKiom1idZSaA0j60AAUYQrMtf_g794.png-wh_500x0-wm_3-wmp_4-s_3806008514.png" alt="图一"></p>
+<h3 id="Event-Loop"><a href="#Event-Loop" class="headerlink" title="Event Loop"></a>Event Loop</h3><p><img src="https://img-blog.csdn.net/20141216194247656?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvbGVmdGZpc3Q=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/Center" alt="图二"></p>
 
       
     </div>
@@ -171,18 +172,18 @@
     
 <nav id="article-nav">
   
-    <a href="/2017/03/14/CommonJS和ES6模块/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2018/10/15/JavaScript引擎的工作原理/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          CommonJS和ES6模块
+          JavaScript引擎的工作原理
         
       </div>
     </a>
   
   
-    <a href="/2016/05/15/执行上下文this/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">执行上下文this</div>
+    <a href="/2018/10/14/数据结构和内存中堆和栈的区别和联系/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">数据结构和内存中堆和栈的区别和联系</div>
       <strong class="article-nav-caption">></strong>
     </a>
   

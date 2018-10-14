@@ -114,6 +114,151 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-JSBridge的原理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/06/05/JSBridge的原理/" class="article-date">
+  	<time datetime="2018-06-04T16:00:00.000Z" itemprop="datePublished">2018-06-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/05/JSBridge的原理/">JSBridge的原理</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>转载自掘金：<a href="https://juejin.im/post/5abca877f265da238155b6bc" target="_blank" rel="noopener">https://juejin.im/post/5abca877f265da238155b6bc</a></p>
+</blockquote>
+<p>关于 JSBridge，绝大多数同学最早遇到的是微信的 WeiXinJSBridge（现在被封装成 JSSDK），各种 Web 页面可以通过 Bridge 调用微信提供的一些原生功能，为用户提供相关的功能。其实，JSBridge很早就出现在软件开发中，在一些桌面软件中很早就运用了这样的形式，多用在通知、产品详情、广告等模块中，然后这些模块中，使用的是 WebUI，而相关按钮点击后，调用的是Native功能。现在移动端盛行，不管是Hybrid应用，还是React-Native都离不开JSBridge，当然也包括在国内举足轻重的微信小程序。那么，JSBridge到底是什么？它的出现是为了什么？它究竟是怎么实现的？在这篇文章中，会在移动混合开发的范畴内，将给大家带来 JSBridge 的深入剖析。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/3/29/16270f34f02109eb?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="图1"><br><img src="https://user-gold-cdn.xitu.io/2018/3/29/16270f45ca45db54?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="图2"></p>
+<h1 id="1-前言"><a href="#1-前言" class="headerlink" title="1 前言"></a>1 前言</h1><p>有些童鞋听到JSBridge这个名词，就是觉得非常高上大，有了它Web和Native可以进行交互，就像『进化药水』，让Web摇身一变，成为移动战场的『上将一名』。其实并非如此，JSBridge 其实真是一个很简单的东西，更多的是一种形式、一种思想。</p>
+<h1 id="2-JSBridge-的起源"><a href="#2-JSBridge-的起源" class="headerlink" title="2 JSBridge 的起源"></a>2 JSBridge 的起源</h1><p>为什么是 JSBridge ？而不是 PythonBridge 或是 RubyBridge ？</p>
+<p>当然不是因为 JavaScript 语言高人一等（虽然斯坦福大学已经把算法导论的语言从 Java 改成 JavaScript，小得意一下，嘻嘻），主要的原因还是因为 JavaScript 主要载体 Web 是当前世界上的<strong>最易编写、最易维护、最易部署</strong>的UI构建方式。工程师可以用很简单的HTML标签和CSS样式快速的构建出一个页面，并且在服务端部署后，用户不需要主动更新，就能看到最新的 UI 展现。</p>
+<p>因此，<strong>开发维护成本</strong>和 <strong>更新成本</strong>较低的 Web 技术成为混合开发中几乎不二的选择，而作为Web技术逻辑核心的JavaScript也理所应当肩负起与其他技术『桥接』的职责，并且作为移动不可缺少的一部分，任何一个移动操作系统中都包含可运行JavaScript的容器，例如WebView和JSCore。所以，运行JavaScript不用像运行其他语言时，要额外添加运行环境。因此，基于上面种种原因，JSBridge 应运而生。PhoneGap（Codova 的前身）作为 Hybrid 鼻祖框架，应该是最先被开发者广泛认知的 JSBridge 的应用场景；而对于 JSBridge的应用在国内真正兴盛起来，则是因为杀手级应用微信的出现，主要用途是在网页中通过JSBridge设置分享内容。移动端混合开发中的JSBridge，主要被应用在两种形式的技术方案上：</p>
+<ol>
+<li>基于 Web 的 Hybrid 解决方案：例如微信浏览器、各公司的 Hybrid 方案</li>
+<li>非基于 Web UI 但业务逻辑基于 JavaScript 的解决方案：例如 React-Native</li>
+</ol>
+<p>【注】：微信小程序基于 Web UI，但是为了追求运行效率，对 UI 展现逻辑和业务逻辑的 JavaScript 进行了隔离。因此小程序的技术方案介于上面描述的两种方式之间。</p>
+<h1 id="3-JSBridge-的用途"><a href="#3-JSBridge-的用途" class="headerlink" title="3 JSBridge 的用途"></a>3 JSBridge 的用途</h1><p>JSBridge 简单来讲，主要是 给 JavaScript 提供调用 Native 功能的接口，让混合开发中的『前端部分』可以方便地使用地址位置、摄像头甚至支付等 Native 功能。<br>既然是『简单来讲』，那么 JSBridge 的用途肯定不只『调用 Native 功能』这么简单宽泛。实际上，JSBridge 就像其名称中的『Bridge』的意义一样，是 Native 和非 Native 之间的桥梁，它的核心是 构建 Native 和非 Native 间消息通信的通道，而且是 双向通信的通道。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/3/29/16270f744a3e61f2?imageView2/0/w/1280/h/960/format/webp/ignore-error/1" alt="图3"></p>
+<p>所谓 双向通信的通道:</p>
+<ol>
+<li>JS 向 Native 发送消息 : 调用相关功能、通知 Native 当前 JS 的相关状态等。</li>
+<li>Native 向 JS 发送消息 : 回溯调用结果、消息推送、通知 JS 当前 Native 的状态等。</li>
+</ol>
+<p>这里有些同学有疑问了：消息都是单向的，那么调用 Native 功能时 Callback 怎么实现的？对于这个问题，在下一节里会给出解释。</p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JSBridge/">JSBridge</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2018/06/05/JSBridge的原理/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-在JavaScript中使用mixin" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/06/04/在JavaScript中使用mixin/" class="article-date">
+  	<time datetime="2018-06-03T16:00:00.000Z" itemprop="datePublished">2018-06-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/04/在JavaScript中使用mixin/">在JavaScript中使用mixin</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>mixin:多重继承，也称为extend</p>
+<p>mixin(混合)的本质就是将一个对象的属性拷贝到另一个对象上，其实就是对象的融合。</p>
+<p>Q: 这个和原型链的继承有什么区别？<br>A: mixin是直接在混合后的对象本身的属性上查找的，而不是在prototype上查找的</p>
+<p>Q: 这个和Object.assigin()有什么区别？<br>A: 虽然Object.assigin()也在对象属性进行合并，但Object.assigin()不会复制原型链上的属性，<br>   而mixin会将原型链上的属性一并复制过去（for … in …）</p>
+<p>demo:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mixin.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> mixin (source, target) &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> source) &#123;</span><br><span class="line">        <span class="keyword">if</span> (source[key] !== target[key]) &#123;</span><br><span class="line">            target[key] = source[key];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> target;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// index.js</span></span><br><span class="line"><span class="keyword">import</span> mixin <span class="keyword">from</span> <span class="string">'mixin'</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Book = &#123;</span><br><span class="line">    type: <span class="string">'book'</span>,</span><br><span class="line">    log () &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> Tech_book = mixin (Book, &#123;</span><br><span class="line">    name: <span class="string">'tech_book'</span>,</span><br><span class="line">    log () &#123;</span><br><span class="line">        Book.log.call(<span class="keyword">this</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">Tech_book.log();</span><br><span class="line"><span class="comment">// this: &#123;</span></span><br><span class="line">    type: <span class="string">'book'</span>,</span><br><span class="line">    name: <span class="string">'tech_book'</span>,</span><br><span class="line">    log: f log()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注： mixin.js 扩展参数的写法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mixin.js</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> mixin (...objs) &#123;</span><br><span class="line">    <span class="keyword">return</span> objs.reduce(<span class="function">(<span class="params">dest, src</span>) =&gt;</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> src) &#123;</span><br><span class="line">            dest[key] = src[key]</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dest;    </span><br><span class="line">    &#125;);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-wap适配iPhone X方案实践" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -379,185 +524,6 @@
         <p class="article-more-link">
           <a  href="/2017/09/01/跨域/#more">阅读全文 >></a>
         </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-HTTPS浅析" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/01/HTTPS浅析/" class="article-date">
-  	<time datetime="2017-07-31T16:00:00.000Z" itemprop="datePublished">2017-08-01</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/01/HTTPS浅析/">HTTPS协议浅析</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>首先，我们在讲HTTPS之前先了解下为什么摒弃HTTP。</p>
-<h3 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h3><p>明文传输协议，交互过程以及数据传输都没有进行加密，通信双方也没有进行任何认证，通信过程非常容易遭遇劫持、监听、篡改，严重情况下，会造成恶意的流量劫持等问题，甚至造成个人隐私泄露（比如银行卡卡号和密码泄露）等严重的安全问题。</p>
-<h3 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h3><p>超文本安全传输协议,和HTTP相比,多了一个SSL/TSL的认证过程,端口为443。<br>HTTP协议直接放置在TCP协议之上,而HTTPS在HTTP和TCP中间加上一层加密层。如图2-1所示。</p>
-<center><br><img src="https://haitao.nos.netease.com/a7cf29cb-9134-4762-847f-49c5a308fc93.png" alt="HTTPS"><br>图2-1<br></center>
-
-<h3 id="HTTPS流程解析"><a href="#HTTPS流程解析" class="headerlink" title="HTTPS流程解析"></a>HTTPS流程解析</h3><p>首先，我们来看一下HTTPS的简要流程图（如图3-1）。</p>
-<center><br><img src="https://haitao.nos.netease.com/291669a5-da1e-4512-a4a4-0978cff1bb23.png" alt="HTTPS"><br>图3-1<br></center>
-
-<p>1.客户端先向服务端发送一次HTTPS的连接请求。HTTPS服务端返回CA证书和加密公钥public key(非对称加密，如RSA)。<br>2.客户端用预设的CA列表验证证书，若证书有问题则提示风险。<br>3.客户端生成随机对称密钥，并通过第一步骤中的public key做加密（如AES对称加密）<br>4.将加密后的对称密钥发送给HTTPS服务端<br>5.HTTPS服务端用自己的非对称密钥private key解密，得到第三步的随机对称密钥<br>6.之后双方传送数据都用第五步得到的对称密钥加密后通信</p>
-<p><strong>注意点：</strong></p>
-<blockquote>
-<ol>
-<li>第一步中为什么使用非对称加密（如RSA）？<br> 因为非对称加密中，公钥加密的数据，有且只有唯一的私钥才能够解密。<strong>栗子</strong>：我有N把锁但只对应一把钥匙，这把钥匙保存在HTTPS服务器中，锁通过第一步的请求分发给各个客户端。</li>
-</ol>
-</blockquote>
-<blockquote>
-<ol start="2">
-<li>第三步中为什么使用对称加密（如AES）?<br> 因为非对称加密的解密过程极其消耗CPU资源，如果在通信过程中均使用非对称加密，会对服务器产生巨大的压力。因此非对称加密只是在对称密钥交换或者CA签名的时候使用（第一步和第五步）。之后一直使用对称加密进行通信，因为对称加密的效率高、速度快。<br> <strong>栗子</strong>：对称加密就是一把锁对应一把钥匙，第四步就是客户端把自己的钥放进过public key这把锁里，然后发给HTTPS服务端，服务端用自己的private key打开这把锁，得到了里面的对称密钥。这样客户端和服务端双方手里都拿着对称密钥，之后就可以拿着这把锁互相加解密了。</li>
-</ol>
-</blockquote>
-<blockquote>
-<ol start="3">
-<li>为什么需要CA数字证书？<br> 数字证书有三个功能：<br> 1.身份授权。确保浏览器访问的网站是经过CA验证的可信任的网站；<br> 2.分发公钥。每个数字证书都包含了注册者生成的公钥（验证确保是合法的，非伪造的公钥）。在SSL握手时会通过certificate消息传输给客户端；<br> 3.验证证书合法性。客户端接收到数字证书后，会对证书合法性进行验证。只有验证通过后的证书，才能够进行后续通信过程（通过数字签名防伪SHA-RSA）。<br><strong>如果没有数字证书，第一步中的非对称密钥可能会被中间人拦截，然后自己创建一个新的非对称密钥给客户端，从而导致客户端和服务端的通信均可被中间人解密了</strong></li>
-</ol>
-</blockquote>
-<p>综上所述，如图3-2，非对称加密算法（公钥和私钥）交换对称密钥+数字证书验证身份（验证公钥是否是伪造的）+利用对称密钥加解密后续传输的数据=安全</p>
-<center><br><img src="https://haitao.nos.netease.com/113c9ab4-1787-418f-b3da-66482f5ccb4f.png" alt="HTTPS"><br>图3-2<br></center>
-
-<p>HTTPS基本的流程如上所示，其中的非对称加密、对称加密和数字签名可以展开很多篇幅，这里就不详细展开了。可以通过对应用密码学的学习，对HTTPS的加解密过程进行更深入的理解。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/HTTPS/">HTTPS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/博客/">博客</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-Flux与Redux浅析" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/05/31/Flux与Redux浅析/" class="article-date">
-  	<time datetime="2017-05-30T16:00:00.000Z" itemprop="datePublished">2017-05-31</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/31/Flux与Redux浅析/">Flux与Redux浅析</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="什么是Flux"><a href="#什么是Flux" class="headerlink" title="什么是Flux?"></a>什么是Flux?</h2><p>—— 简单地说，Flux是用来构建用户端的Web应用程序的体系架构，用来管理和控制应用中数据的流向。</p>
-<p><img src="https://haitao.nos.netease.com/1dd8055f-2ba0-47c6-b15d-30ae205cc2f3.png" alt="Flux数据流"></p>
-<p>从上图可知，Flux最大的一个优点就是数据的单向流动。</p>
-<blockquote>
-<p>1.首先要有 action，通过定义一些 action creator 方法根据需要创建 Action 提供给 dispatcher<br>  2.View 层通过用户交互（比如 onClick）会触发 Action<br>  3.Dispatcher 会分发触发的 Action 给所有注册的 Store 的回调函数<br>  4.Store 回调函数根据接收的 Action 更新自身数据之后会触发一个 change 事件通知 View 数据更改了<br>  5.View 会监听这个 change 事件，拿到对应的新数据并调用 setState 更新组件 UI</p>
-</blockquote>
-<p>因此，我们可以将上图总结一下：<br><strong>Action</strong>可以看成是修改Store的行为抽象；<br><strong>Dispatcher</strong>管理着应用的数据流，可以看为Action到Store的分发器；<br><strong>Store</strong>管理着整个应用的状态和逻辑，类似MVC中的Model。</p>
-<p>相对于MVC中View具备多个修改Modal的能力，导致VC<->M在复杂页面中会比较混乱。<br><img src="https://haitao.nos.netease.com/f9abd847-0212-4584-b580-c268bb621630.png" alt="MVC"></-></p>
-<p>Flux实现了所有的状态都通过Store来维护，Store统一控制View，View没有直接修改Store的能力，而是发起Action通过Dispatcher去修改Store(通过 Action 传递数据)。避免了数据流的混乱。</p>
-<p><a href="https://github.com/facebook/flux/tree/master/examples" target="_blank" rel="noopener">Flux Demo</a></p>
-<h2 id="什么是Redux"><a href="#什么是Redux" class="headerlink" title="什么是Redux?"></a>什么是Redux?</h2><p>—— Redux是基于Flux架构的一次改进，官方的定义：Redux is a predictable state container for JavaScript apps（可预测的状态容器）。</p>
-<p><img src="https://haitao.nos.netease.com/116462f9-e8fb-4daa-89e2-73a129d29dce.png" alt="Redux数据流"></p>
-<p>从图中可以看出，Redux和Flux最大的不同在于Redux用Reducer代替了Flux的Dispatcher。Redux设想你永远不会变动你的数据，而应该在Reducer中返回新的对象来作为应用的新状态。因此，State 应该是只读的，唯一改变 State 的方法就是触发Action。而为了描述 Action 如何改变 State Tree ，需要编写 Reducers来实现。</p>
-<p><strong>Reducer函数</strong>：是纯函数，不应该有副作用，不应有API调用，Date.now()或者随机获取等不稳定的操作，应当保证相同的输入Reducer计算的结果应该是一致的输出，它只会进行单纯的计算。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Reducer</span>(<span class="params">state, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> ACTION_TYPE:</span><br><span class="line">      <span class="comment">// calc...</span></span><br><span class="line">      <span class="keyword">return</span> newState;</span><br><span class="line">    <span class="keyword">default</span>: <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> newState;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>State是不可修改的，所以返回的新State应该是基于输入State副本的修改，而不是直接修改State后的返回。</p>
-<h3 id="Redux三大原则"><a href="#Redux三大原则" class="headerlink" title="Redux三大原则"></a>Redux三大原则</h3><blockquote>
-<p><strong>1.单一数据源(Store)</strong><br>    整个应用的State被存放在一棵Object tree中，并且这个Object tree只存在唯一一个Store中；<br>  <strong>2.State是只读的 唯一改变 State 的方法就是触发 Action，Action 是一个用于描述已发生事件的普通对象。</strong><br>  确保了View和网络请求无法直接修改State，所有的修改都能被集中化处理。<br>  <strong>3.通过纯函数Reducer来修改Store,</strong><br>  Reducer 只是一些纯函数，它接收先前的 State 和 Action，并返回新的 State。<br>  即reducer(state, action) =&gt; new state</p>
-</blockquote>
-<h3 id="Redux与Flux的对比"><a href="#Redux与Flux的对比" class="headerlink" title="Redux与Flux的对比"></a>Redux与Flux的对比</h3><p>前面我们称Redux是基于Flux架构的一次改进，那么Redux和Flux具体有哪些区别呢？从代码层面来看：<br><strong>Action:</strong></p>
-<ul>
-<li><p><em>Flux:</em></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*Flux直接在Action中调用Dispatch*/</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">addTodo</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">  AppDispatcher.dispatch(&#123;</span><br><span class="line">    type: ActionTypes.ADD_TODO,</span><br><span class="line">    text: text</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><em>Redux:</em></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*Redux将Action和Dispatch解耦*/</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">addTodo</span>(<span class="params">text</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    type: ActionTypes.ADD_TODO,</span><br><span class="line">    text: text</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p><strong>Store:</strong></p>
-<ul>
-<li><p><em>Flux:</em></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> _todos = [];</span><br><span class="line"><span class="keyword">const</span> TodoStore = <span class="built_in">Object</span>.assign(<span class="keyword">new</span> EventEmitter(), &#123;</span><br><span class="line">  getTodos() &#123;</span><br><span class="line">    <span class="keyword">return</span> _todos;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line">AppDispatcher.register(<span class="function"><span class="keyword">function</span> (<span class="params">action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">  <span class="keyword">case</span> ActionTypes.ADD_TODO:</span><br><span class="line">    _todos = _todos.concat([action.text]);</span><br><span class="line">    TodoStore.emitChange();</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> TodoStore;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><em>Redux:</em></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*Redux将Dispatch从Store中剥离*/</span></span><br><span class="line"><span class="keyword">const</span> initialState = &#123; <span class="attr">todos</span>: [] &#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> <span class="title">TodoStore</span>(<span class="params">state = initialState, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">  <span class="keyword">case</span> ActionTypes.ADD_TODO:</span><br><span class="line">    <span class="keyword">return</span> &#123; <span class="attr">todos</span>: state.todos.concat([action.text]) &#125;;</span><br><span class="line">  <span class="keyword">default</span>:</span><br><span class="line">    <span class="keyword">return</span> state;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="Redux简单demo实现"><a href="#Redux简单demo实现" class="headerlink" title="Redux简单demo实现"></a>Redux简单demo实现</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// actions</span></span><br><span class="line"><span class="keyword">const</span> INCREMENT = <span class="string">'INCREMENT'</span>;</span><br><span class="line"><span class="keyword">const</span> DECREMENT = <span class="string">'DECREMENT'</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">incrementCreator</span>(<span class="params">number</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    type: INCREMENT,</span><br><span class="line">    number,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">decrementCreator</span>(<span class="params">number</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    type: DECREMENT,</span><br><span class="line">    number,</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化state</span></span><br><span class="line"><span class="keyword">const</span> initialState = &#123;</span><br><span class="line">  counter: <span class="number">0</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// reducers函数，注意最后一定要return state防止不能匹配到action的时候state丢失</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">countReducer</span>(<span class="params">state = initialState, action</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">switch</span> (action.type) &#123;</span><br><span class="line">    <span class="keyword">case</span> INCREMENT:</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Object</span>.assign(&#123;&#125;, &#123;</span><br><span class="line">        counter: state.counter + action.number,</span><br><span class="line">      &#125;);</span><br><span class="line">    <span class="keyword">case</span> DECREMENT:</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Object</span>.assign(&#123;&#125;, &#123;</span><br><span class="line">        counter: state.counter - action.number,</span><br><span class="line">      &#125;);</span><br><span class="line">    <span class="keyword">default</span>: <span class="keyword">return</span> state;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建store</span></span><br><span class="line"><span class="keyword">const</span> store = Redux.createStore(countReducer);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 订阅store的修改</span></span><br><span class="line">store.subscribe(<span class="function"><span class="keyword">function</span> <span class="title">log</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(store.getState());</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 通过dispatch action来改变state</span></span><br><span class="line">store.dispatch(incrementCreator(<span class="number">5</span>)); <span class="comment">//Object &#123;counter: 5&#125;</span></span><br><span class="line">store.dispatch(decrementCreator(<span class="number">4</span>)); <span class="comment">//Object &#123;counter: 1&#125;</span></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Flux/">Flux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Redux/">Redux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/博客/">博客</a>
-	</div>
-
-
       
       <div class="clearfix"></div>
     </div>

@@ -114,11 +114,11 @@
 </nav>
       <div class="body-wrap">
   
-    <article id="post-模块·封装数据" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-动态生成元素并获取" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/09/24/模块·封装数据/" class="article-date">
-  	<time datetime="2015-09-23T16:00:00.000Z" itemprop="datePublished">2015-09-24</time>
+      <a href="/2016/01/14/动态生成元素并获取/" class="article-date">
+  	<time datetime="2016-01-13T16:00:00.000Z" itemprop="datePublished">2016-01-14</time>
 </a>
     </div>
   
@@ -131,7 +131,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2015/09/24/模块·封装数据/">模块·封装数据</a>
+      <a class="article-title" href="/2016/01/14/动态生成元素并获取/">动态生成元素并获取</a>
     </h1>
   
 
@@ -140,9 +140,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>有时候我们不希望外部访问私有变量，但希望外部可以来访问方法，我们通过模块模式来暴露相关的接口供外部调用，同时函数内部的私有变量外部又是访问不到的，从而实现了数据的封装，达到信息隐藏的目的。<br>接下来我们来看demo：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> prison = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> prisonerName = <span class="string">"Mike"</span>;</span><br><span class="line">    <span class="keyword">var</span> jailTerm = <span class="string">"20 year term"</span>;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        prisoner : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> prisonerName + <span class="string">"-"</span> + jailTerm;</span><br><span class="line">        &#125;,</span><br><span class="line">        setJailTerm : <span class="function"><span class="keyword">function</span>(<span class="params">term</span>)</span>&#123;</span><br><span class="line">            jailTerm = term;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="built_in">console</span>.log(prison.prisoner());     <span class="comment">//"Mike-20 year term"</span></span><br><span class="line">prison.setJailTerm(<span class="string">"Sententce commuted"</span>);       </span><br><span class="line"><span class="built_in">console</span>.log(prison.prisoner());     <span class="comment">//"Mike-Sententce commuted"</span></span><br></pre></td></tr></table></figure>
-<p>通过立即执行函数可以避免全局污染。<br>我们不能通过prison. prisonerName和prison. jailTerm来访问prison的变量(私有变量),因为私有变量的生命周期只存在立即执行函数的作用域内，但是我们可以通过访问prison.prisoner()和prison.setJailTerm()这两个对象方法(函数暴露的接口)来访问和修改变量值。</p>
+        <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"container"</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></span><br><span class="line">        </span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</span><br><span class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">test1</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">var</span> container = <span class="built_in">document</span>.getElementById(<span class="string">'container'</span>);</span><br><span class="line">            <span class="keyword">var</span> html = <span class="string">""</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>;i &lt; <span class="number">5</span>;i++)&#123;</span><br><span class="line">                html = <span class="string">'&lt;div id="div'</span>+i+<span class="string">'"&gt;'</span>+i+<span class="string">'&lt;/div&gt;'</span></span><br><span class="line">                container.innerHTML += html;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">test2</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>;i &lt; <span class="number">5</span>;i++)&#123;</span><br><span class="line">                <span class="keyword">var</span> div = <span class="built_in">document</span>.getElementById(<span class="string">'div'</span>+i);</span><br><span class="line">                <span class="built_in">console</span>.log(div);<span class="comment">//&lt;div id="0"&gt;&lt;/div&gt;  --  &lt;div id="4"&gt;&lt;/div&gt;</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        test1()</span><br><span class="line">        test2()</span><br><span class="line">    &#125;</span><br><span class="line">&lt;<span class="regexp">/script&gt;</span></span><br></pre></td></tr></table></figure>
+<p>通过test1()往container中插入五个div层，再通过test2()获取到这些div，此场景适用于动态插入多个同类型的div，并对这些div进行操作。比如，选择多张图片，每个div都是一个图片预览加上传的层，通过test2()对每个上传的层进行操作。</p>
 
       
     </div>
@@ -150,7 +150,66 @@
     <div class="article-info article-info-index">
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/模块模式/">模块模式</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-通过闭包在外部访问函数的私有变量" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/09/通过闭包在外部访问函数的私有变量/" class="article-date">
+  	<time datetime="2016-01-08T16:00:00.000Z" itemprop="datePublished">2016-01-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/09/通过闭包在外部访问函数的私有变量/">通过闭包在外部访问函数的私有变量</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>通过闭包实现外部访问函数的私有变量<br>接下来我们来看demo：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> test = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">return</span>&#123;</span><br><span class="line">            aaa : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">                <span class="keyword">var</span> a = <span class="number">1</span>;</span><br><span class="line">                <span class="function"><span class="keyword">function</span> <span class="title">num</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">                    <span class="keyword">var</span> b = <span class="number">2</span>;</span><br><span class="line">                    <span class="keyword">return</span> (a+<span class="string">","</span>+b);</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">return</span> num;</span><br><span class="line">            &#125;,</span><br><span class="line">            bbb : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">                <span class="keyword">var</span> b =  test.aaa()();</span><br><span class="line">                alert(b);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;)();</span><br><span class="line">    test.bbb();  <span class="comment">// 1,2</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<p>通过将aaa函数中num函数作为返回值，在bbb函数中调用aaa函数获取到num函数，执行num函数获取到变量值。<br>原理参考<a href="/2015/05/12/JS作用域链/index.html" target="_blank"> [ JS作用域链 ]</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/闭包/">闭包</a></li></ul>
 	</div>
 
       
@@ -234,6 +293,65 @@
 
 
   
+    <article id="post-模块·封装数据" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/24/模块·封装数据/" class="article-date">
+  	<time datetime="2015-09-23T16:00:00.000Z" itemprop="datePublished">2015-09-24</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/09/24/模块·封装数据/">模块·封装数据</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>有时候我们不希望外部访问私有变量，但希望外部可以来访问方法，我们通过模块模式来暴露相关的接口供外部调用，同时函数内部的私有变量外部又是访问不到的，从而实现了数据的封装，达到信息隐藏的目的。<br>接下来我们来看demo：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> prison = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> prisonerName = <span class="string">"Mike"</span>;</span><br><span class="line">    <span class="keyword">var</span> jailTerm = <span class="string">"20 year term"</span>;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">        prisoner : <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> prisonerName + <span class="string">"-"</span> + jailTerm;</span><br><span class="line">        &#125;,</span><br><span class="line">        setJailTerm : <span class="function"><span class="keyword">function</span>(<span class="params">term</span>)</span>&#123;</span><br><span class="line">            jailTerm = term;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="built_in">console</span>.log(prison.prisoner());     <span class="comment">//"Mike-20 year term"</span></span><br><span class="line">prison.setJailTerm(<span class="string">"Sententce commuted"</span>);       </span><br><span class="line"><span class="built_in">console</span>.log(prison.prisoner());     <span class="comment">//"Mike-Sententce commuted"</span></span><br></pre></td></tr></table></figure>
+<p>通过立即执行函数可以避免全局污染。<br>我们不能通过prison. prisonerName和prison. jailTerm来访问prison的变量(私有变量),因为私有变量的生命周期只存在立即执行函数的作用域内，但是我们可以通过访问prison.prisoner()和prison.setJailTerm()这两个对象方法(函数暴露的接口)来访问和修改变量值。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/模块模式/">模块模式</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-笔记1：关于作用域" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -276,130 +394,6 @@
       
 	<div class="article-category tagcloud">
 	<a class="article-category-link" href="/categories/笔记/">笔记</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-关于闭包" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/30/关于闭包/" class="article-date">
-  	<time datetime="2015-05-29T16:00:00.000Z" itemprop="datePublished">2015-05-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/30/关于闭包/">关于闭包</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>当函数执行完毕时，管理内存的本地方法会将函数中所有创建了的东西从内存中移除。因为函数已经执行完毕，所以我们似乎不再需要访问该执行内存中的任何东西了。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> prisoner = <span class="string">'Jsoh'</span>;</span><br><span class="line">    &#125;)();</span><br></pre></td></tr></table></figure>
-<p>一旦函数执行完成，prisoner变量就不再需要保存在内存中了。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> prison = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> prisoner = <span class="string">'Jsoh'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span>&#123;<span class="attr">prisoner</span>:prisoner&#125;;</span><br><span class="line">    &#125;)();</span><br><span class="line"></span><br><span class="line"><span class="comment">//"Jsoh"</span></span><br><span class="line"><span class="built_in">console</span>.log(prison.prisoner);</span><br></pre></td></tr></table></figure>
-<p>我们仍然不需要在匿名函数执行后访问prisoner变量。因为字符串Jsoh已经保存在prison.prisoner中，没有理由再在模块所在的内存中保存prisoner变量，因为它不用再被访问。prison.prisoner的值是字符串Jsoh，但是它不再指向prisoner变量。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> prison = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">var</span> prisoner = <span class="string">'Jsoh'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span>&#123;</span><br><span class="line">        prisoner:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> prisoner;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;)();</span><br><span class="line"></span><br><span class="line"><span class="comment">//"Jsoh"</span></span><br><span class="line"><span class="built_in">console</span>.log(prison.prisoner());</span><br></pre></td></tr></table></figure>
-<p>现在，每次执行prison.prisoner时都会访问prisoner变量。prison.prisoner()返回prisoner变量的当前值。如果垃圾回收器来把它从内存中移除了，调用prison.prisoner会返回undefined，而不是Jsoh。</p>
-<p>所以什么是闭包？闭包是阻止垃圾回收器将变量从内存中移除的方法，使得在创建变量的执行环境的外面能够访问到该变量。当prisoner函数被保存到prison对象上时，一个闭包就创建了。闭包因保存函数而被创建，在执行函数的外面，可以动态访问prisoner的值，这就阻止了垃圾回收器将prisoner变量从内存中移除。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/闭包/">闭包</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/博客/">博客</a>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/05/30/关于闭包/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-MVC设计模式" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/15/MVC设计模式/" class="article-date">
-  	<time datetime="2015-05-14T16:00:00.000Z" itemprop="datePublished">2015-05-15</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/15/MVC设计模式/">MVC设计模式</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>MVC：M(Model)–处理数据和业务逻辑 (例:Servlet)<br>     V(View)–通过布局向用户展示数据 (例:JSP)<br>     C(Controller)–接收用户请求并调用相应的模型处理 (例:JavaBean)</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">         HTTP请求                      请求参数选取合适的模型</span><br><span class="line">      /-------------------&gt;\        /--------------------------&gt;\</span><br><span class="line">浏览器                     控制器 C                             模型 M</span><br><span class="line">      \&lt;-------------------/ &lt;    | \&lt;--------------------------/</span><br><span class="line">                             \    |  原始数据(按控制器指令选取的)        </span><br><span class="line">                             |    |</span><br><span class="line">            返回处理后的数据  |    |  选取相应视图</span><br><span class="line">                             |    |</span><br><span class="line">                             |    /</span><br><span class="line">                             |   <span class="tag">&lt;</span></span><br><span class="line"><span class="tag">                           视图 <span class="attr">V</span></span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVC/">MVC</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/博客/">博客</a>
 	</div>
 
 
