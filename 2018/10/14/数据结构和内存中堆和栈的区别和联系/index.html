@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>数据结构和内存中堆和栈的区别和联系 | 张金新的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="部分转载自：https://www.cnblogs.com/ChenZhongzhou/p/5685537.html 一、数据结构中的堆与栈：栈：是一种连续储存的数据结构，具有先进后出的性质。通常的操作有入栈（圧栈）、出栈和栈顶元素。想要读取栈中的某个元素，就要将其之前的所有元素出栈才能完成。类比现实中的箱子一样。 堆：是一种非连续的树形储存数据结构，每个节点有一个值，整棵树是经过排序的。特点是根">
+<meta name="keywords" content="前端,数据结构,堆栈">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构和内存中堆和栈的区别和联系">
+<meta property="og:url" content="http://zhangjinxin.com/2018/10/14/数据结构和内存中堆和栈的区别和联系/index.html">
+<meta property="og:site_name" content="张金新的博客">
+<meta property="og:description" content="部分转载自：https://www.cnblogs.com/ChenZhongzhou/p/5685537.html 一、数据结构中的堆与栈：栈：是一种连续储存的数据结构，具有先进后出的性质。通常的操作有入栈（圧栈）、出栈和栈顶元素。想要读取栈中的某个元素，就要将其之前的所有元素出栈才能完成。类比现实中的箱子一样。 堆：是一种非连续的树形储存数据结构，每个节点有一个值，整棵树是经过排序的。特点是根">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/928019/201607/928019-20160719170222107-1820485296.png">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/928019/201607/928019-20160719170359294-1831730516.png">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/928019/201607/928019-20160719170537091-233465737.png">
+<meta property="og:updated_time" content="2018-10-14T09:12:00.204Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="数据结构和内存中堆和栈的区别和联系">
+<meta name="twitter:description" content="部分转载自：https://www.cnblogs.com/ChenZhongzhou/p/5685537.html 一、数据结构中的堆与栈：栈：是一种连续储存的数据结构，具有先进后出的性质。通常的操作有入栈（圧栈）、出栈和栈顶元素。想要读取栈中的某个元素，就要将其之前的所有元素出栈才能完成。类比现实中的箱子一样。 堆：是一种非连续的树形储存数据结构，每个节点有一个值，整棵树是经过排序的。特点是根">
+<meta name="twitter:image" content="https://images2015.cnblogs.com/blog/928019/201607/928019-20160719170222107-1820485296.png">
+  
+    <link rel="alternative" href="/atom.xml" title="张金新的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="/img/star.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">张金新</a></h1>
+		</hgroup>
+
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+				        	<li><a href="/file/resume.pdf" target="_blank">我的简历</a></li>
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://taobaofed.org/">淘宝前端团队</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://efe.baidu.com">百度EFE技术体系</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">张金新</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="/img/star.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">张金新</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-数据结构和内存中堆和栈的区别和联系" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/10/14/数据结构和内存中堆和栈的区别和联系/" class="article-date">
+  	<time datetime="2018-10-13T16:00:00.000Z" itemprop="datePublished">2018-10-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      数据结构和内存中堆和栈的区别和联系
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/堆栈/">堆栈</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>部分转载自：<a href="https://www.cnblogs.com/ChenZhongzhou/p/5685537.html" target="_blank" rel="noopener">https://www.cnblogs.com/ChenZhongzhou/p/5685537.html</a></p>
+<h3 id="一、数据结构中的堆与栈："><a href="#一、数据结构中的堆与栈：" class="headerlink" title="一、数据结构中的堆与栈："></a>一、数据结构中的堆与栈：</h3><p>栈：是一种连续储存的数据结构，具有先进后出的性质。通常的操作有入栈（圧栈）、出栈和栈顶元素。想要读取栈中的某个元素，就要将其之前的所有元素出栈才能完成。类比现实中的箱子一样。</p>
+<p>堆：是一种非连续的树形储存数据结构，每个节点有一个值，整棵树是经过排序的。特点是根结点的值最小（或最大），且根结点的两个子树也是一个堆。常用来实现优先队列，存取随意。</p>
+<h3 id="二、内存中的栈区与堆区："><a href="#二、内存中的栈区与堆区：" class="headerlink" title="二、内存中的栈区与堆区："></a>二、内存中的栈区与堆区：</h3><p>一般说到内存，指的是计算机的随机储存器（RAM），程序都在这里面运行。计算机内存的大致划分如下图所示：</p>
+<p><img src="https://images2015.cnblogs.com/blog/928019/201607/928019-20160719170222107-1820485296.png" alt="图一"></p>
+<blockquote>
+<p>栈内存：由程序自动向操作系统申请分配以及回收，速度快，使用方便，但程序员无法控制。若分配失败，则提示栈溢出错误。注意，const局部变量也储存在栈区内，栈区向地址减小的方向增长。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//测试栈内存</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">10</span>; <span class="comment">//变量i储存在栈区中</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> i2 = <span class="number">20</span>;</span><br><span class="line">    <span class="keyword">int</span> i3 = <span class="number">30</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; &amp;i &lt;&lt; <span class="string">" "</span> &lt;&lt; &amp;i2 &lt;&lt; <span class="string">" "</span> &lt;&lt; &amp;i3 &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试输出为：</p>
+<p><img src="https://images2015.cnblogs.com/blog/928019/201607/928019-20160719170359294-1831730516.png" alt="图二"></p>
+<p>&amp;i3 &lt; &amp;i2 &lt; &amp;i，证明地址是减小的。</p>
+<blockquote>
+<p>堆内存：程序员向操作系统申请一块内存，当系统收到程序的申请时，会遍历一个记录空闲内存地址的链表，寻找第一个空间大于所申请空间的堆结点，然后将该结点从空闲结点链表中删除，并将该结点的空间分配给程序。分配的速度较慢，地址不连续，容易碎片化。此外，由程序员申请，同时也必须由程序员负责销毁，否则则导致内存泄露。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//测试堆内存和栈内存的区别</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">10</span>; <span class="comment">//变量i储存在栈区中</span></span><br><span class="line">    <span class="keyword">char</span> pc[] = <span class="string">"hello!"</span>; <span class="comment">//储存在栈区</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> cd = <span class="number">99.2</span>; <span class="comment">//储存在栈区</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">long</span> si = <span class="number">99</span>; <span class="comment">//si储存在可读写区，专门用来储存全局变量和静态变量的内存</span></span><br><span class="line">    <span class="keyword">int</span>* pi = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">100</span>); <span class="comment">//指针pi指向的内存是在 堆区，专门储存程序运行时分配的内存</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; &amp;i &lt;&lt; <span class="string">" "</span> &lt;&lt; &amp;pc &lt;&lt; <span class="string">" "</span> &lt;&lt; &amp;cd &lt;&lt; <span class="string">" "</span> &lt;&lt; &amp;si &lt;&lt; <span class="string">" "</span> &lt;&lt; pi &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">delete</span> pi; <span class="comment">//需程序员自己释放</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试输出为：</p>
+<p><img src="https://images2015.cnblogs.com/blog/928019/201607/928019-20160719170537091-233465737.png" alt="图三"></p>
+<p>运行多次后会发现pi所指向的地址并不连续，是跳跃式的；而&amp;si是一致的，储存在可读写区；前三个变量都储存在栈区，由程序自动分配和销毁。</p>
+<blockquote>
+<p>栈内存和堆内存的总结：例如我们定义了一个 char a ；系统会自动的在栈上为其开辟空间。而堆（英文名字:heap）则是程序员根据需要自己申请的空间，例如malloc(10); 开辟是个字节的空间。由于栈上的空间是自动分配自动回收的，所以栈上的数据的生存周期只是在函数的运行过程中，运行后就释放掉，不可以再访问。而堆上的数据只要程序员不释放空间，就一直可以访问到，不过缺点是一旦忘记释放会造成内存泄露。</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="三-、-内存分配中栈区和堆区的区别"><a href="#三-、-内存分配中栈区和堆区的区别" class="headerlink" title="三 、 内存分配中栈区和堆区的区别"></a>三 、 内存分配中栈区和堆区的区别</h3><p><strong>0. 申请方式和回收方式不同</strong></p>
+<p>不知道你是否有点明白了，堆和栈的第一个区别就是申请方式的不同：栈（英文名字;stack）是系统自动分配空间的，例如我们定义了一个 char a ；系统会自动的在栈上为其开辟空间。而堆（英文名字:heap）则是程序员根据需要自己申请的空间，例如malloc(10); 开辟是个字节的空间。由于栈上的空间是自动分配自动回收的，所以栈上的数据的生存周期只是在函数的运行过程中，运行后就释放掉，不可以再访问。而堆上的数据只要程序员不释放空间，就一直可以访问到，不过缺点是一旦忘记释放会造成内存泄露。</p>
+<p><strong>1. 申请后系统的响应</strong></p>
+<p>栈 ： 只要栈的剩余空间大于所申请的空间，系统将为程序提供内存，否则将报异常提示栈溢出。</p>
+<p>堆：首先应该知道操作系统有一个记录空闲内存地址的链表，当系统受到程序的申请时，会遍历该链表，寻找第一个空间大于所申请空间的堆结点，然后将该结点从空闲结点链表中删除，并将该结点的空间分配给程序，另外，对于大多 数系统，会在这块内存空间中的首地址处记录本次分配的大小，这样，代码中的delete语句才能正确的释放本内存空间。另外，由于找到的堆结点的大小不一定正好等于申请的大小，系统会自动的将多余的那部分重新放入空闲链表中。也就是说堆会在申请后还要做一些后续的工作这就会引出申请效率的问题</p>
+<p><strong>2. 申请效率的比较</strong></p>
+<p>栈：由系统自动分配，速度较快。但程序员是无法控制的。</p>
+<p>堆：是由new分配的内存，一般速度比较慢，而且容易产生内存碎片，不过用起来最方便。</p>
+<p><strong>3. 申请大小的限制</strong></p>
+<p>栈： 在Windows下，栈是向低地址扩展的数据结构，是一块连续的内存的区域。这句话的意思是栈顶的地址和栈的最大容量是系统预先规定好的，在Windows下，栈的大小是2M（也有的说是1M，总之是一个编译时就确定的常数），如果申请的空间超过栈的剩余空间时，将提示overflow。因此，能从栈获得的空间较小堆：堆是向高地址扩展的数据结构，是不连续的内存区域。这是由于系统是用链表来存储空闲内存地址的，自然是不连续的，而链表的遍历方向是由低地址向高地址。堆的大小受限于计算机系统中有效的虚拟内存。由此可见，堆获得的空间比较灵活，也比较大。</p>
+<p><strong>4. 堆和栈中的内存内容</strong></p>
+<p>由于栈的大小限制，所以用子函数还是有物理意义的，而不仅仅是逻辑意义。</p>
+<p>栈：在函数调用时，第一个进栈的是主函数中函数调用后的下一条指令（函数调用语句的吓一跳可执行语句）的地址，然后是函数的各个参数，在大多数的C编译器中，参数是有右往左入栈的，然后是函数中的局部变量。注意静态变量是不入栈的。当本次函数调用结束后，局部变量先出栈，然后是参数，最后栈顶指针指向最开始存的地址，也就是主函数中的下一条指令，程序由该点继续运行。</p>
+<p>堆：一般是在堆的头部用一个字节存放堆的大小。堆中的具体内容由程序员安排。</p>
+<p><strong>5. 关于堆和栈一个比较形象的比喻</strong></p>
+<p>栈：使用栈就像我们去饭馆里吃饭，只管点菜（发出申请）、付钱、吃（使用），吃饱了就走，不必理会切菜，洗菜等准备工作和洗碗、刷锅等扫尾工作，他的好处就是快捷，但是自由度小。</p>
+<p>堆：使用堆就像是自己动手做喜欢的菜肴，比较麻烦，但是比较符合自己的口味，而且自由度大</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/10/11/观察者模式与发布-订阅模式/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">观察者模式与发布-订阅模式</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 张金新
+        <span>--联系我：15757116071@163.com</span>
+    	</div>
+      	<div class="footer-right">
+      		Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> 
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/mobile.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

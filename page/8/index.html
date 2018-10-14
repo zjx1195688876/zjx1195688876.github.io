@@ -114,6 +114,68 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-JS作用域链" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/05/12/JS作用域链/" class="article-date">
+  	<time datetime="2015-05-11T16:00:00.000Z" itemprop="datePublished">2015-05-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/12/JS作用域链/">JS作用域链</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>作用域链的执行：如图所示，当在查找变量的定义时，JavaScript引擎首先在局部执行环境对象上查找。如果没有定义，则跳出作用域链，到创建它的执行环境中去，并且在该执行环境对象中查找变量的定义，以此类推，直到找到定义或者到达全局作用域为止。</p>
+<p>为了演示作用域链，下面我们来看一份例子,下面的代码清单将会依次打印下面的内容：<br>-<code>I am here to save the day</code><br>-<code>regular_joe is assigned</code><br>-<code>undefined</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> regular_joe = <span class="string">'I am here to save the day'</span>; <span class="comment">//在全局作用域里，设置regular_joe</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//logs 'I am here to save the day'</span></span><br><span class="line">    <span class="built_in">console</span>.log(regular_joe); <span class="comment">//调用作用域：全局。作用域链中的最近匹配：全局的regular_joe</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">supermax</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="keyword">var</span> regular_joe = <span class="string">'regular_joe is assigned'</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//logs 'regular_joe is assigned'</span></span><br><span class="line">        <span class="built_in">console</span>.log(regular_joe); <span class="comment">//调用作用域：全局-&gt;supermax(),作用域链中的最近匹配：在supermax()中定义的regular_joe</span></span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">presion</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">var</span> regular_joe;</span><br><span class="line">            <span class="built_in">console</span>.log(regular_joe); <span class="comment">//调用作用域：全局-&gt;supermax()-&gt;presion(),作用域链中的最近匹配：在presion()中定义的regular_joe</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//logs 'ubdefined'</span></span><br><span class="line">        presion();</span><br><span class="line">    &#125;</span><br><span class="line">    supermax();</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/05/12/JS作用域链/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-AJAX" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">

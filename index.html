@@ -114,6 +114,87 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-数据结构和内存中堆和栈的区别和联系" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/10/14/数据结构和内存中堆和栈的区别和联系/" class="article-date">
+  	<time datetime="2018-10-13T16:00:00.000Z" itemprop="datePublished">2018-10-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/14/数据结构和内存中堆和栈的区别和联系/">数据结构和内存中堆和栈的区别和联系</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>部分转载自：<a href="https://www.cnblogs.com/ChenZhongzhou/p/5685537.html" target="_blank" rel="noopener">https://www.cnblogs.com/ChenZhongzhou/p/5685537.html</a></p>
+<h3 id="一、数据结构中的堆与栈："><a href="#一、数据结构中的堆与栈：" class="headerlink" title="一、数据结构中的堆与栈："></a>一、数据结构中的堆与栈：</h3><p>栈：是一种连续储存的数据结构，具有先进后出的性质。通常的操作有入栈（圧栈）、出栈和栈顶元素。想要读取栈中的某个元素，就要将其之前的所有元素出栈才能完成。类比现实中的箱子一样。</p>
+<p>堆：是一种非连续的树形储存数据结构，每个节点有一个值，整棵树是经过排序的。特点是根结点的值最小（或最大），且根结点的两个子树也是一个堆。常用来实现优先队列，存取随意。</p>
+<h3 id="二、内存中的栈区与堆区："><a href="#二、内存中的栈区与堆区：" class="headerlink" title="二、内存中的栈区与堆区："></a>二、内存中的栈区与堆区：</h3><p>一般说到内存，指的是计算机的随机储存器（RAM），程序都在这里面运行。计算机内存的大致划分如下图所示：</p>
+<p><img src="https://images2015.cnblogs.com/blog/928019/201607/928019-20160719170222107-1820485296.png" alt="图一"></p>
+<blockquote>
+<p>栈内存：由程序自动向操作系统申请分配以及回收，速度快，使用方便，但程序员无法控制。若分配失败，则提示栈溢出错误。注意，const局部变量也储存在栈区内，栈区向地址减小的方向增长。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//测试栈内存</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">10</span>; <span class="comment">//变量i储存在栈区中</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> i2 = <span class="number">20</span>;</span><br><span class="line">    <span class="keyword">int</span> i3 = <span class="number">30</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; &amp;i &lt;&lt; <span class="string">" "</span> &lt;&lt; &amp;i2 &lt;&lt; <span class="string">" "</span> &lt;&lt; &amp;i3 &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试输出为：</p>
+<p><img src="https://images2015.cnblogs.com/blog/928019/201607/928019-20160719170359294-1831730516.png" alt="图二"></p>
+<p>&amp;i3 &lt; &amp;i2 &lt; &amp;i，证明地址是减小的。</p>
+<blockquote>
+<p>堆内存：程序员向操作系统申请一块内存，当系统收到程序的申请时，会遍历一个记录空闲内存地址的链表，寻找第一个空间大于所申请空间的堆结点，然后将该结点从空闲结点链表中删除，并将该结点的空间分配给程序。分配的速度较慢，地址不连续，容易碎片化。此外，由程序员申请，同时也必须由程序员负责销毁，否则则导致内存泄露。</p>
+</blockquote>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//测试堆内存和栈内存的区别</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">10</span>; <span class="comment">//变量i储存在栈区中</span></span><br><span class="line">    <span class="keyword">char</span> pc[] = <span class="string">"hello!"</span>; <span class="comment">//储存在栈区</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> cd = <span class="number">99.2</span>; <span class="comment">//储存在栈区</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">long</span> si = <span class="number">99</span>; <span class="comment">//si储存在可读写区，专门用来储存全局变量和静态变量的内存</span></span><br><span class="line">    <span class="keyword">int</span>* pi = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">100</span>); <span class="comment">//指针pi指向的内存是在 堆区，专门储存程序运行时分配的内存</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; &amp;i &lt;&lt; <span class="string">" "</span> &lt;&lt; &amp;pc &lt;&lt; <span class="string">" "</span> &lt;&lt; &amp;cd &lt;&lt; <span class="string">" "</span> &lt;&lt; &amp;si &lt;&lt; <span class="string">" "</span> &lt;&lt; pi &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">delete</span> pi; <span class="comment">//需程序员自己释放</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试输出为：</p>
+<p><img src="https://images2015.cnblogs.com/blog/928019/201607/928019-20160719170537091-233465737.png" alt="图三"></p>
+<p>运行多次后会发现pi所指向的地址并不连续，是跳跃式的；而&amp;si是一致的，储存在可读写区；前三个变量都储存在栈区，由程序自动分配和销毁。</p>
+<blockquote>
+<p>栈内存和堆内存的总结：例如我们定义了一个 char a ；系统会自动的在栈上为其开辟空间。而堆（英文名字:heap）则是程序员根据需要自己申请的空间，例如malloc(10); 开辟是个字节的空间。由于栈上的空间是自动分配自动回收的，所以栈上的数据的生存周期只是在函数的运行过程中，运行后就释放掉，不可以再访问。而堆上的数据只要程序员不释放空间，就一直可以访问到，不过缺点是一旦忘记释放会造成内存泄露。</p>
+</blockquote>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/堆栈/">堆栈</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据结构/">数据结构</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2018/10/14/数据结构和内存中堆和栈的区别和联系/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-观察者模式与发布-订阅模式" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -389,69 +470,6 @@
         <p class="article-more-link">
           <a  href="/2018/06/25/require() 源码解读/#more">阅读全文 >></a>
         </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-ES6解构赋值" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2018/06/24/ES6解构赋值/" class="article-date">
-  	<time datetime="2018-06-23T16:00:00.000Z" itemprop="datePublished">2018-06-24</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/06/24/ES6解构赋值/">ES6解构赋值</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li><p>数组的解构赋值</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> [head, ...tail] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];</span><br><span class="line">head <span class="comment">// 1</span></span><br><span class="line">tail <span class="comment">// [2, 3, 4]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> [x, y, ...z] = [<span class="string">'a'</span>];</span><br><span class="line">x <span class="comment">// "a"</span></span><br><span class="line">y <span class="comment">// undefined</span></span><br><span class="line">z <span class="comment">// []</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>对象的解构赋值</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> &#123; foo, bar &#125; = &#123; <span class="attr">foo</span>: <span class="string">"aaa"</span>, <span class="attr">bar</span>: <span class="string">"bbb"</span> &#125;;</span><br><span class="line">foo <span class="comment">// "aaa"</span></span><br><span class="line">bar <span class="comment">// "bbb"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 变量必须与属性同名，才能取到正确的值。</span></span><br><span class="line"><span class="keyword">let</span> &#123; baz &#125; = &#123; <span class="attr">foo</span>: <span class="string">"aaa"</span>, <span class="attr">bar</span>: <span class="string">"bbb"</span> &#125;;</span><br><span class="line">baz <span class="comment">// undefined</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 如果变量名与属性名不一致，必须写成下面这样</span></span><br><span class="line"><span class="keyword">let</span> &#123; <span class="attr">foo</span>: baz &#125; = &#123; <span class="attr">foo</span>: <span class="string">'aaa'</span>, <span class="attr">bar</span>: <span class="string">'bbb'</span> &#125;;</span><br><span class="line">baz <span class="comment">// "aaa"</span></span><br><span class="line"><span class="keyword">let</span> obj = &#123; <span class="attr">first</span>: <span class="string">'hello'</span>, <span class="attr">last</span>: <span class="string">'world'</span> &#125;;</span><br><span class="line"><span class="keyword">let</span> &#123; <span class="attr">first</span>: f, <span class="attr">last</span>: l &#125; = obj;</span><br><span class="line">f <span class="comment">// 'hello'</span></span><br><span class="line">l <span class="comment">// 'world'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 对象的解构赋值的内部机制，是先找到同名属性，然后再赋给对应的变量。真正被赋值的是后者，而不是前者。</span></span><br><span class="line"><span class="comment">// foo是匹配的模式，baz才是变量。真正被赋值的是变量baz，而不是模式foo。</span></span><br><span class="line"><span class="keyword">let</span> &#123; <span class="attr">foo</span>: baz &#125; = &#123; <span class="attr">foo</span>: <span class="string">"aaa"</span>, <span class="attr">bar</span>: <span class="string">"bbb"</span> &#125;;</span><br><span class="line">baz <span class="comment">// "aaa"</span></span><br><span class="line">foo <span class="comment">// error: foo is not defined</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 与数组一样，解构也可以用于嵌套结构的对象。</span></span><br><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">  p: [</span><br><span class="line">    <span class="string">'Hello'</span>,</span><br><span class="line">    &#123; <span class="attr">y</span>: <span class="string">'World'</span> &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">let</span> &#123; p, <span class="attr">p</span>: [x, &#123; y &#125;] &#125; = obj;</span><br><span class="line">x <span class="comment">// "Hello"</span></span><br><span class="line">y <span class="comment">// "World"</span></span><br><span class="line">p <span class="comment">// ["Hello", &#123;y: "World"&#125;]</span></span><br></pre></td></tr></table></figure></li>
-</ol>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ES6/">ES6</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/博客/">博客</a>
-	</div>
-
-
       
       <div class="clearfix"></div>
     </div>
