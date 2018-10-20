@@ -238,6 +238,68 @@
 
 
   
+    <article id="post-变量提升" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/05/13/变量提升/" class="article-date">
+  	<time datetime="2015-05-12T16:00:00.000Z" itemprop="datePublished">2015-05-13</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/13/变量提升/">JS变量提升</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在JavaScript中，当变量被声明时，声明会被提升到它所在函数的顶部，并被赋予<strong>undefined</strong>值。这就使得在函数的任意位置声明的变量存在于整个函数中，尽管在赋值之前，它的值一直为undefined。<br>像这样：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;                             <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(v);           ------------&gt; <span class="keyword">var</span> v;</span><br><span class="line">        <span class="keyword">var</span> v = <span class="number">1</span>; ______________/              <span class="built_in">console</span>.log(v);</span><br><span class="line">                                 \------------&gt; v = <span class="number">1</span>;</span><br><span class="line">    &#125;                                   &#125;</span><br></pre></td></tr></table></figure></p>
+<p>左边和右边的函数是等价的。JavaScript的变量声明会被提升到它们所在函数的顶部，而初始化仍旧在原来的地方。</p>
+<p>JavaScript引擎并没有重写代码：每次调用函数时，声明都会重新提升。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">prison</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//logs 'undefined'</span></span><br><span class="line">    <span class="built_in">console</span>.log(prisoner);</span><br><span class="line">    <span class="keyword">var</span> prisoner = <span class="string">'Now I am defined'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//logs 'Now I am define'</span></span><br><span class="line">    <span class="built_in">console</span>.log(prisoner);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/博客/">博客</a>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/05/13/变量提升/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-双飞翼布局" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -338,68 +400,6 @@
 	</div>
 
 
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-变量提升" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/13/变量提升/" class="article-date">
-  	<time datetime="2015-05-12T16:00:00.000Z" itemprop="datePublished">2015-05-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/13/变量提升/">JS变量提升</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在JavaScript中，当变量被声明时，声明会被提升到它所在函数的顶部，并被赋予<strong>undefined</strong>值。这就使得在函数的任意位置声明的变量存在于整个函数中，尽管在赋值之前，它的值一直为undefined。<br>像这样：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;                             <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(v);           ------------&gt; <span class="keyword">var</span> v;</span><br><span class="line">        <span class="keyword">var</span> v = <span class="number">1</span>; ______________/              <span class="built_in">console</span>.log(v);</span><br><span class="line">                                 \------------&gt; v = <span class="number">1</span>;</span><br><span class="line">    &#125;                                   &#125;</span><br></pre></td></tr></table></figure></p>
-<p>左边和右边的函数是等价的。JavaScript的变量声明会被提升到它们所在函数的顶部，而初始化仍旧在原来的地方。</p>
-<p>JavaScript引擎并没有重写代码：每次调用函数时，声明都会重新提升。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">prison</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="comment">//logs 'undefined'</span></span><br><span class="line">    <span class="built_in">console</span>.log(prisoner);</span><br><span class="line">    <span class="keyword">var</span> prisoner = <span class="string">'Now I am defined'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//logs 'Now I am define'</span></span><br><span class="line">    <span class="built_in">console</span>.log(prisoner);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/JavaScript/">JavaScript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/前端/">前端</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/博客/">博客</a>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/05/13/变量提升/#more">阅读全文 >></a>
-        </p>
       
       <div class="clearfix"></div>
     </div>
