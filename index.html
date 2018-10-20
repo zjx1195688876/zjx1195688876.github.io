@@ -141,7 +141,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h3 id="异步IO流程"><a href="#异步IO流程" class="headerlink" title="异步IO流程"></a>异步IO流程</h3><p><img src="https://s3.51cto.com/wyfs02/M01/8D/7B/wKiom1idZSaA0j60AAUYQrMtf_g794.png-wh_500x0-wm_3-wmp_4-s_3806008514.png" alt="图一"></p>
-<h3 id="Event-Loop"><a href="#Event-Loop" class="headerlink" title="Event Loop"></a>Event Loop</h3><p><img src="http://i1.bvimg.com/665196/5d9bfc62eab56d83.png" alt="图二"></p>
+<h3 id="Event-Loop"><a href="#Event-Loop" class="headerlink" title="Event Loop"></a>Event Loop</h3><p><img src="https://t1.picb.cc/uploads/2018/10/20/JaZudR.md.png" alt="图二"></p>
 
       
     </div>
@@ -286,20 +286,20 @@
 <h3 id="一、数据结构中的堆与栈："><a href="#一、数据结构中的堆与栈：" class="headerlink" title="一、数据结构中的堆与栈："></a>一、数据结构中的堆与栈：</h3><p>栈：是一种连续储存的数据结构，具有先进后出的性质。通常的操作有入栈（圧栈）、出栈和栈顶元素。想要读取栈中的某个元素，就要将其之前的所有元素出栈才能完成。类比现实中的箱子一样。</p>
 <p>堆：是一种非连续的树形储存数据结构，每个节点有一个值，整棵树是经过排序的。特点是根结点的值最小（或最大），且根结点的两个子树也是一个堆。常用来实现优先队列，存取随意。</p>
 <h3 id="二、内存中的栈区与堆区："><a href="#二、内存中的栈区与堆区：" class="headerlink" title="二、内存中的栈区与堆区："></a>二、内存中的栈区与堆区：</h3><p>一般说到内存，指的是计算机的随机储存器（RAM），程序都在这里面运行。计算机内存的大致划分如下图所示：</p>
-<p><img src="http://i1.bvimg.com/665196/7f6f0a1324291429.png" alt="图一"></p>
+<p><img src="https://t1.picb.cc/uploads/2018/10/20/JaZIRi.png" alt="图一"></p>
 <blockquote>
 <p>栈内存：由程序自动向操作系统申请分配以及回收，速度快，使用方便，但程序员无法控制。若分配失败，则提示栈溢出错误。注意，const局部变量也储存在栈区内，栈区向地址减小的方向增长。</p>
 </blockquote>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//测试栈内存</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">10</span>; <span class="comment">//变量i储存在栈区中</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">int</span> i2 = <span class="number">20</span>;</span><br><span class="line">    <span class="keyword">int</span> i3 = <span class="number">30</span>;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; &amp;i &lt;&lt; <span class="string">" "</span> &lt;&lt; &amp;i2 &lt;&lt; <span class="string">" "</span> &lt;&lt; &amp;i3 &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>测试输出为：</p>
-<p><img src="http://i1.bvimg.com/665196/7a022e835bc2bf95.png" alt="图二"></p>
+<p><img src="https://t1.picb.cc/uploads/2018/10/20/JaZ1sX.png" alt="图二"></p>
 <p>&amp;i3 &lt; &amp;i2 &lt; &amp;i，证明地址是减小的。</p>
 <blockquote>
 <p>堆内存：程序员向操作系统申请一块内存，当系统收到程序的申请时，会遍历一个记录空闲内存地址的链表，寻找第一个空间大于所申请空间的堆结点，然后将该结点从空闲结点链表中删除，并将该结点的空间分配给程序。分配的速度较慢，地址不连续，容易碎片化。此外，由程序员申请，同时也必须由程序员负责销毁，否则则导致内存泄露。</p>
 </blockquote>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//测试堆内存和栈内存的区别</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">10</span>; <span class="comment">//变量i储存在栈区中</span></span><br><span class="line">    <span class="keyword">char</span> pc[] = <span class="string">"hello!"</span>; <span class="comment">//储存在栈区</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">double</span> cd = <span class="number">99.2</span>; <span class="comment">//储存在栈区</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">long</span> si = <span class="number">99</span>; <span class="comment">//si储存在可读写区，专门用来储存全局变量和静态变量的内存</span></span><br><span class="line">    <span class="keyword">int</span>* pi = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="number">100</span>); <span class="comment">//指针pi指向的内存是在 堆区，专门储存程序运行时分配的内存</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; &amp;i &lt;&lt; <span class="string">" "</span> &lt;&lt; &amp;pc &lt;&lt; <span class="string">" "</span> &lt;&lt; &amp;cd &lt;&lt; <span class="string">" "</span> &lt;&lt; &amp;si &lt;&lt; <span class="string">" "</span> &lt;&lt; pi &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">delete</span> pi; <span class="comment">//需程序员自己释放</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>测试输出为：</p>
-<p><img src="http://i1.bvimg.com/665196/c5cc8554b4c3d43d.png" alt="图三"></p>
+<p><img src="https://t1.picb.cc/uploads/2018/10/20/JaZcC8.png" alt="图三"></p>
 <p>运行多次后会发现pi所指向的地址并不连续，是跳跃式的；而&amp;si是一致的，储存在可读写区；前三个变量都储存在栈区，由程序自动分配和销毁。</p>
 <blockquote>
 <p>栈内存和堆内存的总结：例如我们定义了一个 char a ；系统会自动的在栈上为其开辟空间。而堆（英文名字:heap）则是程序员根据需要自己申请的空间，例如malloc(10); 开辟是个字节的空间。由于栈上的空间是自动分配自动回收的，所以栈上的数据的生存周期只是在函数的运行过程中，运行后就释放掉，不可以再访问。而堆上的数据只要程序员不释放空间，就一直可以访问到，不过缺点是一旦忘记释放会造成内存泄露。</p>
@@ -367,10 +367,10 @@
 <p>在翻阅资料的时候，有人把观察者（Observer）模式等同于发布（Publish）/订阅（Subscribe）模式，也有人认为这两种模式还是存在差异，具体的差异为调度的地方不同。</p>
 <h3 id="观察者模式"><a href="#观察者模式" class="headerlink" title="观察者模式"></a>观察者模式</h3><p>比较概念的解释是，目标和观察者是基类，目标提供维护观察者的一系列方法，观察者提供更新接口。具体观察者和具体目标继承各自的基类，然后具体观察者把自己注册到具体目标里，在具体目标发生变化时候，调度观察者的更新方法。</p>
 <p>比如有个“天气中心”的具体目标A，专门监听天气变化，而有个显示天气的界面的观察者B，B就把自己注册到A里，当A触发天气变化，就调度B的更新方法，并带上自己的上下文。</p>
-<p><img src="http://i1.bvimg.com/665196/30d05217bb1bb36c.png" alt="图一"></p>
+<p><img src="https://t1.picb.cc/uploads/2018/10/20/JaZmNg.png" alt="图一"></p>
 <h3 id="发布-订阅模式"><a href="#发布-订阅模式" class="headerlink" title="发布/订阅模式"></a>发布/订阅模式</h3><p>比较概念的解释是，订阅者把自己想订阅的事件注册到调度中心，当该事件触发时候，发布者发布该事件到调度中心（顺带上下文），由调度中心统一调度订阅者注册到调度中心的处理代码。</p>
 <p>比如有个界面是实时显示天气，它就订阅天气事件（注册到调度中心，包括处理程序），当天气变化时（定时获取数据），就作为发布者发布天气信息到调度中心，调度中心就调度订阅者的天气处理程序。</p>
-<p><img src="http://i1.bvimg.com/665196/330b9b2f432c2047.png" alt="图二"></p>
+<p><img src="https://t1.picb.cc/uploads/2018/10/20/JaZ6Ov.png" alt="图二"></p>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
 <li>从两张图片可以看到，最大的区别是调度的地方。</li>
 </ol>
